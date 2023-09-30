@@ -14,6 +14,8 @@ namespace CMIYC.Player
         private static readonly Vector2 _crosshairPosition = new(0.5f, 0.5f);
         private const float _crosshairMaxDistance = 100f;
 
+        public int Ammo { get; private set; }
+
         [field: SerializeField]
         public WeaponDefinition CurrentWeaponInstance { get; private set; }
 
@@ -29,7 +31,6 @@ namespace CMIYC.Player
         [SerializeField]
         private Transform _weaponRoot;
 
-        private int _ammo;
         private bool _reloading;
         private CacheInput _input;
 
@@ -40,7 +41,7 @@ namespace CMIYC.Player
             if (CurrentWeaponInstance == null || _currentProjectilePrefab == null) return;
 
             // Early return if we are out of ammo.
-            if (_ammo <= 0)
+            if (Ammo <= 0)
             {
                 // Perform our reload animation if we can.
                 if (!_reloading)
@@ -52,7 +53,7 @@ namespace CMIYC.Player
                 return;
             }
 
-            _ammo--;
+            Ammo--;
             var projectilePosition = CurrentWeaponInstance.ProjectileEmitPoint.position;
             FireProjectile(_currentProjectilePrefab, projectilePosition);
         }
@@ -81,7 +82,7 @@ namespace CMIYC.Player
                 (t) => _weaponRoot.localPosition = t * Vector3.down, Easer.OutCubic, this);
 
             _reloading = false;
-            _ammo = CurrentWeaponInstance.InitialAmmo;
+            Ammo = CurrentWeaponInstance.InitialAmmo;
         }
 
         // Instantiates and fires "projectilePrefab" from startingWorldPosition, in the direction of the crosshair.
@@ -118,7 +119,7 @@ namespace CMIYC.Player
         {
             if (CurrentWeaponInstance != null)
             {
-                _ammo = CurrentWeaponInstance.InitialAmmo;
+                Ammo = CurrentWeaponInstance.InitialAmmo;
             }
 
             _input = new();

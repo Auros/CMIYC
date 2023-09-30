@@ -368,6 +368,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 261938435}
+    - target: {fileID: 5020753806508446428, guid: 985a747c887dc6a4daaf8e1e5f136c35,
+        type: 3}
+      propertyPath: _weaponManager
+      value: 
+      objectReference: {fileID: 1537596904}
     - target: {fileID: 6993210897615391582, guid: 985a747c887dc6a4daaf8e1e5f136c35,
         type: 3}
       propertyPath: m_Camera
@@ -1045,6 +1050,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447590876}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1537596904 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2378783188982227642, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
+    type: 3}
+  m_PrefabInstance: {fileID: 6027617039942507185}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 220c7ec313aea6041989e69f0a3c9d2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1788151589
 GameObject:
   m_ObjectHideFlags: 0
