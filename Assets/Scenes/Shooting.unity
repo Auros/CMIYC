@@ -348,6 +348,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 146850298}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &188744512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188744514}
+  - component: {fileID: 188744513}
+  m_Layer: 0
+  m_Name: Input Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &188744513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188744512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f722d07aa12b034d8c33387a9ba56a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &188744514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188744512}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &250414767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -371,6 +415,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3076001902378870742, guid: 1811d4e4950245944a7ca33bdfa4e78b,
+        type: 3}
+      propertyPath: _inputController
+      value: 
+      objectReference: {fileID: 188744513}
     - target: {fileID: 4697410574160761484, guid: 1811d4e4950245944a7ca33bdfa4e78b,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2006,6 +2055,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2378783188982227642, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
+        type: 3}
+      propertyPath: _inputController
+      value: 
+      objectReference: {fileID: 188744513}
+    - target: {fileID: 4514367145247156543, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
+        type: 3}
+      propertyPath: _inputController
+      value: 
+      objectReference: {fileID: 188744513}
     - target: {fileID: 7016093482924637585, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2076,6 +2135,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2109715364}
+  - {fileID: 188744514}
   - {fileID: 1311361685}
   - {fileID: 6027617039942507185}
   - {fileID: 1109225640}

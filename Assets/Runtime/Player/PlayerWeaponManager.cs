@@ -6,6 +6,7 @@ using CMIYC.Weapons;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XInput;
 
 namespace CMIYC.Player
 {
@@ -18,15 +19,16 @@ namespace CMIYC.Player
         public WeaponDefinition CurrentWeaponInstance { get; private set; }
 
         [SerializeField]
-        private TweenManager _tweenManager;
+        private TweenManager _tweenManager = null!;
 
         [SerializeField]
-        private Camera _mainCamera;
+        private Camera _mainCamera = null!;
 
         [SerializeField]
-        private Transform _weaponRoot;
+        private Transform _weaponRoot = null!;
 
-        private CacheInput _input;
+        [SerializeField]
+        private InputController _inputController = null!;
 
         public void OnShoot(InputAction.CallbackContext context)
         {
@@ -74,9 +76,7 @@ namespace CMIYC.Player
 
         private void Start()
         {
-            _input = new();
-            _input.Shooting.AddCallbacks(this);
-            _input.Shooting.Enable();
+            _inputController.Input.Shooting.AddCallbacks(this);
         }
 
         private static float ModifiedBackOut(ref float time)

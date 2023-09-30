@@ -2,6 +2,7 @@
 using CMIYC.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XInput;
 
 namespace CMIYC.Settings
 {
@@ -21,6 +22,9 @@ namespace CMIYC.Settings
         public bool Paused { get; private set; }
 
         [SerializeField]
+        private InputController _inputController = null!;
+
+        [SerializeField]
         private TweenManager _tweenManager = null!;
 
         [SerializeField]
@@ -32,15 +36,11 @@ namespace CMIYC.Settings
         private CursorLockMode _cachedCursorLockMode;
         private float _cachedTimeScale;
 
-        private CacheInput _input = null;
-
         private void Start()
         {
             HidePauseMenu(0);
 
-            _input = new();
-            _input.Pause.AddCallbacks(this);
-            _input.Pause.Enable();
+            _inputController.Input.Pause.AddCallbacks(this);
         }
 
         public void OnPause(InputAction.CallbackContext context)
@@ -64,12 +64,15 @@ namespace CMIYC.Settings
                 Time.timeScale = 0;
 
                 PresentPauseMenu(_settingsDuration);
+
+                _inputController.Disable(_inputController.Input.Pause.Pause);
             }
             // Restore cursor lock mode on unpause
             else
             {
                 Cursor.lockState = _cachedCursorLockMode;
                 Time.timeScale = _cachedTimeScale;
+                _inputController.Enable();
                 HidePauseMenu(_settingsDuration);
             }
         }
