@@ -1,0 +1,21 @@
+{
+    "name": "CMIYC",
+    "rootNamespace": "CMIYC",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:bbd289d6e512d7742984a08ed2673021",
+        "GUID:c88f40d7426e3024bb0b22e8d994255f",
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:90cd226741011a645a3ee72555b13dfa"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
