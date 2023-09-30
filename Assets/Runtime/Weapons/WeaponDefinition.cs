@@ -6,6 +6,13 @@ using UnityEngine;
 namespace CMIYC.Weapons
 {
     // Used in the root of a prefab.
+    // TODO:
+    //   - Multiple projectile emission points
+    //   - Multiple projectiles shot per click
+    //   - Full auto firing
+    //   - Burst fire?
+    //   - Recoil?
+    //   - Spread?
     public class WeaponDefinition : MonoBehaviour
     {
         [field: Tooltip("Transform where projectiles are instantiated and fired from (pointing to the cursor)")]
@@ -62,12 +69,7 @@ namespace CMIYC.Weapons
 
             // Emit a new projectile at the weapon emission point, and let it loose.
             var newProjectile = Instantiate(projectile);
-            newProjectile.Initialize(spawnPoint, projectileForward, OnProjectileHit);
-        }
-
-        // TODO: Deal damage to the hit entity
-        private void OnProjectileHit(ProjectileHitEvent hit)
-        {
+            newProjectile.Initialize(spawnPoint, projectileForward);
         }
 
         private async UniTask ReloadAsync()

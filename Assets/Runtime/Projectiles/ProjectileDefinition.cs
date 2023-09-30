@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace CMIYC.Projectiles
 {
-#nullable enable
     // Used in the root of a prefab.
     public class ProjectileDefinition : MonoBehaviour
     {
@@ -23,19 +22,16 @@ namespace CMIYC.Projectiles
         [SerializeField] private LayerMask _layerMask;
 
         private float _timeAlive;
-        private Action<ProjectileHitEvent>? _onCollision;
         private Ray _raycast;
         private bool _initialized;
 
-        public void Initialize(Vector3 position, Vector3 forward, Action<ProjectileHitEvent>? onCollision)
+        public void Initialize(Vector3 position, Vector3 forward)
         {
             if (_initialized) throw new InvalidOperationException("BRUH WE ARE ALREADY INITIALIZED!!!!");
             _initialized = true;
 
             transform.position = position;
             transform.forward = forward;
-
-            _onCollision = onCollision;
 
             if (_hitScan)
             {
@@ -95,9 +91,11 @@ namespace CMIYC.Projectiles
 
         private void CallbackAndDestroy(ProjectileHitEvent projectileHitEvent)
         {
-            _onCollision?.Invoke(projectileHitEvent);
+            // I think using Messages would be more performant than manually iterating through every component?
+            projectileHitEvent.Collider
+                .BroadcastMessage(nameof(IProjectileTarget.OnProjectileHit), projectileHitEvent, SendMessageOptions.DontRequireReceiver);
+
             Destroy(gameObject);
         }
     }
-#nullable restore
 }
