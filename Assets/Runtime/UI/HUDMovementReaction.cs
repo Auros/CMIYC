@@ -8,6 +8,7 @@ namespace CMIYC.UI
         [SerializeField] private Transform _characterTransform;
 
         [Header("Parameters")]
+        [SerializeField] private bool _useUnscaledTime;
         [SerializeField] private float _reactionStrength;
         [SerializeField] private float _movementSensitivity;
         [SerializeField] private float _rotationSensitivity;
@@ -44,7 +45,10 @@ namespace CMIYC.UI
             var eulerOffset = _rotationSensitivity * (_characterPerviousEuler - characterEuler).normalized;
 
             // Lerp between our old offset and the current offset
-            var dT = Time.deltaTime;
+            var dT = _useUnscaledTime
+                ? Time.unscaledDeltaTime
+                : Time.deltaTime;
+
             _offsetPos = Vector3.Lerp(_offsetPos, posOffset, dT * _reactionStrength);
             _offsetEuler = Vector3.Lerp(_offsetEuler, eulerOffset, dT * _reactionStrength);
 

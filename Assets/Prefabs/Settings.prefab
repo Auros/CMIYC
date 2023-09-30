@@ -220,6 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterTransform: {fileID: 0}
+  _useUnscaledTime: 1
   _reactionStrength: 5
   _movementSensitivity: 10
   _rotationSensitivity: 2.5
