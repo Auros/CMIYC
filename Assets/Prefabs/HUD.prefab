@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 7304976173413753618}
   - component: {fileID: 6993210897615391582}
   - component: {fileID: 1814511925015354559}
+  - component: {fileID: 8125227882269484089}
   - component: {fileID: 5020753806508446428}
   m_Layer: 5
   m_Name: HUD
@@ -488,6 +489,20 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!114 &8125227882269484089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2653215865125207177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df931618c3507ac4fabf909d6fa79062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultTweenCapacity: 100
+  _timeSource: 0
 --- !u!114 &5020753806508446428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,6 +517,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ammoCounter: {fileID: 7570257321530284761}
   _weaponManager: {fileID: 0}
+  _tweenManager: {fileID: 8125227882269484089}
 --- !u!1 &2914759734784007847
 GameObject:
   m_ObjectHideFlags: 0
