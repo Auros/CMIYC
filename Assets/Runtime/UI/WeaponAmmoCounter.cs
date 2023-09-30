@@ -17,7 +17,17 @@ namespace CMIYC.UI
         private CancellationTokenSource? _cts;
         private int _cachedAmmo;
 
-        private void Start() => _cachedAmmo = _weaponManager.CurrentWeaponInstance.Ammo;
+        private void Start()
+        {
+            if (_weaponManager == null)
+            {
+                Debug.LogWarning($"lmao someone forgot to assign {nameof(_weaponManager)}, disabling {nameof(WeaponAmmoCounter)}...");
+                enabled = false;
+                return;
+            }
+
+            _cachedAmmo = _weaponManager.CurrentWeaponInstance.Ammo;
+        }
 
         // This certainly wouldnt be Auros approved but we're in a game jam, i dont give a fuck
         private void LateUpdate()
