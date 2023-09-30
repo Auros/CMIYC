@@ -8,11 +8,11 @@ namespace CMIYC
 {
     public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
     {
-        private CapsuleCollider _capsuleCollider;
-        private Rigidbody _rigidbody;
-        private Camera _camera;
+        private CapsuleCollider _capsuleCollider = null!;
+        private Rigidbody _rigidbody = null!;
+        private Camera _camera = null!;
 
-        private CacheInput _cacheInput;
+        private CacheInput _cacheInput = null!;
 
         [SerializeField]
         private LayerMask _collisionMask;
