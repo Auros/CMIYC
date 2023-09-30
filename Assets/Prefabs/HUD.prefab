@@ -451,7 +451,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 0.3
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -903,7 +903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterTransform: {fileID: 0}
   _reactionStrength: 5
-  _movementSensitivity: 50
+  _movementSensitivity: 10
   _rotationSensitivity: 2.5
 --- !u!1 &8054709951190882007
 GameObject:
