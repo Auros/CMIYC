@@ -7,6 +7,9 @@ namespace CMIYC.Projectiles
     // Used in the root of a prefab.
     public class ProjectileDefinition : MonoBehaviour
     {
+        [Tooltip("Amount of damage to deal to entities.")]
+        [field: SerializeField] public float Damage { get; private set; }
+
         [Tooltip("If true, this projectile will have infinite velocity and travel instantly to its target.")]
         [SerializeField] private bool _hitScan;
 
