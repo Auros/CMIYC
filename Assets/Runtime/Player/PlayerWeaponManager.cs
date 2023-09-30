@@ -79,7 +79,7 @@ namespace CMIYC.Player
 
             // Bring our weapon back up and finish reloading.
             await _tweenManager.Run(1f, 0f, reappearAnimationLength,
-                (t) => _weaponRoot.localPosition = t * Vector3.down, Easer.OutCubic, this);
+                (t) => _weaponRoot.localPosition = t * Vector3.down, ModifiedBackOut, this);
 
             _reloading = false;
             Ammo = CurrentWeaponInstance.InitialAmmo;
@@ -125,6 +125,14 @@ namespace CMIYC.Player
             _input = new();
             _input.Shooting.AddCallbacks(this);
             _input.Shooting.Enable();
+        }
+
+        private static float ModifiedBackOut(ref float time)
+        {
+            const float backOvershoot = 0.5f;
+
+            var newTime = time - 1f;
+            return newTime * newTime * ((backOvershoot + 1) * newTime + backOvershoot) + 1;
         }
     }
 }
