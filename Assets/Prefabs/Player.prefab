@@ -130,6 +130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ProjectileEmitPoint>k__BackingField: {fileID: 471526553432590656}
   <InitialAmmo>k__BackingField: 32
+  <BulletProjectile>k__BackingField: {fileID: 3250812358997741803, guid: 6ebc7152e8d674a43a4835691208a0f6,
+    type: 3}
   <SelfProjectile>k__BackingField: {fileID: 2792000099564881397, guid: fe4977847bd94b04f998700016d775c1,
     type: 3}
   <ReloadTime>k__BackingField: 1
@@ -450,8 +452,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CurrentWeaponInstance>k__BackingField: {fileID: 8401904488090815095}
-  _currentProjectilePrefab: {fileID: 3250812358997741803, guid: 6ebc7152e8d674a43a4835691208a0f6,
-    type: 3}
   _tweenManager: {fileID: 7719258016994574435}
   _mainCamera: {fileID: 8754990859651074425}
   _weaponRoot: {fileID: 284327309987478461}

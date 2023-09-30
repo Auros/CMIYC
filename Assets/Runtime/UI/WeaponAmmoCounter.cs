@@ -17,12 +17,12 @@ namespace CMIYC.UI
         private CancellationTokenSource? _cts;
         private int _cachedAmmo;
 
-        private void Start() => _cachedAmmo = _weaponManager.Ammo;
+        private void Start() => _cachedAmmo = _weaponManager.CurrentWeaponInstance.Ammo;
 
         // This certainly wouldnt be Auros approved but we're in a game jam, i dont give a fuck
         private void LateUpdate()
         {
-            var ammo = _weaponManager.Ammo;
+            var ammo = _weaponManager.CurrentWeaponInstance.Ammo;
 
             if (ammo != _cachedAmmo)
             {
