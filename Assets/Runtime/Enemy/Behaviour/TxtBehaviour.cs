@@ -14,9 +14,13 @@ namespace CMIYC.Enemy.Behaviour
 
         }
 
-        public void SetMetadata(TxtMetadataScriptableObject metadata)
+        public void SetMetadata(TxtMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
+            // should prob be cached or something
+            var fileExtension = "." + enemy.EnemyTypeName.ToLower();
+
             _documentText.SetText(metadata.TextContents);
+            SetNameTagMetadata(metadata.NameTag + fileExtension, cameraToLookAt);
         }
     }
 }

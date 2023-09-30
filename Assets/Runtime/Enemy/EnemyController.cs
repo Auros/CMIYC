@@ -4,12 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CMIYC.Enemy.Behaviour;
+using CMIYC.Input;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using UnityEngine.InputSystem.Controls;
 using Random = UnityEngine.Random;
 
 namespace CMIYC.Enemy
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, IInputReceiver
     {
         [Tooltip("TXT File Metadata")]
         [field: SerializeField]
@@ -17,12 +20,22 @@ namespace CMIYC.Enemy
 
         [SerializeField]
         private Transform _enemyContainer = null!;
-
+        [SerializeField]
+        private InputBroadcaster _inputBroadcaster = null!;
         [SerializeField]
         private EnemySpawnDefinition _debugSpawnDefinition = null!;
+        [SerializeField]
+        private EnemyTextPool _enemyTextPool = null!;
 
+        // not the best place for this probably
+        [SerializeField]
+        private Camera _mainCamera = null!;
+
+        private List<EnemyBehaviour> _spawnedEnemies = new();
         public void Start()
         {
+            _inputBroadcaster.Register(this);
+
             if (_debugSpawnDefinition != null)
             {
                 Spawn(_debugSpawnDefinition);
@@ -82,15 +95,18 @@ namespace CMIYC.Enemy
             var enemyBehaviour = Instantiate(enemy.Prefab, _enemyContainer);
             enemyBehaviour.transform.position = spawnPoint.position;
             enemyBehaviour.transform.localRotation = spawnPoint.localRotation; // ? is this even necessary?
-            SetMetadata(enemyBehaviour);
+            SetMetadata(enemyBehaviour, enemy);
+
+            _spawnedEnemies.Add(enemyBehaviour);
         }
 
-        private void SetMetadata(EnemyBehaviour enemyBehaviour)
+        private void SetMetadata(EnemyBehaviour enemyBehaviour, EnemyScriptableObject enemy)
         {
             if (enemyBehaviour is TxtBehaviour txtBehaviour)
             {
                 // TODO: Prevent same file from spawning twice in the same "chunk?"
-                txtBehaviour.SetMetadata(RandomFromArray(TxtMetadata));
+                var metadata = RandomFromArray(TxtMetadata);
+                txtBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
         }
 
@@ -128,6 +144,20 @@ namespace CMIYC.Enemy
             }
 
             return spawnPoints;
+        }
+
+        public void OnKeyPressed(KeyControl key)
+        {
+            var keyDisplayName = key.displayName;
+            foreach (var enemy in _spawnedEnemies)
+            {
+                if (enemy is TxtBehaviour txtBehaviour)
+                {
+                    Debug.Log("Spawning..");
+                    _enemyTextPool.SpawnText(txtBehaviour.transform, keyDisplayName).Forget();
+                }
+            }
+            // do stuff
         }
     }
 }
