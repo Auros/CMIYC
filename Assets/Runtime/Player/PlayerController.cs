@@ -7,6 +7,8 @@ namespace CMIYC.Player
 {
     public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
     {
+        public bool IsGrounded => _grounded;
+
         private CapsuleCollider _capsuleCollider = null!;
         private Rigidbody _rigidbody = null!;
         private Camera _camera = null!;
