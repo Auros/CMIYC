@@ -22,7 +22,16 @@ namespace CMIYC.UI
         private Vector3 _offsetEuler;
 
 
-        private void Start() => _rect = transform as RectTransform;
+        private void Start()
+        {
+            _rect = transform as RectTransform;
+
+            if (_characterTransform == null)
+            {
+                Debug.LogWarning($"lmao someone forgot to assign {nameof(_characterTransform)}, disabling {nameof(HUDMovementReaction)}...");
+                enabled = false;
+            }
+        }
 
         private void LateUpdate()
         {
