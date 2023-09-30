@@ -12,10 +12,14 @@ namespace CMIYC.Weapons
 
         [Tooltip("The initial ammo capacity of the weapon.")]
         [field: SerializeField]
-        public int Ammo { get; set; }
+        public int InitialAmmo { get; set; }
 
         [Tooltip("If non-null and the magazine is empty, the weapon will throw this projectile at the player.")]
         [field: SerializeField]
         public ProjectileDefinition SelfProjectile { get; private set; }
+
+        [Tooltip("The time it takes to reload this weapon.")]
+        [field:SerializeField]
+        public float ReloadTime { get; set; } = 1f;
     }
 }

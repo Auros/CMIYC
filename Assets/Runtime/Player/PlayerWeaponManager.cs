@@ -1,6 +1,9 @@
-﻿using CMIYC.Input;
+﻿using System;
+using AuraTween;
+using CMIYC.Input;
 using CMIYC.Projectiles;
 using CMIYC.Weapons;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,8 +21,16 @@ namespace CMIYC.Player
         private ProjectileDefinition _currentProjectilePrefab;
 
         [SerializeField]
+        private TweenManager _tweenManager;
+
+        [SerializeField]
         private Camera _mainCamera;
 
+        [SerializeField]
+        private Transform _weaponRoot;
+
+        private int _ammo;
+        private bool _reloading;
         private CacheInput _input;
 
         public void OnShoot(InputAction.CallbackContext context)
@@ -29,28 +40,54 @@ namespace CMIYC.Player
             if (CurrentWeaponInstance == null || _currentProjectilePrefab == null) return;
 
             // Early return if we are out of ammo.
-            if (CurrentWeaponInstance.Ammo <= 0)
+            if (_ammo <= 0)
             {
-                // Throw the weapon if ammo is empty
-                var selfProjectile = CurrentWeaponInstance.SelfProjectile;
-                if (selfProjectile != null)
+                // Perform our reload animation if we can.
+                if (!_reloading)
                 {
-                    Destroy(CurrentWeaponInstance.gameObject);
-                    FireProjectile(selfProjectile, CurrentWeaponInstance.transform.position);
+                    ReloadAsync().Forget();
                 }
+
 
                 return;
             }
 
-            CurrentWeaponInstance.Ammo--;
+            _ammo--;
             var projectilePosition = CurrentWeaponInstance.ProjectileEmitPoint.position;
             FireProjectile(_currentProjectilePrefab, projectilePosition);
+        }
+
+        private async UniTask ReloadAsync()
+        {
+            const float reappearAnimationLength = 1f;
+
+            _reloading = true;
+
+            // Throw the weapon if ammo is empty
+            var selfProjectile = CurrentWeaponInstance.SelfProjectile;
+            if (selfProjectile != null)
+            {
+                FireProjectile(selfProjectile, CurrentWeaponInstance.transform.position);
+            }
+
+            // ...For the time being, shove our weapon into the ground.
+            _weaponRoot.localPosition = 10f * Vector3.down;
+
+            // Wait to bring our weapon back up.
+            await UniTask.Delay(TimeSpan.FromSeconds(CurrentWeaponInstance.ReloadTime - reappearAnimationLength));
+
+            // Bring our weapon back up and finish reloading.
+            await _tweenManager.Run(1f, 0f, reappearAnimationLength,
+                (t) => _weaponRoot.localPosition = t * Vector3.down, Easer.OutCubic, this);
+
+            _reloading = false;
+            _ammo = CurrentWeaponInstance.InitialAmmo;
         }
 
         // Instantiates and fires "projectilePrefab" from startingWorldPosition, in the direction of the crosshair.
         private void FireProjectile(ProjectileDefinition projectilePrefab, Vector3 startingWorldPosition)
         {
-            // Convert our 0-1 crosshair position to screen space (0,0 to screen width/height)
+            // Convert our 0-1 crosshair constant to screen space (0,0 to screen width,height)
             var crosshairScreenSpace = new Vector3(
                 _mainCamera.pixelWidth * _crosshairPosition.x,
                 _mainCamera.pixelHeight * _crosshairPosition.y, 0);
@@ -79,6 +116,11 @@ namespace CMIYC.Player
 
         private void Start()
         {
+            if (CurrentWeaponInstance != null)
+            {
+                _ammo = CurrentWeaponInstance.InitialAmmo;
+            }
+
             _input = new();
             _input.Shooting.AddCallbacks(this);
             _input.Shooting.Enable();

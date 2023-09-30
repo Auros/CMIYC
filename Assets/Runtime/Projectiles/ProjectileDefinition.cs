@@ -92,7 +92,6 @@ namespace CMIYC.Projectiles
 
         private void CallbackAndDestroy(ProjectileHitEvent projectileHitEvent)
         {
-            Debug.Log("destroyed");
             _onCollision?.Invoke(projectileHitEvent);
             Destroy(gameObject);
         }
