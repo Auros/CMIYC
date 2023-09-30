@@ -25,6 +25,12 @@ namespace CMIYC.Projectiles
         private Ray _raycast;
         private bool _initialized;
 
+        /// <summary>
+        /// Initializes this projectile with the given world position and direction.
+        /// </summary>
+        /// <param name="position">Initial world position of this projectile.</param>
+        /// <param name="forward">Direction of projectile travel.</param>
+        /// <exception cref="InvalidOperationException">Projectile was already initialized</exception>
         public void Initialize(Vector3 position, Vector3 forward)
         {
             if (_initialized) throw new InvalidOperationException("BRUH WE ARE ALREADY INITIALIZED!!!!");
