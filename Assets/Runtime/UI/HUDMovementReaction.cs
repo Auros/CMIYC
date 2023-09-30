@@ -6,14 +6,14 @@ namespace CMIYC.UI
     public class HUDMovementReaction : MonoBehaviour
     {
         [Tooltip("Transform for the HUD to react to")]
-        [SerializeField] private Transform _characterTransform;
+        [SerializeField] private Transform _characterTransform = null!;
 
         [Header("Parameters")]
         [SerializeField] private float _reactionStrength;
         [SerializeField] private float _movementSensitivity;
         [SerializeField] private float _rotationSensitivity;
 
-        private RectTransform _rect;
+        private RectTransform _rect = null!;
 
         private Vector3 _characterPreviousPos;
         private Vector3 _characterPerviousEuler;
@@ -24,7 +24,7 @@ namespace CMIYC.UI
 
         private void Start()
         {
-            _rect = transform as RectTransform;
+            _rect = (transform as RectTransform)!;
 
             if (_characterTransform == null)
             {
