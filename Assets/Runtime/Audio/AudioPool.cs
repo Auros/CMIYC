@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Pool;
 
 namespace CMIYC.Audio
 {
@@ -14,14 +15,9 @@ namespace CMIYC.Audio
             {
                 _volume = value;
 
-                foreach (var source in _activeSources)
+                for (var i = 0; i < _activeSources.Count; i++)
                 {
-                    source.volume = _volume;
-                }
-
-                foreach (var source in _pooledSources)
-                {
-                    source.volume = _volume;
+                    _activeSources[i].volume = _volume;
                 }
             }
         }
@@ -42,26 +38,25 @@ namespace CMIYC.Audio
         private int _initialPoolSize = 0;
 
         private List<AudioSource> _activeSources = new();
-        private Stack<AudioSource> _pooledSources = new();
+        private ObjectPool<AudioSource> _objectPool = null!;
 
         public void Play(AudioClip clip)
         {
-            var source = ReuseOrCreateSource();
-
-            source.pitch = _pitchBase + Random.Range(-_pitchRandomness, _pitchRandomness);
+            var source = _objectPool.Get();
             source.clip = clip;
+            source.Play();
 
             _activeSources.Add(source);
-            source.Play();
         }
 
         private void Start()
-        {
-            for (var i = 0; i < _initialPoolSize; i++)
-            {
-                _pooledSources.Push(CreateNewAudioSource());
-            }
-        }
+            => _objectPool = new ObjectPool<AudioSource>(
+                CreateNewAudioSource,
+                PrepareAudioSource,
+                null, // Nothing special needed on release
+                null, // Nothing special needed on destroy
+                false,
+                _initialPoolSize);
 
         private void Update()
         {
@@ -69,23 +64,12 @@ namespace CMIYC.Audio
             {
                 var source = _activeSources[i];
 
-                if (!source.isPlaying)
-                {
-                    _activeSources.RemoveAt(i);
-                    _pooledSources.Push(source);
-                    i--;
-                }
-            }
-        }
+                if (source.isPlaying) continue;
 
-        private AudioSource ReuseOrCreateSource()
-        {
-            if (!_pooledSources.TryPop(out var res))
-            {
-                res = CreateNewAudioSource();
+                _activeSources.RemoveAt(i);
+                _objectPool.Release(source);
+                i--;
             }
-
-            return res;
         }
 
         private AudioSource CreateNewAudioSource()
@@ -94,6 +78,12 @@ namespace CMIYC.Audio
             source.volume = Volume;
             source.outputAudioMixerGroup = _sfxMixerGroup;
             return source;
+        }
+
+        private void PrepareAudioSource(AudioSource source)
+        {
+            source.pitch = _pitchBase + Random.Range(-_pitchRandomness, _pitchRandomness);
+            source.volume = _volume;
         }
     }
 }
