@@ -8,23 +8,23 @@ namespace CMIYC.Weapons
     // Used in the root of a prefab.
     public class WeaponDefinition : MonoBehaviour
     {
-        [Tooltip("Transform where projectiles are instantiated and fired from (pointing to the cursor)")]
+        [field: Tooltip("Transform where projectiles are instantiated and fired from (pointing to the cursor)")]
         [field: SerializeField]
         public Transform ProjectileEmitPoint { get; private set; }
 
-        [Tooltip("The initial ammo capacity of the weapon.")]
+        [field: Tooltip("The initial ammo capacity of the weapon.")]
         [field: SerializeField]
         public int InitialAmmo { get; set; }
 
-        [Tooltip("Bullet projectile that is emitted from the Projectile Emit Point.")]
+        [field: Tooltip("Bullet projectile that is emitted from the Projectile Emit Point.")]
         [field: SerializeField]
         public ProjectileDefinition BulletProjectile { get; private set; }
 
-        [Tooltip("If non-null and the magazine is empty, the weapon will throw this projectile at the player.")]
+        [field: Tooltip("If non-null and the magazine is empty, the weapon will throw this projectile at the player.")]
         [field: SerializeField]
         public ProjectileDefinition SelfProjectile { get; private set; }
 
-        [Tooltip("The time it takes to reload this weapon.")]
+        [field: Tooltip("The time it takes to reload this weapon.")]
         [field: SerializeField]
         public float ReloadTime { get; set; } = 1f;
 
