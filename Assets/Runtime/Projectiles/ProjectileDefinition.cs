@@ -76,9 +76,24 @@ namespace CMIYC.Projectiles
             }
 
             // Our projectile has hit something; destroy and call back
-            var hitEvent = new ProjectileHitEvent(this, hitInfo);
-            _onCollision?.Invoke(hitEvent);
+            var hitEvent = new ProjectileHitEvent(this, hitInfo.collider);
+            CallbackAndDestroy(hitEvent);
+        }
 
+        // If the physics system reports a collision, we should assume that we need to call back.
+        private void OnCollisionEnter(Collision collision)
+        {
+            // Ensure we are colliding only with layers we want
+            if ((_layerMask.value & 1 << collision.gameObject.layer) > 0) return;
+
+            var hitEvent = new ProjectileHitEvent(this, collision.collider);
+            CallbackAndDestroy(hitEvent);
+        }
+
+        private void CallbackAndDestroy(ProjectileHitEvent projectileHitEvent)
+        {
+            Debug.Log("destroyed");
+            _onCollision?.Invoke(projectileHitEvent);
             Destroy(gameObject);
         }
     }

@@ -7,10 +7,10 @@ namespace CMIYC.Projectiles
         public readonly Collider Collider { get; }
         public readonly ProjectileDefinition Instance { get; }
 
-        public ProjectileHitEvent(ProjectileDefinition instance, RaycastHit hit)
+        public ProjectileHitEvent(ProjectileDefinition instance, Collider collider)
         {
             Instance = instance;
-            Collider = hit.collider;
+            Collider = collider;
         }
     }
 }
