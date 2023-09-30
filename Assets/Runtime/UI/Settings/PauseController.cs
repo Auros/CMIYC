@@ -5,9 +5,20 @@ using UnityEngine.InputSystem;
 
 namespace CMIYC.Settings
 {
+    /* TODO:
+     * Okay, so I need to disable other sources of input during pausing, but currently every other class makes their own CacheInput instance.
+     * 
+     * That makes my life difficult.
+     * 
+     * I *could* make CacheInput a persistent singleton, so I can disable every other input action from PauseController itself,
+     * however Auros will have my head. Although I genuinely think this approach makes more sense compared to having every single Input consumer
+     * depend on PauseController and early return based on the Paused state.
+     */
     public class PauseController : MonoBehaviour, CacheInput.IPauseActions
     {
         private const float _settingsDuration = 0.5f;
+
+        public bool Paused { get; private set; }
 
         [SerializeField]
         private TweenManager _tweenManager = null!;
@@ -18,7 +29,6 @@ namespace CMIYC.Settings
         [SerializeField]
         private RectTransform _menuPanel = null!;
 
-        private bool _paused;
         private CursorLockMode _cachedCursorLockMode;
         private float _cachedTimeScale;
 
@@ -26,6 +36,8 @@ namespace CMIYC.Settings
 
         private void Start()
         {
+            HidePauseMenu(0);
+
             _input = new();
             _input.Pause.AddCallbacks(this);
             _input.Pause.Enable();
@@ -40,10 +52,10 @@ namespace CMIYC.Settings
 
         public void TogglePause()
         {
-            _paused = !_paused;
+            Paused = !Paused;
 
             // Cache cursor lock mode on pause
-            if (_paused)
+            if (Paused)
             {
                 _cachedCursorLockMode = Cursor.lockState;
                 Cursor.lockState = CursorLockMode.None;
@@ -51,35 +63,35 @@ namespace CMIYC.Settings
                 _cachedTimeScale = Time.timeScale;
                 Time.timeScale = 0;
 
-                PresentPauseMenu();
+                PresentPauseMenu(_settingsDuration);
             }
             // Restore cursor lock mode on unpause
             else
             {
                 Cursor.lockState = _cachedCursorLockMode;
                 Time.timeScale = _cachedTimeScale;
-                HidePauseMenu();
+                HidePauseMenu(_settingsDuration);
             }
         }
 
-        private void PresentPauseMenu()
+        private void PresentPauseMenu(float duration)
         {
             // Background imagine sliding from the left
-            _tweenManager.Run(-0.1f, 1, _settingsDuration, t => _backgroundImage.anchorMax = _backgroundImage.anchorMax.WithX(t), Easer.OutCubic);
+            _tweenManager.Run(-0.1f, 1, duration, t => _backgroundImage.anchorMax = _backgroundImage.anchorMax.WithX(t), Easer.OutCubic);
 
             // Settings panel bounce animation
-            _tweenManager.Run(0, 1, _settingsDuration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
-            _tweenManager.Run(0, 1, _settingsDuration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.OutBack);
+            _tweenManager.Run(0, 1, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
+            _tweenManager.Run(0, 1, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.OutBack);
         }
 
-        private void HidePauseMenu()
+        private void HidePauseMenu(float duration)
         {
             // Background imagine sliding from the left
-            _tweenManager.Run(1, -0.1f, _settingsDuration, t => _backgroundImage.anchorMax = _backgroundImage.anchorMax.WithX(t), Easer.InCubic);
+            _tweenManager.Run(1, -0.1f, duration, t => _backgroundImage.anchorMax = _backgroundImage.anchorMax.WithX(t), Easer.InCubic);
 
             // Settings panel bounce animation
-            _tweenManager.Run(1, 0, _settingsDuration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
-            _tweenManager.Run(1, 0, _settingsDuration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.InBack);
+            _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
+            _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.InBack);
         }
     }
 }
