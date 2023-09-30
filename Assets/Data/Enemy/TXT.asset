@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyTypeName: txt
   Health: 100
+  Prefab: {fileID: 4345307744541851202, guid: 5eb7814babea8ec44a40a709362926a6, type: 3}

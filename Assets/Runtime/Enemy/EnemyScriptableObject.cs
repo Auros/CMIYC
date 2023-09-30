@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CMIYC.Enemy.Behaviour;
+using UnityEngine;
 
 namespace CMIYC.Enemy
 {
@@ -7,5 +8,6 @@ namespace CMIYC.Enemy
     {
         public string EnemyTypeName = string.Empty;
         public float Health = 100;
+        public EnemyBehaviour Prefab;
     }
 }

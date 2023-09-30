@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CMIYC.Enemy.Behaviour;
 using JetBrains.Annotations;
 using Random = UnityEngine.Random;
 
@@ -12,7 +13,10 @@ namespace CMIYC.Enemy
     {
         [Tooltip("TXT File Metadata")]
         [field: SerializeField]
-        public TXTMetadataScriptableObject[] TxtMetadata { get; private set; } = Array.Empty<TXTMetadataScriptableObject>();
+        public TxtMetadataScriptableObject[] TxtMetadata { get; private set; } = Array.Empty<TxtMetadataScriptableObject>();
+
+        [SerializeField]
+        private Transform _enemyContainer = null!;
 
         [SerializeField]
         private EnemySpawnDefinition _debugSpawnDefinition = null!;
@@ -42,7 +46,8 @@ namespace CMIYC.Enemy
             foreach (var spawnPoint in spawnPoints)
             {
                 var randomEnemy = PickRandomEnemyType(spawnDefinition);
-                Debug.Log($"enemy: {randomEnemy.EnemyTypeName}");
+                // Debug.Log($"enemy: {randomEnemy.EnemyTypeName}");
+                SpawnEnemy(randomEnemy, spawnPoint);
             }
         }
 
@@ -70,6 +75,28 @@ namespace CMIYC.Enemy
 
             Debug.LogWarning("Couldn't select enemy with weighted logic, returning first");
             return spawnDefinition.SpawnedEnemies.First().Enemy;
+        }
+
+        private void SpawnEnemy(EnemyScriptableObject enemy, Transform spawnPoint)
+        {
+            var enemyBehaviour = Instantiate(enemy.Prefab, _enemyContainer);
+            enemyBehaviour.transform.position = spawnPoint.position;
+            enemyBehaviour.transform.localRotation = spawnPoint.localRotation; // ? is this even necessary?
+            SetMetadata(enemyBehaviour);
+        }
+
+        private void SetMetadata(EnemyBehaviour enemyBehaviour)
+        {
+            if (enemyBehaviour is TxtBehaviour txtBehaviour)
+            {
+                // TODO: Prevent same file from spawning twice in the same "chunk?"
+                txtBehaviour.SetMetadata(RandomFromArray(TxtMetadata));
+            }
+        }
+
+        private T RandomFromArray<T>(T[] array)
+        {
+            return array[Random.Range(0, array.Length)];
         }
 
         private List<Transform> PickSpawnPoints(EnemySpawnDefinition spawnDefinition)
