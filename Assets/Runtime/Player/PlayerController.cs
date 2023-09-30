@@ -4,7 +4,7 @@ using CMIYC.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace CMIYC
+namespace CMIYC.Player
 {
     public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
     {
