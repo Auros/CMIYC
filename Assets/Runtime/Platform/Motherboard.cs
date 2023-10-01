@@ -12,6 +12,9 @@ namespace CMIYC.Platform
 
         public IReadOnlyList<Daughterboard> Daughterboards => throw new NotImplementedException();
 
-        
+        public void SetData(Daughterboard entrance, Daughterboard daughterboards)
+        {
+
+        }
     }
 }

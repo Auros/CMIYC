@@ -2,8 +2,7 @@
 
 namespace CMIYC.Platform
 {
-    public class Wall : MonoBehaviour
+    public class PartialDefinition : Definition
     {
-
     }
 }

@@ -1,15 +1,12 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CMIYC.Platform
 {
     public class Daughterboard : MonoBehaviour
     {
-
-
-        public Wall? GetWall(WallLocation location)
+        public void GetDefinition()
         {
-            throw new NotImplementedException();
+
         }
     }
 }

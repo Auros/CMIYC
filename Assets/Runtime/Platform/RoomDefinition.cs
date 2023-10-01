@@ -1,9 +1,82 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CMIYC.Platform
 {
-    public class RoomDefinition : MonoBehaviour
+    public class RoomDefinition : Definition
     {
+        [SerializeField]
+        private RoomSegment[] _roomSegments = Array.Empty<RoomSegment>();
 
+        public Cardinal Cardinal { get; private set; }
+
+        public Vector2Int AnchorLocation { get; private set; }
+
+        protected override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+
+            Gizmos.color = Color.magenta.WithA(0.2f);
+
+            var self = transform;
+            Gizmos.matrix = self.localToWorldMatrix;
+
+            var originAnchorPos = _originAnchorTarget.localPosition;
+            foreach (var segment in _roomSegments)
+            {
+                var target = originAnchorPos.WithY(4f) + new Vector3(PlatformGenerator.daughterboardUnit * segment.Location.x, 0f, PlatformGenerator.daughterboardUnit * segment.Location.y);
+                Gizmos.DrawCube(target, new Vector3(2f, 8f, 2f));
+            }
+        }
+
+        public void SetData(Cardinal cardinal, Vector2Int anchorLocation)
+        {
+            Cardinal = cardinal;
+            AnchorLocation = anchorLocation;
+        }
+
+        public WallSegmentType GetWallSegmentType(Cardinal cardinal, Vector2Int location)
+        {
+            location = InverseTransformLocation(location);
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var roomSegment in _roomSegments)
+            {
+                if (roomSegment.Location != location)
+                    continue;
+
+                var localizedCardinal = (Cardinal)Mathf.Abs(((int)cardinal - (int)Cardinal) % 4);
+                return roomSegment.GetWallSegmentType(localizedCardinal);
+            }
+            return WallSegmentType.None;
+        }
+
+        public Vector2Int InverseTransformLocation(Vector2Int location)
+        {
+            var sub = Cardinal switch
+            {
+                Cardinal.North => new Vector2Int(location.x - AnchorLocation.x, location.y - AnchorLocation.y),
+                Cardinal.East => new Vector2Int(AnchorLocation.y - location.y,  location.x - AnchorLocation.x),
+                Cardinal.South => new Vector2Int(AnchorLocation.x - location.x, AnchorLocation.y - location.y),
+                Cardinal.West => new Vector2Int(location.y - AnchorLocation.y,  AnchorLocation.x - location.x),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            return sub;
+        }
+
+        public Vector2Int TransformLocation(Vector2Int location)
+        {
+            var sub = Cardinal switch
+            {
+                Cardinal.North => new Vector2Int(AnchorLocation.x + location.x, AnchorLocation.y + location.y),
+                Cardinal.East => new Vector2Int(AnchorLocation.x - location.y, AnchorLocation.y + location.x),
+                Cardinal.South => new Vector2Int(location.y - AnchorLocation.y, location.x - AnchorLocation.x),
+                Cardinal.West => new Vector2Int(AnchorLocation.x - location.y, AnchorLocation.y + location.x),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            return sub;
+        }
     }
 }

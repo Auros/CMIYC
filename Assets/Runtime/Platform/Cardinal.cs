@@ -1,6 +1,6 @@
 ﻿namespace CMIYC.Platform
 {
-    public enum WallLocation
+    public enum Cardinal
     {
         North,
         East,
