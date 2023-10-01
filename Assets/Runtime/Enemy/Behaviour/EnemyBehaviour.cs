@@ -37,6 +37,8 @@ namespace CMIYC.Enemy.Behaviour
         protected TMP_Text _nameText = null!;
         [SerializeField]
         protected TMP_Text _fileTypeText = null!;
+        [SerializeField]
+        protected ParticleSystem _damageParticles = null!;
 
         [SerializeField]
         private List<Renderer> _dissolvingRenderers = new();
@@ -90,6 +92,9 @@ namespace CMIYC.Enemy.Behaviour
         {
             if (!_isAlive) return;
             Debug.Log($"Hit enemy for {hitEvent.Instance.Damage} damage!");
+            _damageParticles.transform.position = hitEvent.Point;
+            _damageParticles.transform.rotation = Quaternion.LookRotation(hitEvent.Normal, transform.up);
+            _damageParticles.Play();
             HandleHealthChange(hitEvent.Instance.Damage);
         }
 
