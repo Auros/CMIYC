@@ -24,11 +24,13 @@ namespace CMIYC.Enemy
         [SerializeField]
         private InputBroadcaster _inputBroadcaster = null!;
         [SerializeField]
-        private EnemySpawnDefinition _debugSpawnDefinition = null!;
+        private List<EnemySpawnDefinition> _debugSpawnDefinitions = null!;
         [SerializeField]
         private EnemyTextPool _enemyTextPool = null!;
         [SerializeField]
         private TweenManager _tweenManager = null!;
+
+        private const float _spawnOffset = 1.11f; // assuming spawn is at foot of enemy, how much height needs to be added
 
         // not the best place for this probably
         [SerializeField]
@@ -39,9 +41,12 @@ namespace CMIYC.Enemy
         {
             _inputBroadcaster.Register(this);
 
-            if (_debugSpawnDefinition != null)
+            if (_debugSpawnDefinitions != null && _debugSpawnDefinitions.Count > 0)
             {
-                Spawn(_debugSpawnDefinition);
+                foreach (var spawnPosition in _debugSpawnDefinitions)
+                {
+                    Spawn(spawnPosition);
+                }
             }
         }
 
@@ -96,7 +101,7 @@ namespace CMIYC.Enemy
         private void SpawnEnemy(EnemyScriptableObject enemy, Transform spawnPoint)
         {
             var enemyBehaviour = Instantiate(enemy.Prefab, _enemyContainer);
-            enemyBehaviour.transform.position = spawnPoint.position;
+            enemyBehaviour.transform.position = spawnPoint.position + new Vector3(0f, _spawnOffset, 0f);
             enemyBehaviour.transform.localRotation = spawnPoint.localRotation; // ? is this even necessary?
             SetMetadata(enemyBehaviour, enemy);
 
