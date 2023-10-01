@@ -856,6 +856,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2911587348959925494}
     m_Modifications:
+    - target: {fileID: 6264434153484552, guid: 1811d4e4950245944a7ca33bdfa4e78b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6264434153484552, guid: 1811d4e4950245944a7ca33bdfa4e78b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 959336323268821207, guid: 1811d4e4950245944a7ca33bdfa4e78b,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -886,6 +894,26 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1749192221019806767, guid: 1811d4e4950245944a7ca33bdfa4e78b,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749192221019806767, guid: 1811d4e4950245944a7ca33bdfa4e78b,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749192221019806767, guid: 1811d4e4950245944a7ca33bdfa4e78b,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1893458795911007505, guid: 1811d4e4950245944a7ca33bdfa4e78b,
+        type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 8680687887783255861}
     - target: {fileID: 3076001902378870742, guid: 1811d4e4950245944a7ca33bdfa4e78b,
         type: 3}
       propertyPath: _musicLoop
@@ -1279,6 +1307,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 2499787152736206103}
+    - target: {fileID: 4223304721813067686, guid: dcb985326e82a47489e1851839e2c395,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4609658242630895003, guid: dcb985326e82a47489e1851839e2c395,
         type: 3}
       propertyPath: m_Pivot.x
