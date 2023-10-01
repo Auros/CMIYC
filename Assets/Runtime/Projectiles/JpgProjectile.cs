@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace CMIYC.Projectiles
 {
-    public class PngProjectile : MonoBehaviour
+    public class JpgProjectile : MonoBehaviour
     {
+        private static int _addToNoiseProperty = Shader.PropertyToID("_AddToNoiseUV");
+
         [field: SerializeField]
         public ProjectileDefinition ProjectileDefinition { get; set; } = null!;
 
@@ -25,6 +27,7 @@ namespace CMIYC.Projectiles
             foreach (var renderer in Renderers)
             {
                 renderer.material.color = color;
+                renderer.material.SetVector(_addToNoiseProperty, new Vector4(Random.Range(0f, 1f), Random.Range(0f, 1f), 0, 0));
             }
         }
 

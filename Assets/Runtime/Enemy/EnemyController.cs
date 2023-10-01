@@ -23,6 +23,10 @@ namespace CMIYC.Enemy
         [field: SerializeField]
         public PngMetadataScriptableObject[] PngMetadata { get; private set; } = Array.Empty<PngMetadataScriptableObject>();
 
+        [Tooltip("JPG File Metadata")]
+        [field: SerializeField]
+        public JpgMetadataScriptableObject[] JpgMetadata { get; private set; } = Array.Empty<JpgMetadataScriptableObject>();
+
         [SerializeField]
         private Transform _enemyContainer = null!;
         [SerializeField]
@@ -128,18 +132,23 @@ namespace CMIYC.Enemy
 
         private void SetMetadata(EnemyBehaviour enemyBehaviour, EnemyScriptableObject enemy)
         {
+            // TODO: Prevent same file from spawning twice in the same "chunk?"
+
             enemyBehaviour.Setup(enemy.Health, _tweenManager, OnDeath);
             if (enemyBehaviour is TxtBehaviour txtBehaviour)
             {
-                // TODO: Prevent same file from spawning twice in the same "chunk?"
                 var metadata = RandomFromArray(TxtMetadata);
                 txtBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
             else if (enemyBehaviour is PngBehaviour pngBehaviour)
             {
-                // TODO: Prevent same file from spawning twice in the same "chunk?"
                 var metadata = RandomFromArray(PngMetadata);
                 pngBehaviour.SetMetadata(metadata, enemy, _mainCamera);
+            }
+            else if (enemyBehaviour is JpgBehaviour jpgBehaviour)
+            {
+                var metadata = RandomFromArray(JpgMetadata);
+                jpgBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
         }
 
