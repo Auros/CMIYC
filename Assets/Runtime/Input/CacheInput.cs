@@ -55,6 +55,15 @@ namespace CMIYC.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""b912e412-7881-4ff1-b77e-fb775a1188d6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -167,6 +176,28 @@ namespace CMIYC.Input
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9413947-cf69-49bb-a0ad-3c8041a60bd9"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""661d1600-6e08-44f4-a4c2-fa7ea6545af6"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -256,6 +287,7 @@ namespace CMIYC.Input
             m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+            m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
             // Shooting
             m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
             m_Shooting_Shoot = m_Shooting.FindAction("Shoot", throwIfNotFound: true);
@@ -326,6 +358,7 @@ namespace CMIYC.Input
         private readonly InputAction m_Player_Movement;
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_Jump;
+        private readonly InputAction m_Player_Crouch;
         public struct PlayerActions
         {
             private @CacheInput m_Wrapper;
@@ -333,6 +366,7 @@ namespace CMIYC.Input
             public InputAction @Movement => m_Wrapper.m_Player_Movement;
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
+            public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -351,6 +385,9 @@ namespace CMIYC.Input
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -364,6 +401,9 @@ namespace CMIYC.Input
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
+                @Crouch.started -= instance.OnCrouch;
+                @Crouch.performed -= instance.OnCrouch;
+                @Crouch.canceled -= instance.OnCrouch;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -478,6 +518,7 @@ namespace CMIYC.Input
             void OnMovement(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
+            void OnCrouch(InputAction.CallbackContext context);
         }
         public interface IShootingActions
         {
