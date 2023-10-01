@@ -34,9 +34,10 @@ namespace CMIYC.Enemy.Behaviour
         private List<Renderer> _dissolvingRenderers = new();
 
         private static readonly int _dissolveProperty = Shader.PropertyToID("_DissolveY");
-        private static readonly float _maxDissolve = 1.7f;
-        private static readonly float _minDissolve = -1.04f;
-        private static readonly float _aliveMinDissolve = 0.5f;
+        private static readonly float _heightAddition = 1.11f;
+        private static readonly float _maxDissolve = 1.7f + _heightAddition;
+        private static readonly float _minDissolve = -1.04f + _heightAddition;
+        private static readonly float _aliveMinDissolve = 0.5f + _heightAddition;
 
         public void SetNameTagMetadata(string fileName, Camera cameraToLookAt)
         {
@@ -51,6 +52,12 @@ namespace CMIYC.Enemy.Behaviour
             _maxHealth = health;
             _onDeath = onDeath;
             _isAlive = true;
+
+            foreach (var dissolvingRenderer in _dissolvingRenderers)
+            {
+                Debug.Log(_maxDissolve);
+                dissolvingRenderer.material.SetFloat(_dissolveProperty, _maxDissolve);
+            }
         }
 
         void Update()
