@@ -102,6 +102,7 @@ namespace CMIYC.Enemy
 
         private void SetMetadata(EnemyBehaviour enemyBehaviour, EnemyScriptableObject enemy)
         {
+            enemyBehaviour.SetHealth(enemy.Health);
             if (enemyBehaviour is TxtBehaviour txtBehaviour)
             {
                 // TODO: Prevent same file from spawning twice in the same "chunk?"
@@ -153,7 +154,6 @@ namespace CMIYC.Enemy
             {
                 if (enemy is TxtBehaviour txtBehaviour)
                 {
-                    Debug.Log("Spawning..");
                     _enemyTextPool.SpawnText(txtBehaviour.transform, keyDisplayName).Forget();
                 }
             }
