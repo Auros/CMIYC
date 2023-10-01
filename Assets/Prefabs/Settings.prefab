@@ -118,6 +118,9 @@ MonoBehaviour:
   _tweenManager: {fileID: 6578046672531336030}
   _backgroundImage: {fileID: 3482504371652013140}
   _menuPanel: {fileID: 6834095623951521598}
+  _audioMixer: {fileID: 24100000, guid: 3358d5c7039dcc6448ab7a71344eedbe, type: 2}
+  _normalLowpassAmount: 22000
+  _pausedLowpassAmount: 377
 --- !u!114 &6610942933108717792
 MonoBehaviour:
   m_ObjectHideFlags: 0

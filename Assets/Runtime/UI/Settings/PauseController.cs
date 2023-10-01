@@ -1,6 +1,8 @@
 ﻿using AuraTween;
+using CMIYC.Audio;
 using CMIYC.Input;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 namespace CMIYC.UI.Settings
@@ -31,6 +33,9 @@ namespace CMIYC.UI.Settings
 
         [SerializeField]
         private RectTransform _menuPanel = null!;
+
+        [SerializeField]
+        private MusicLoop _musicLoop = null!;
 
         private CursorLockMode _cachedCursorLockMode;
         private float _cachedTimeScale;
@@ -86,6 +91,9 @@ namespace CMIYC.UI.Settings
             // Settings panel bounce animation
             _tweenManager.Run(0, 1, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
             _tweenManager.Run(0, 1, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.OutBack);
+
+            // Lowpass
+            _musicLoop.EnableLowPass(duration);
         }
 
         private void HidePauseMenu(float duration)
@@ -96,6 +104,9 @@ namespace CMIYC.UI.Settings
             // Settings panel bounce animation
             _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
             _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.InBack);
+
+            // Lowpass
+            _musicLoop.DisableLowPass(duration);
         }
     }
 }
