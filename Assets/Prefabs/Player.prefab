@@ -610,7 +610,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -5507,7 +5507,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -5572,9 +5572,9 @@ ParticleSystem:
     enabled: 1
     startLifetime:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 5
-      minScalar: 5
+      minMaxState: 3
+      scalar: 15
+      minScalar: 10
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6510,14 +6510,14 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.5252747
         - serializedVersion: 3
-          time: 0.9524603
-          value: 0.26388973
+          time: 0.9127682
+          value: 0.642268
           inSlope: 0.24133115
-          outSlope: 14.396788
+          outSlope: 13.840899
           tangentMode: 1
           weightedMode: 0
           inWeight: 0.1629636
-          outWeight: 0.9537679
+          outWeight: 0.30247208
         - serializedVersion: 3
           time: 1
           value: 0.013885498
@@ -10301,7 +10301,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd47cdb3bba2e7e4b910d0a4ecf0d59f, type: 2}
+  - {fileID: 2100000, guid: b333157f3b2a76544a9760f8d390967b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
