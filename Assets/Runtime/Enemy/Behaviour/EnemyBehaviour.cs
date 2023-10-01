@@ -94,7 +94,7 @@ namespace CMIYC.Enemy.Behaviour
             Debug.Log($"Hit enemy for {hitEvent.Instance.Damage} damage!");
             _damageParticles.transform.position = hitEvent.Point;
             _damageParticles.transform.rotation = Quaternion.LookRotation(hitEvent.Normal, transform.up);
-            _damageParticles.Play();
+            _damageParticles.Emit((int)(hitEvent.Instance.Damage / 3) + 1);
             HandleHealthChange(hitEvent.Instance.Damage);
         }
 

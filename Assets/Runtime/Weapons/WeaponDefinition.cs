@@ -1,4 +1,5 @@
 ﻿using System;
+using CMIYC.Audio;
 using CMIYC.Projectiles;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -39,9 +40,29 @@ namespace CMIYC.Weapons
         [field: SerializeField]
         public ParticleSystem MuzzleFlashParticles { get; private set; }
 
+        [field: Tooltip("The time between firing each bullet in seconds")]
+        [field: SerializeField]
+        public float FireSpeed { get; set; } = 0.1f;
+
         [field: Tooltip("The time it takes to reload this weapon.")]
         [field: SerializeField]
         public float ReloadTime { get; set; } = 1f;
+
+        [field: Tooltip("The audiopool to use for weapon sound effects.")]
+        [field: SerializeField]
+        private AudioPool _audioPool = null!;
+
+        [field: Tooltip("The audioclip to use for shooting sound effect.")]
+        [field: SerializeField]
+        private AudioClip _shootClip = null!;
+
+        [field: Tooltip("The reloadclip to use for reloading sound effect")]
+        [field: SerializeField]
+        private AudioClip _reloadClip = null!;
+
+        [field: Tooltip("The time to play the reload sound during the animation")]
+        [field: SerializeField]
+        private float ReloadSoundTime { get; set; } = 0.8f;
 
         // Current ammo of this weapon
         public int Ammo { get; private set; }
@@ -49,11 +70,15 @@ namespace CMIYC.Weapons
         // Reload state of the weapon
         public bool Reloading { get; private set; }
 
+        // If a round is ready to be fired
+        public bool RoundReady { get; private set; } = true;
+
         private void Start() => Ammo = InitialAmmo;
 
         public bool Shoot(Vector3 target)
         {
             if (Reloading) return false;
+            if (!RoundReady) return true;
 
             if (Ammo == 0)
             {
@@ -61,6 +86,8 @@ namespace CMIYC.Weapons
                 ReloadAsync().Forget();
                 return false;
             }
+
+            FireCooldown().Forget();
 
             Ammo--;
             FireProjectile(BulletProjectile, target);
@@ -75,7 +102,30 @@ namespace CMIYC.Weapons
                 MuzzleFlashParticles.Play();
             }
 
+            if (_audioPool != null)
+            {
+                if (_shootClip != null)
+                {
+                    _audioPool.Play(_shootClip);
+                }
+            }
+
             return true;
+        }
+
+        public void Throw(Vector3 target)
+        {
+            if (Reloading) return;
+            FireProjectile(SelfProjectile, target);
+            ReloadAsync().Forget();
+
+            if (_audioPool != null)
+            {
+                if (_reloadClip != null)
+                {
+                    ReloadSoundAsync().Forget();
+                }
+            }
         }
 
         private void FireProjectile(ProjectileDefinition projectile, Vector3 target)
@@ -91,6 +141,15 @@ namespace CMIYC.Weapons
             newProjectile.Initialize(spawnPoint, projectileForward);
         }
 
+        private async UniTask FireCooldown()
+        {
+            RoundReady = false;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(FireSpeed));
+
+            RoundReady = true;
+        }
+
         private async UniTask ReloadAsync()
         {
             Reloading = true;
@@ -99,6 +158,12 @@ namespace CMIYC.Weapons
             Ammo = InitialAmmo;
 
             Reloading = false;
+        }
+
+        private async UniTask ReloadSoundAsync()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(ReloadSoundTime));
+            _audioPool.Play(_reloadClip);
         }
     }
 }

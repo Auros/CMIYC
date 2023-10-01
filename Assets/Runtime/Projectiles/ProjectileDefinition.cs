@@ -1,6 +1,7 @@
 ﻿using System;
 using AuraTween;
 using Cysharp.Threading.Tasks;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace CMIYC.Projectiles
@@ -19,6 +20,9 @@ namespace CMIYC.Projectiles
 
         [Tooltip("The rigidbody to use for physics calculations (if it is desired).")]
         [SerializeField] private Rigidbody? _attachedRigidbody;
+
+        [Tooltip("If true, the projectile will not have a constant path, and will instead use rigidbody forces from the beginning.")]
+        [SerializeField] private bool _toss;
 
         [Tooltip("If the projectile has not hit any target over this length of time, instantly destroy. <= 0 implies infinite lifetime.")]
         [SerializeField] private float _lifetime;
@@ -56,6 +60,19 @@ namespace CMIYC.Projectiles
                 //_velocity = float.MaxValue; dont want to use this anymore, bc it fucks it if rigidbody is enabled
             }
 
+            if (_toss == true)
+            {
+                if (_attachedRigidbody == null)
+                {
+                    Debug.LogError($"TOSS IS SET TO TRUE ON {transform.name} BUT LACKS A NECESSARY ATTACHED RIGIDBODY.");
+                    return;
+                }
+
+                // Add forces and forget
+                _attachedRigidbody.AddForce(transform.forward.normalized * _velocity * 20); // mult velocity by 20 to increase speed (since it is supposed to be hitscan)
+                _attachedRigidbody.AddTorque(new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)).normalized);
+            }
+
             _originalScale = transform.localScale;
 
             _raycast = new Ray(position, forward);
@@ -72,7 +89,9 @@ namespace CMIYC.Projectiles
 
             ApplyLifetime();
 
-            if (!_collided)
+            // if already collided, dont do raycast shit
+            // also dont do raycast shit if we are doing a toss
+            if (!_collided && !_toss)
             {
                 var rayVelocity = _velocity * Time.deltaTime;
                 if (_hitScan)
