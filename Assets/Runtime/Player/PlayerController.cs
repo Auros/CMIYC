@@ -1,24 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using CMIYC.Input;
+﻿using CMIYC.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
-namespace CMIYC
+namespace CMIYC.Player
 {
     public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
     {
+        public bool IsGrounded => _grounded;
+
         private CapsuleCollider _capsuleCollider = null!;
         private Rigidbody _rigidbody = null!;
         private Camera _camera = null!;
 
-        private CacheInput _cacheInput = null!;
+        [field: FormerlySerializedAs("_sensitivity")]
+        [field: SerializeField]
+        public float Sensitivity { get; set; } = 1f;
+
+        [SerializeField]
+        private InputController _inputController = null!;
 
         [SerializeField]
         private LayerMask _collisionMask;
-
-        [SerializeField]
-        private float _sensitivity = 1f;
 
         [SerializeField]
         private float _maxSpeed = 0f;
@@ -45,17 +48,17 @@ namespace CMIYC
             _rigidbody = GetComponent<Rigidbody>();
             _camera = GetComponentInChildren<Camera>();
 
-            _cacheInput = new CacheInput();
-            _cacheInput.Player.AddCallbacks(this);
-            _cacheInput.Player.Enable();
+            _inputController.Input.Player.AddCallbacks(this);
 
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         void Update()
         {
-            Vector2 lookValue = _cacheInput.Player.Look.ReadValue<Vector2>();
-            lookValue *= _sensitivity * 0.1f;
+            if (!_inputController.Enabled) return;
+
+            Vector2 lookValue = _inputController.Input.Player.Look.ReadValue<Vector2>();
+            lookValue *= Sensitivity * 0.1f;
             Vector3 angles = _camera.transform.localEulerAngles;
             angles.x -= lookValue.y;
             angles.y += lookValue.x;

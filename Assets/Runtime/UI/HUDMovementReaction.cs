@@ -2,18 +2,18 @@
 
 namespace CMIYC.UI
 {
-    [RequireComponent(typeof(RectTransform))]
     public class HUDMovementReaction : MonoBehaviour
     {
         [Tooltip("Transform for the HUD to react to")]
-        [SerializeField] private Transform _characterTransform = null!;
+        [SerializeField] private Transform _characterTransform;
 
         [Header("Parameters")]
+        [SerializeField] private bool _useUnscaledTime;
         [SerializeField] private float _reactionStrength;
         [SerializeField] private float _movementSensitivity;
         [SerializeField] private float _rotationSensitivity;
 
-        private RectTransform _rect = null!;
+        private Transform _transform;
 
         private Vector3 _characterPreviousPos;
         private Vector3 _characterPerviousEuler;
@@ -24,7 +24,7 @@ namespace CMIYC.UI
 
         private void Start()
         {
-            _rect = (transform as RectTransform)!;
+            _transform = transform;
 
             if (_characterTransform == null)
             {
@@ -40,17 +40,21 @@ namespace CMIYC.UI
             var characterEuler = _characterTransform.eulerAngles;
 
             // Calculate offsets based on normalized difference, multiplied by sensitivity
-            var posOffset = _movementSensitivity * (_characterPreviousPos - characterPos).normalized;
+            // (we inverse transform the position offset to get away from world space, which causes some problems)
+            var posOffset = _characterTransform.InverseTransformDirection(_movementSensitivity * (_characterPreviousPos - characterPos).normalized);
             var eulerOffset = _rotationSensitivity * (_characterPerviousEuler - characterEuler).normalized;
 
             // Lerp between our old offset and the current offset
-            var dT = Time.deltaTime;
+            var dT = _useUnscaledTime
+                ? Time.unscaledDeltaTime
+                : Time.deltaTime;
+
             _offsetPos = Vector3.Lerp(_offsetPos, posOffset, dT * _reactionStrength);
             _offsetEuler = Vector3.Lerp(_offsetEuler, eulerOffset, dT * _reactionStrength);
 
             // Apply new offsets to the HUD
-            _rect.anchoredPosition3D = _offsetPos;
-            _rect.localEulerAngles = _offsetEuler;
+            _transform.localPosition = _offsetPos;
+            _transform.localEulerAngles = _offsetEuler;
 
             // Store the offsets for the next frame
             _characterPreviousPos = characterPos;
