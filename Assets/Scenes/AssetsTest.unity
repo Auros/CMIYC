@@ -1213,7 +1213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &904811464
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2240,7 +2240,20 @@ MonoBehaviour:
   _inputBroadcaster: {fileID: 285328000}
   _debugSpawnDefinition: {fileID: 1268590700}
   _enemyTextPool: {fileID: 309602796}
+  _tweenManager: {fileID: 1928460390}
   _mainCamera: {fileID: 421112663}
+--- !u!114 &1291970054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1615942825663289528, guid: 5eb7814babea8ec44a40a709362926a6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1645552110283424145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1344521350
 GameObject:
   m_ObjectHideFlags: 0
@@ -3156,6 +3169,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4345307744541851202, guid: 5eb7814babea8ec44a40a709362926a6,
+        type: 3}
+      propertyPath: _fileTypeText
+      value: 
+      objectReference: {fileID: 1291970054}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

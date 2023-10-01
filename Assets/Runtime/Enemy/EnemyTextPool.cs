@@ -1,4 +1,5 @@
-﻿using AuraTween;
+﻿using System.Collections.Generic;
+using AuraTween;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace CMIYC.Enemy
 
         TMP_Text CreatePooledItem()
         {
-            var text = Instantiate(_template);
+            var text = Instantiate(_template, this.transform);
             text.gameObject.SetActive(true);
             text.alpha = _startAlpha;
             return text;
@@ -65,12 +66,15 @@ namespace CMIYC.Enemy
         public async UniTask SpawnText(Transform parent, string inputText)
         {
             var text = Pool.Get();
-            text.transform.SetParent(parent);
+            //text.transform.SetParent(parent);
             // set random position.. hardcoded, whatever
-            text.transform.localPosition = new Vector3(Random.Range(-_posMaxRandom, _posMaxRandom), Random.Range(-_posMaxRandom, _posMaxRandom), Random.Range(-_posMaxRandom, _posMaxRandom));
+            text.transform.position = parent.position + new Vector3(Random.Range(-_posMaxRandom, _posMaxRandom), Random.Range(-_posMaxRandom, _posMaxRandom), Random.Range(-_posMaxRandom, _posMaxRandom));
             text.SetText(inputText);
             await _tweenManager.Run(_startAlpha, 0f, _fadeDuration,
-                (t) => text.alpha = t, Easer.Linear);
+                (t) =>
+                {
+                    if(text != null) text.alpha = t;
+                }, Easer.Linear);
 
             if (text != null) Pool.Release(text);
         }

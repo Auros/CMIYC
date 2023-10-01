@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AuraTween;
 using CMIYC.Enemy.Behaviour;
 using CMIYC.Input;
 using Cysharp.Threading.Tasks;
@@ -26,6 +27,8 @@ namespace CMIYC.Enemy
         private EnemySpawnDefinition _debugSpawnDefinition = null!;
         [SerializeField]
         private EnemyTextPool _enemyTextPool = null!;
+        [SerializeField]
+        private TweenManager _tweenManager = null!;
 
         // not the best place for this probably
         [SerializeField]
@@ -102,7 +105,7 @@ namespace CMIYC.Enemy
 
         private void SetMetadata(EnemyBehaviour enemyBehaviour, EnemyScriptableObject enemy)
         {
-            enemyBehaviour.SetHealth(enemy.Health);
+            enemyBehaviour.Setup(enemy.Health, _tweenManager, OnDeath);
             if (enemyBehaviour is TxtBehaviour txtBehaviour)
             {
                 // TODO: Prevent same file from spawning twice in the same "chunk?"
@@ -158,6 +161,16 @@ namespace CMIYC.Enemy
                 }
             }
             // do stuff
+        }
+
+        public void OnDeath(EnemyBehaviour enemy)
+        {
+            Debug.Log("Enemy is DEAD!");
+            if (_spawnedEnemies.Contains(enemy)) _spawnedEnemies.Remove(enemy);
+
+            // push event here ( when we need it)
+
+            Destroy(enemy.gameObject);
         }
     }
 }
