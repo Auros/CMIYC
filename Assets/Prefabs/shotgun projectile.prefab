@@ -388,6 +388,39 @@ MonoBehaviour:
   _velocity: 1000
   _useRigidbody: 1
   _lifetime: 20
+  _sizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.92686594
+      outSlope: -0.92686594
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9245041
+      value: 0.14310868
+      inSlope: -3.8333864
+      outSlope: -3.8333864
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.027646655
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99505615
+      value: 0.002357483
+      inSlope: -16.109375
+      outSlope: -16.109375
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09338184
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _layerMask:
     serializedVersion: 2
     m_Bits: 65591
