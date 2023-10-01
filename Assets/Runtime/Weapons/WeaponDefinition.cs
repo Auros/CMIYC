@@ -72,7 +72,7 @@ namespace CMIYC.Weapons
 
             if (MuzzleFlashParticles != null)
             {
-                MuzzleFlashParticles.Emit(30);
+                MuzzleFlashParticles.Play();
             }
 
             return true;

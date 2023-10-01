@@ -106,7 +106,7 @@ MonoBehaviour:
   _lifetime: 20
   _layerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 196727
 --- !u!54 &2807221648870796750
 Rigidbody:
   m_ObjectHideFlags: 0
