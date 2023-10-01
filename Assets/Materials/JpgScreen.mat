@@ -122,9 +122,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _AddToNoiseUV: {r: 3.2405, g: 0.8251649, b: 0, a: 0}
+    - _AddToNoiseUV: {r: 0.09946942, g: 1.6852639, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.7992785, g: 0.669422, b: 0.72429705, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _UVMult: {r: 1.8751754, g: 1, b: 1, a: 1}

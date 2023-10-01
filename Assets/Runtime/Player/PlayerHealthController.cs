@@ -7,6 +7,7 @@ namespace CMIYC
     public class PlayerHealthController : MonoBehaviour, IProjectileTarget
     {
         public event Action PlayerTookDamage;
+        public event Action PlayerTookJpegDamage;
 
         [field: SerializeField]
         public float InitialHealth { get; private set; } = 100f;
@@ -25,6 +26,12 @@ namespace CMIYC
             Health -= hitEvent.Instance.Damage;
 
             PlayerTookDamage?.Invoke();
+
+            // ???????
+            if (hitEvent.Instance.gameObject.name == "_JpgProjectile_(Clone)")
+            {
+                PlayerTookJpegDamage?.Invoke();
+            }
 
             if (Health <= 0)
             {
