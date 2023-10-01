@@ -37,6 +37,12 @@ namespace CMIYC.UI.Settings
         [SerializeField]
         private MusicLoop _musicLoop = null!;
 
+        [SerializeField]
+        private AudioSource _pauseSFX = null!;
+
+        [SerializeField]
+        private AudioSource _unpauseSFX = null!;
+
         private CursorLockMode _cachedCursorLockMode;
         private float _cachedTimeScale;
 
@@ -71,6 +77,8 @@ namespace CMIYC.UI.Settings
 
                 PresentPauseMenu(_settingsDuration);
 
+                _pauseSFX.Play();
+
                 _inputController.Disable(_inputController.Input.Pause.Pause);
             }
             // Restore cursor lock mode on unpause
@@ -78,7 +86,11 @@ namespace CMIYC.UI.Settings
             {
                 Cursor.lockState = _cachedCursorLockMode;
                 Time.timeScale = _cachedTimeScale;
+
                 _inputController.Enable();
+
+                _unpauseSFX.Play();
+
                 HidePauseMenu(_settingsDuration);
             }
         }
