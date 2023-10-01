@@ -717,6 +717,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 2499787152736206103}
+    - target: {fileID: 3869921312883164155, guid: 985a747c887dc6a4daaf8e1e5f136c35,
+        type: 3}
+      propertyPath: _playerHealthController
+      value: 
+      objectReference: {fileID: 2615342334743526033}
     - target: {fileID: 5020753806508446428, guid: 985a747c887dc6a4daaf8e1e5f136c35,
         type: 3}
       propertyPath: _weaponManager
@@ -979,6 +984,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 2499787152736206103}
+    - target: {fileID: 5856024504854187029, guid: 1811d4e4950245944a7ca33bdfa4e78b,
+        type: 3}
+      propertyPath: _playerHealthController
+      value: 
+      objectReference: {fileID: 2615342334743526033}
     - target: {fileID: 6257943512416431735, guid: 1811d4e4950245944a7ca33bdfa4e78b,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1143,6 +1153,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 2499787152736206103}
+    - target: {fileID: 604646279460864655, guid: ad325aa5e4212bc4c8b2f129975bcd6c,
+        type: 3}
+      propertyPath: _playerHealthController
+      value: 
+      objectReference: {fileID: 2615342334743526033}
     - target: {fileID: 2534329889277539165, guid: ad325aa5e4212bc4c8b2f129975bcd6c,
         type: 3}
       propertyPath: _musicLoop
@@ -1307,6 +1322,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 2499787152736206103}
+    - target: {fileID: 3662644304434915692, guid: dcb985326e82a47489e1851839e2c395,
+        type: 3}
+      propertyPath: _playerHealthController
+      value: 
+      objectReference: {fileID: 2615342334743526033}
     - target: {fileID: 4223304721813067686, guid: dcb985326e82a47489e1851839e2c395,
         type: 3}
       propertyPath: m_RaycastTarget

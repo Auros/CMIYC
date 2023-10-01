@@ -10398,6 +10398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterTransform: {fileID: 2574090047296711515}
+  _playerHealthController: {fileID: 2685141081799896285}
   _useUnscaledTime: 0
   _reactionStrength: 5
   _movementSensitivity: 0.1
