@@ -10601,6 +10601,8 @@ MonoBehaviour:
   _collisionMask:
     serializedVersion: 2
     m_Bits: 1
+  _defaultCameraHeight: 0.75
+  _crouchedCameraHeight: 0.4
   _maxSpeed: 6
   _groundAccel: 52
   _groundDecel: 28

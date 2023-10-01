@@ -1,4 +1,5 @@
-﻿using CMIYC.Input;
+﻿using AuraTween;
+using CMIYC.Input;
 using CMIYC.Projectiles;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +29,12 @@ namespace CMIYC.Player
         private LayerMask _collisionMask;
 
         [SerializeField]
+        private float _defaultCameraHeight = 0.75f;
+
+        [SerializeField]
+        private float _crouchedCameraHeight = 0.4f;
+
+        [SerializeField]
         private float _maxSpeed = 0f;
 
         [SerializeField]
@@ -44,6 +51,7 @@ namespace CMIYC.Player
 
         private bool _grounded = false;
         private bool _inputJumping = false;
+        private bool _inputCrouching = false;
         private Vector2 _inputMovement = Vector2.zero;
 
         void Start()
@@ -74,6 +82,8 @@ namespace CMIYC.Player
             angles.x -= lookValue.y;
             angles.y += lookValue.x;
             _camera.transform.localEulerAngles = angles;
+
+            _camera.transform.localPosition = _camera.transform.localPosition.WithY(_inputCrouching ? _crouchedCameraHeight : _defaultCameraHeight);
         }
 
         void FixedUpdate()
@@ -158,6 +168,14 @@ namespace CMIYC.Player
                 _inputMovement = context.ReadValue<Vector2>();
             else
                 _inputMovement = Vector2.zero;
+        }
+
+        public void OnCrouch(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                _inputCrouching = true;
+            else if (context.canceled)
+                _inputCrouching = false;
         }
 
         private void OnDestroy()
