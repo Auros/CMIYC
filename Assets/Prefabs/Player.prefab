@@ -478,7 +478,7 @@ MonoBehaviour:
     type: 3}
   <ShellParticles>k__BackingField: {fileID: 4951472915665468825}
   <MuzzleFlashParticles>k__BackingField: {fileID: 6492892418563275905}
-  <ReloadTime>k__BackingField: 1
+  <ReloadTime>k__BackingField: 3
 --- !u!1 &6672090934404705017
 GameObject:
   m_ObjectHideFlags: 0
@@ -10546,7 +10546,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 131072
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
