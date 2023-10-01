@@ -1898,6 +1898,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1272939674}
   - component: {fileID: 1272939675}
+  - component: {fileID: 1272939676}
   m_Layer: 0
   m_Name: EnemyController
   m_TagString: Untagged
@@ -1943,12 +1944,40 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a086e8f5987f7454e9a3d81209d469f4, type: 2}
   - {fileID: 11400000, guid: 211efee740ed29142af845c706369dba, type: 2}
   - {fileID: 11400000, guid: 993579f13d17fc449942ce26e4dbc92a, type: 2}
+  <PngMetadata>k__BackingField: []
   _enemyContainer: {fileID: 1361197741}
   _inputBroadcaster: {fileID: 285328000}
-  _debugSpawnDefinition: {fileID: 1268590700}
+  _debugSpawnDefinitions:
+  - {fileID: 1272939676}
   _enemyTextPool: {fileID: 309602796}
   _tweenManager: {fileID: 1928460390}
   _mainCamera: {fileID: 242381956}
+--- !u!114 &1272939676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272939673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d784be8f36fcbb143b7ff2221f06af5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <SpawnPoints>k__BackingField:
+  - {fileID: 1054210243}
+  - {fileID: 1704393800}
+  - {fileID: 220714086}
+  - {fileID: 794521494}
+  - {fileID: 920496296}
+  - {fileID: 987381879}
+  <MinSpawnCount>k__BackingField: 1
+  <MaxSpawnCount>k__BackingField: -1
+  <SpawnChance>k__BackingField: 0.5
+  <SpawnedEnemies>k__BackingField:
+  - <Enemy>k__BackingField: {fileID: 11400000, guid: 1b7048bfded751c4f970f196a12f85a8,
+      type: 2}
+    <SpawnWeight>k__BackingField: 0
 --- !u!1 &1344521350
 GameObject:
   m_ObjectHideFlags: 0

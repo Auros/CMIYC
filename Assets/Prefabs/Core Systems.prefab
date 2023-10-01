@@ -1239,6 +1239,11 @@ PrefabInstance:
       propertyPath: _deathController
       value: 
       objectReference: {fileID: 2980596473541964107}
+    - target: {fileID: 6524623334067273482, guid: dcb985326e82a47489e1851839e2c395,
+        type: 3}
+      propertyPath: _healthController
+      value: 
+      objectReference: {fileID: 2615342334743526033}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
