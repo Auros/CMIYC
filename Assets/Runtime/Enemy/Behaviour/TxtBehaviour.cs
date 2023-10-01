@@ -46,6 +46,7 @@ namespace CMIYC.Enemy.Behaviour
 
         public void CreateTextProjectile(string displayText)
         {
+            if (!_isWithinPlayerRange) return;
             // create projectile
             FireProjectile(_textProjectile, _cameraToLookAt.transform, displayText);
         }

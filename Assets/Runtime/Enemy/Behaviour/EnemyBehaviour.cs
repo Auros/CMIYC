@@ -11,7 +11,13 @@ namespace CMIYC.Enemy.Behaviour
 {
     public abstract class EnemyBehaviour : MonoBehaviour, IProjectileTarget
     {
-        private bool _isAlive = false;
+        private bool _isDebugging = true; // TODO BUG IMPORTANT CHANGE FOR PRODUCTION!!!!!!!!!!!!!!!!!!!
+
+        protected float _maxPlayerDistance = 15f; // enemies will not attack/move/whatever if the player is further than this
+        // ideally this would include the player being in the same room but idk if we'll have time
+
+        protected bool _isAlive = false;
+        protected bool _isWithinPlayerRange = false;
 
         private float _health;
         private float _maxHealth;
@@ -26,6 +32,8 @@ namespace CMIYC.Enemy.Behaviour
         [SerializeField]
         private Transform _nameTag = null!;
         [SerializeField]
+        private GameObject _playerVisibleDebugger = null!;
+        [SerializeField]
         protected TMP_Text _nameText = null!;
         [SerializeField]
         protected TMP_Text _fileTypeText = null!;
@@ -36,9 +44,10 @@ namespace CMIYC.Enemy.Behaviour
         private List<Renderer> _dissolvingRenderers = new();
 
         private static readonly int _dissolveProperty = Shader.PropertyToID("_DissolveY");
-        private static readonly float _maxDissolve = 1.7f;
-        private static readonly float _minDissolve = -1.04f;
-        private static readonly float _aliveMinDissolve = 0.5f;
+        private static readonly float _heightAddition = 1.11f;
+        private static readonly float _maxDissolve = 1.7f + _heightAddition;
+        private static readonly float _minDissolve = -1.04f + _heightAddition;
+        private static readonly float _aliveMinDissolve = 0.5f + _heightAddition;
 
         public void SetNameTagMetadata(string fileName, Camera cameraToLookAt)
         {
@@ -53,6 +62,22 @@ namespace CMIYC.Enemy.Behaviour
             _maxHealth = health;
             _onDeath = onDeath;
             _isAlive = true;
+
+            foreach (var dissolvingRenderer in _dissolvingRenderers)
+            {
+                dissolvingRenderer.material.SetFloat(_dissolveProperty, _maxDissolve);
+            }
+        }
+
+        public void UpdatePlayerPosition(Vector3 globalPlayerPosition)
+        {
+            if (!_isAlive) return;
+            _isWithinPlayerRange = Vector3.Distance(globalPlayerPosition, this.transform.position) < _maxPlayerDistance;
+
+            if (_isDebugging && _playerVisibleDebugger != null)
+            {
+                _playerVisibleDebugger.SetActive(_isWithinPlayerRange);
+            }
         }
 
         void Update()

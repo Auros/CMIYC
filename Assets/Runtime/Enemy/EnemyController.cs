@@ -19,16 +19,28 @@ namespace CMIYC.Enemy
         [field: SerializeField]
         public TxtMetadataScriptableObject[] TxtMetadata { get; private set; } = Array.Empty<TxtMetadataScriptableObject>();
 
+        [Tooltip("PNG File Metadata")]
+        [field: SerializeField]
+        public PngMetadataScriptableObject[] PngMetadata { get; private set; } = Array.Empty<PngMetadataScriptableObject>();
+
+        [Tooltip("JPG File Metadata")]
+        [field: SerializeField]
+        public JpgMetadataScriptableObject[] JpgMetadata { get; private set; } = Array.Empty<JpgMetadataScriptableObject>();
+
         [SerializeField]
         private Transform _enemyContainer = null!;
         [SerializeField]
+        private Transform _player = null!;
+        [SerializeField]
         private InputBroadcaster _inputBroadcaster = null!;
         [SerializeField]
-        private EnemySpawnDefinition _debugSpawnDefinition = null!;
+        private List<EnemySpawnDefinition> _debugSpawnDefinitions = null!;
         [SerializeField]
         private EnemyTextPool _enemyTextPool = null!;
         [SerializeField]
         private TweenManager _tweenManager = null!;
+
+        private const float _spawnOffset = 1.11f; // assuming spawn is at foot of enemy, how much height needs to be added
 
         // not the best place for this probably
         [SerializeField]
@@ -39,9 +51,24 @@ namespace CMIYC.Enemy
         {
             _inputBroadcaster.Register(this);
 
-            if (_debugSpawnDefinition != null)
+            if (_debugSpawnDefinitions != null && _debugSpawnDefinitions.Count > 0)
             {
-                Spawn(_debugSpawnDefinition);
+                foreach (var spawnPosition in _debugSpawnDefinitions)
+                {
+                    Spawn(spawnPosition);
+                }
+            }
+        }
+
+        public void Update()
+        {
+            // only update once every 10 frames
+            if (Time.frameCount % 10 != 0) return;
+
+            var playerPosition = _player.position;
+            foreach (var enemy in _spawnedEnemies)
+            {
+                enemy.UpdatePlayerPosition(playerPosition);
             }
         }
 
@@ -96,7 +123,7 @@ namespace CMIYC.Enemy
         private void SpawnEnemy(EnemyScriptableObject enemy, Transform spawnPoint)
         {
             var enemyBehaviour = Instantiate(enemy.Prefab, _enemyContainer);
-            enemyBehaviour.transform.position = spawnPoint.position;
+            enemyBehaviour.transform.position = spawnPoint.position + new Vector3(0f, _spawnOffset, 0f);
             enemyBehaviour.transform.localRotation = spawnPoint.localRotation; // ? is this even necessary?
             SetMetadata(enemyBehaviour, enemy);
 
@@ -105,12 +132,23 @@ namespace CMIYC.Enemy
 
         private void SetMetadata(EnemyBehaviour enemyBehaviour, EnemyScriptableObject enemy)
         {
+            // TODO: Prevent same file from spawning twice in the same "chunk?"
+
             enemyBehaviour.Setup(enemy.Health, _tweenManager, OnDeath);
             if (enemyBehaviour is TxtBehaviour txtBehaviour)
             {
-                // TODO: Prevent same file from spawning twice in the same "chunk?"
                 var metadata = RandomFromArray(TxtMetadata);
                 txtBehaviour.SetMetadata(metadata, enemy, _mainCamera);
+            }
+            else if (enemyBehaviour is PngBehaviour pngBehaviour)
+            {
+                var metadata = RandomFromArray(PngMetadata);
+                pngBehaviour.SetMetadata(metadata, enemy, _mainCamera);
+            }
+            else if (enemyBehaviour is JpgBehaviour jpgBehaviour)
+            {
+                var metadata = RandomFromArray(JpgMetadata);
+                jpgBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
         }
 
