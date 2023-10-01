@@ -31,6 +31,14 @@ namespace CMIYC.Weapons
         [field: SerializeField]
         public ProjectileDefinition SelfProjectile { get; private set; }
 
+        [field: Tooltip("Particle system to use for bullet shells")]
+        [field: SerializeField]
+        public ParticleSystem ShellParticles { get; private set; }
+
+        [field: Tooltip("Particle system to use for muzzle flash")]
+        [field: SerializeField]
+        public ParticleSystem MuzzleFlashParticles { get; private set; }
+
         [field: Tooltip("The time it takes to reload this weapon.")]
         [field: SerializeField]
         public float ReloadTime { get; set; } = 1f;
@@ -56,6 +64,17 @@ namespace CMIYC.Weapons
 
             Ammo--;
             FireProjectile(BulletProjectile, target);
+
+            if (ShellParticles != null)
+            {
+                ShellParticles.Emit(1);
+            }
+
+            if (MuzzleFlashParticles != null)
+            {
+                MuzzleFlashParticles.Play();
+            }
+
             return true;
         }
 

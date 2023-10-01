@@ -1,4 +1,5 @@
-﻿using CMIYC.Input;
+﻿using AuraTween;
+using CMIYC.Input;
 using CMIYC.Projectiles;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace CMIYC.Player
 {
-    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions, IProjectileTarget
+    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
     {
         public bool IsGrounded => _grounded;
 
@@ -22,7 +23,16 @@ namespace CMIYC.Player
         private InputController _inputController = null!;
 
         [SerializeField]
+        private DeathController _deathController = null!;
+
+        [SerializeField]
         private LayerMask _collisionMask;
+
+        [SerializeField]
+        private float _defaultCameraHeight = 0.75f;
+
+        [SerializeField]
+        private float _crouchedCameraHeight = 0.4f;
 
         [SerializeField]
         private float _maxSpeed = 0f;
@@ -41,6 +51,7 @@ namespace CMIYC.Player
 
         private bool _grounded = false;
         private bool _inputJumping = false;
+        private bool _inputCrouching = false;
         private Vector2 _inputMovement = Vector2.zero;
 
         void Start()
@@ -51,7 +62,14 @@ namespace CMIYC.Player
 
             _inputController.Input.Player.AddCallbacks(this);
 
+            _deathController.OnPlayerDeath += OnPlayerDeath;
+
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        private void OnPlayerDeath()
+        {
+            _rigidbody.constraints = RigidbodyConstraints.None;
         }
 
         void Update()
@@ -64,6 +82,8 @@ namespace CMIYC.Player
             angles.x -= lookValue.y;
             angles.y += lookValue.x;
             _camera.transform.localEulerAngles = angles;
+
+            _camera.transform.localPosition = _camera.transform.localPosition.WithY(_inputCrouching ? _crouchedCameraHeight : _defaultCameraHeight);
         }
 
         void FixedUpdate()
@@ -150,9 +170,17 @@ namespace CMIYC.Player
                 _inputMovement = Vector2.zero;
         }
 
-        public void OnProjectileHit(ProjectileHitEvent hitEvent)
+        public void OnCrouch(InputAction.CallbackContext context)
         {
-            Debug.Log("Player took damage..");
+            if (context.performed)
+                _inputCrouching = true;
+            else if (context.canceled)
+                _inputCrouching = false;
+        }
+
+        private void OnDestroy()
+        {
+            _deathController.OnPlayerDeath -= OnPlayerDeath;
         }
     }
 }

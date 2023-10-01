@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7edeb36797184ece809c12418a76906d, type: 3}
+  m_Name: default unity behavior
+  m_EditorClassIdentifier: 
+  NameTag: NewBehaviourScript.cs
+  TextContents: "using System.Collections;\r\nusing System.Collections.Generic;\r\nusing
+    UnityEngine;\r\n\r\npublic class NewBehaviourScript : MonoBehaviour\r\n{\r\n\t//
+    Start is called before the first frame update\r\n\tvoid Start()\r\n\t{\r\n\t\r\n\t}\r\n\r\n\t//
+    Update is called once per frame\r\n\tvoid Update()\r\n\t{\r\n\t\r\n\t}\r\n}\r"

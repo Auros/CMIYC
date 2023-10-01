@@ -1,12 +1,10 @@
 ﻿using System;
 using AuraTween;
 using CMIYC.Input;
-using CMIYC.Projectiles;
 using CMIYC.Weapons;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
 
 namespace CMIYC.Player
 {
@@ -29,6 +27,9 @@ namespace CMIYC.Player
 
         [SerializeField]
         private InputController _inputController = null!;
+
+        [SerializeField]
+        private DeathController _deathController = null!;
 
         public void OnShoot(InputAction.CallbackContext context)
         {
@@ -77,6 +78,15 @@ namespace CMIYC.Player
         private void Start()
         {
             _inputController.Input.Shooting.AddCallbacks(this);
+
+            _deathController.OnPlayerDeath += OnPlayerDeath;
+        }
+
+        private void OnPlayerDeath() => Destroy(CurrentWeaponInstance.gameObject);
+
+        private void OnDestroy()
+        {
+            _deathController.OnPlayerDeath -= OnPlayerDeath;
         }
 
         private static float ModifiedBackOut(ref float time)
