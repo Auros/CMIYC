@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 namespace CMIYC.Player
 {
-    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions, IProjectileTarget
+    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
     {
         public bool IsGrounded => _grounded;
 
@@ -20,6 +20,9 @@ namespace CMIYC.Player
 
         [SerializeField]
         private InputController _inputController = null!;
+
+        [SerializeField]
+        private DeathController _deathController = null!;
 
         [SerializeField]
         private LayerMask _collisionMask;
@@ -51,7 +54,14 @@ namespace CMIYC.Player
 
             _inputController.Input.Player.AddCallbacks(this);
 
+            _deathController.OnPlayerDeath += OnPlayerDeath;
+
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        private void OnPlayerDeath()
+        {
+            _rigidbody.constraints = RigidbodyConstraints.None;
         }
 
         void Update()
@@ -150,9 +160,9 @@ namespace CMIYC.Player
                 _inputMovement = Vector2.zero;
         }
 
-        public void OnProjectileHit(ProjectileHitEvent hitEvent)
+        private void OnDestroy()
         {
-            Debug.Log("Player took damage..");
+            _deathController.OnPlayerDeath -= OnPlayerDeath;
         }
     }
 }

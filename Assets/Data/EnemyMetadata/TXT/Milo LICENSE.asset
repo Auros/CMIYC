@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7edeb36797184ece809c12418a76906d, type: 3}
+  m_Name: Milo LICENSE
+  m_EditorClassIdentifier: 
+  NameTag: LICENSE
+  TextContents: "        DO WHAT THE FUCK YOU WANT TO (UNLESS YOU'RE FRENCH) PUBLIC
+    LICENSE \r\n                    Version 69, July 2022\r\n\r\n Copyright (C) 1984
+    Dr. Michael Morbius, PhD.\r\n\r\n Everyone is permitted to copy and distribute
+    verbatim or modified \r\n copies of this license document, and changing it is
+    allowed as long \r\n as they do not reside in the country of France.\r\n\r\n           
+    DO WHAT THE FUCK YOU WANT TO (UNLESS YOU'RE FRENCH) PUBLIC LICENSE \r\n   TERMS
+    AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION \r\n\r\n  0. You just
+    DO WHAT THE FUCK YOU WANT TO. Unless you reside in France. Then you can't do
+    anything.\r\n\r\n  1. Have sex! Have sex! Poop my panyans, Poop my pants my pants,
+    Poop my ten to ten, O poop my spend to spend. Have sex! Have sex!\r\n\r\n  2.
+    If you break the terms of this License (by being French), I will morb on you."

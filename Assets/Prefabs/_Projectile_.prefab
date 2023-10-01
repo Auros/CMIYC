@@ -54,7 +54,7 @@ MonoBehaviour:
   _lifetime: 5
   _layerMask:
     serializedVersion: 2
-    m_Bits: 196727
+    m_Bits: 65591
 --- !u!135 &7719281961138693708
 SphereCollider:
   m_ObjectHideFlags: 0
