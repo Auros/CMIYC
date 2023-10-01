@@ -195,9 +195,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 30
-  _hitScan: 1
+  _hitScan: 0
   _velocity: 50
-  _useRigidbody: 1
+  _attachedRigidbody: {fileID: 6747524472276028961}
   _lifetime: 5
   _sizeCurve:
     serializedVersion: 2

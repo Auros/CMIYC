@@ -385,8 +385,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 90
   _hitScan: 0
-  _velocity: 1000
-  _useRigidbody: 1
+  _velocity: 50
+  _attachedRigidbody: {fileID: 255300263677617935}
   _lifetime: 20
   _sizeCurve:
     serializedVersion: 2
@@ -411,7 +411,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.99505615
-      value: 0.002357483
+      value: 0.0047073364
       inSlope: -16.109375
       outSlope: -16.109375
       tangentMode: 0
