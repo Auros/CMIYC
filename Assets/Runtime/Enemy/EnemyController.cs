@@ -26,6 +26,8 @@ namespace CMIYC.Enemy
         [SerializeField]
         private Transform _enemyContainer = null!;
         [SerializeField]
+        private Transform _player = null!;
+        [SerializeField]
         private InputBroadcaster _inputBroadcaster = null!;
         [SerializeField]
         private List<EnemySpawnDefinition> _debugSpawnDefinitions = null!;
@@ -51,6 +53,18 @@ namespace CMIYC.Enemy
                 {
                     Spawn(spawnPosition);
                 }
+            }
+        }
+
+        public void Update()
+        {
+            // only update once every 10 frames
+            if (Time.frameCount % 10 != 0) return;
+
+            var playerPosition = _player.position;
+            foreach (var enemy in _spawnedEnemies)
+            {
+                enemy.UpdatePlayerPosition(playerPosition);
             }
         }
 

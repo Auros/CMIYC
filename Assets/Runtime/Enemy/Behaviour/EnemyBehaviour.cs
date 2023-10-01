@@ -11,7 +11,13 @@ namespace CMIYC.Enemy.Behaviour
 {
     public abstract class EnemyBehaviour : MonoBehaviour, IProjectileTarget
     {
-        private bool _isAlive = false;
+        private bool _isDebugging = true; // TODO BUG IMPORTANT CHANGE FOR PRODUCTION!!!!!!!!!!!!!!!!!!!
+
+        protected float _maxPlayerDistance = 15f; // enemies will not attack/move/whatever if the player is further than this
+        // ideally this would include the player being in the same room but idk if we'll have time
+
+        protected bool _isAlive = false;
+        protected bool _isWithinPlayerRange = false;
 
         private float _health;
         private float _maxHealth;
@@ -25,6 +31,8 @@ namespace CMIYC.Enemy.Behaviour
 
         [SerializeField]
         private Transform _nameTag = null!;
+        [SerializeField]
+        private GameObject _playerVisibleDebugger = null!;
         [SerializeField]
         protected TMP_Text _nameText = null!;
         [SerializeField]
@@ -55,8 +63,18 @@ namespace CMIYC.Enemy.Behaviour
 
             foreach (var dissolvingRenderer in _dissolvingRenderers)
             {
-                Debug.Log(_maxDissolve);
                 dissolvingRenderer.material.SetFloat(_dissolveProperty, _maxDissolve);
+            }
+        }
+
+        public void UpdatePlayerPosition(Vector3 globalPlayerPosition)
+        {
+            if (!_isAlive) return;
+            _isWithinPlayerRange = Vector3.Distance(globalPlayerPosition, this.transform.position) < _maxPlayerDistance;
+
+            if (_isDebugging && _playerVisibleDebugger != null)
+            {
+                _playerVisibleDebugger.SetActive(_isWithinPlayerRange);
             }
         }
 
