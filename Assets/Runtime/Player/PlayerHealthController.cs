@@ -26,7 +26,7 @@ namespace CMIYC
 
             PlayerTookDamage?.Invoke();
 
-            if (Health < 0)
+            if (Health <= 0)
             {
                 Health = 0;
                 _deathController.Die();
