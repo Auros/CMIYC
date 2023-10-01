@@ -232,7 +232,32 @@ MonoBehaviour:
   <Damage>k__BackingField: 5
   _hitScan: 0
   _velocity: 4
+  _attachedRigidbody: {fileID: 0}
   _lifetime: 8
+  _sizeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1.0392216
+      outSlope: -1.0392216
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99176025
+      value: -0.030658722
+      inSlope: -1.0392216
+      outSlope: -1.0392216
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _layerMask:
     serializedVersion: 2
     m_Bits: 63
