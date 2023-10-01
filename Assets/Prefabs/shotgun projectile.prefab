@@ -383,7 +383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47a2e11253f00e4dbfb2a1db79bfa08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 15
+  <Damage>k__BackingField: 90
   _hitScan: 0
   _velocity: 1000
   _useRigidbody: 1
