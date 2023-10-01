@@ -294,8 +294,9 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 467ab216f519e34448a3eae74435ae28, type: 2}
+  m_sharedMaterial: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -609,6 +610,12 @@ PrefabInstance:
       propertyPath: m_text
       value: Music Volume
       objectReference: {fileID: 0}
+    - target: {fileID: 1921357612302342588, guid: 4745e3017522f694caafbf2b1c9b2d11,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,
+        type: 2}
     - target: {fileID: 4183887416523479240, guid: 4745e3017522f694caafbf2b1c9b2d11,
         type: 3}
       propertyPath: m_Name
@@ -853,6 +860,12 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
+    - target: {fileID: 1921357612302342588, guid: 4745e3017522f694caafbf2b1c9b2d11,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,
+        type: 2}
     - target: {fileID: 4183887416523479240, guid: 4745e3017522f694caafbf2b1c9b2d11,
         type: 3}
       propertyPath: m_Name
@@ -1097,6 +1110,12 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
+    - target: {fileID: 1921357612302342588, guid: 4745e3017522f694caafbf2b1c9b2d11,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,
+        type: 2}
     - target: {fileID: 4183887416523479240, guid: 4745e3017522f694caafbf2b1c9b2d11,
         type: 3}
       propertyPath: m_Name
@@ -1470,6 +1489,11 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
+    - target: {fileID: 1921357612302342588, guid: 4745e3017522f694caafbf2b1c9b2d11,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4183887416523479240, guid: 4745e3017522f694caafbf2b1c9b2d11,
         type: 3}
       propertyPath: m_Name
@@ -1816,6 +1840,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unpause Button
       objectReference: {fileID: 0}
+    - target: {fileID: 5099101947908770349, guid: 77408cad2f02b88488f507c51e08ea41,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,
+        type: 2}
     - target: {fileID: 8875321936119281378, guid: 77408cad2f02b88488f507c51e08ea41,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1979,6 +2009,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: QUIT
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099101947908770349, guid: 77408cad2f02b88488f507c51e08ea41,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8875321936119281378, guid: 77408cad2f02b88488f507c51e08ea41,
         type: 3}
