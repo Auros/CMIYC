@@ -10499,10 +10499,9 @@ GameObject:
   - component: {fileID: 3034963083647406016}
   - component: {fileID: 4514367145247156543}
   - component: {fileID: 2378783188982227642}
-  - component: {fileID: 2685141081799896285}
   - component: {fileID: 7719258016994574435}
   m_Layer: 3
-  m_Name: Player
+  m_Name: GoobiePlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10597,7 +10596,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Sensitivity>k__BackingField: 1
   _inputController: {fileID: 0}
-  _deathController: {fileID: 0}
   _collisionMask:
     serializedVersion: 2
     m_Bits: 1
@@ -10623,21 +10621,6 @@ MonoBehaviour:
   _mainCamera: {fileID: 8754990859651074425}
   _weaponRoot: {fileID: 284327309987478461}
   _inputController: {fileID: 0}
-  _deathController: {fileID: 0}
---- !u!114 &2685141081799896285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8658619558702538321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc943db7cf44f35448c6291cf2f3d02f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <InitialHealth>k__BackingField: 100
-  _deathController: {fileID: 0}
 --- !u!114 &7719258016994574435
 MonoBehaviour:
   m_ObjectHideFlags: 0
