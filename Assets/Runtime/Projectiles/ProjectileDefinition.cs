@@ -29,6 +29,7 @@ namespace CMIYC.Projectiles
         private Ray _raycast;
         private bool _initialized;
         private Rigidbody _attachedRigidbody;
+        private bool _collided = false;
 
         /// <summary>
         /// Initializes this projectile with the given world position and direction.
@@ -104,8 +105,13 @@ namespace CMIYC.Projectiles
         // If the physics system reports a collision, we should assume that we need to call back.
         private void OnCollisionEnter(Collision collision)
         {
+            // if we already collideed then no colliding !!!
+            if (_collided) return;
+
             // Ensure we are colliding only with layers we want
-            if ((_layerMask.value & 1 << collision.gameObject.layer) > 0) return;
+            if ((_layerMask.value & 1 << collision.gameObject.layer) <= 0) return;
+
+            _collided = true;
 
             var hitEvent = new ProjectileHitEvent(this, collision.collider);
 

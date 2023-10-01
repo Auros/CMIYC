@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1382895554895680571}
   - component: {fileID: 3524245416468998072}
   - component: {fileID: 1873081728117670141}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Barrel 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2713872640202329058}
   - component: {fileID: 4179058978324491361}
   - component: {fileID: 418317368281364606}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 2772882730883832392}
   - component: {fileID: 6106864920116654080}
   - component: {fileID: 7060391994136118597}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Barrel 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 7032856862816379274}
   - component: {fileID: 1757788821321930516}
   - component: {fileID: 7882115689485929419}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 8485760336997468937}
   - component: {fileID: 255300263677617935}
   - component: {fileID: 3326504064896795314}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shotgun projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +390,7 @@ MonoBehaviour:
   _lifetime: 20
   _layerMask:
     serializedVersion: 2
-    m_Bits: 196727
+    m_Bits: 65591
 --- !u!54 &255300263677617935
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -440,7 +440,7 @@ CapsuleCollider:
   m_Radius: 0.36
   m_Height: 5.66
   m_Direction: 2
-  m_Center: {x: 0, y: -0.18, z: 0.68}
+  m_Center: {x: 0, y: -0.18, z: -0.68}
 --- !u!1 &7999581063741543718
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 1532633608541571219}
   - component: {fileID: 1555529732454555568}
   - component: {fileID: 2452415820852686201}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
