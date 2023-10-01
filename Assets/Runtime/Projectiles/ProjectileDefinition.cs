@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CMIYC.Projectiles
@@ -15,6 +16,9 @@ namespace CMIYC.Projectiles
         [Tooltip("If false, this sets the velocity of the projectile over one second.")]
         [SerializeField] private float _velocity;
 
+        [Tooltip("Whether or not to use a rigidbody for physics calculations.")]
+        [SerializeField] private bool _useRigidbody;
+
         [Tooltip("If the projectile has not hit any target over this length of time, instantly destroy. <= 0 implies infinite lifetime.")]
         [SerializeField] private float _lifetime;
 
@@ -24,6 +28,7 @@ namespace CMIYC.Projectiles
         private float _timeAlive;
         private Ray _raycast;
         private bool _initialized;
+        private Rigidbody _attachedRigidbody;
 
         /// <summary>
         /// Initializes this projectile with the given world position and direction.
@@ -42,6 +47,14 @@ namespace CMIYC.Projectiles
             if (_hitScan)
             {
                 _velocity = float.MaxValue;
+            }
+
+            if (_useRigidbody)
+            {
+                _attachedRigidbody = GetComponent<Rigidbody>();
+                _attachedRigidbody.AddForce(forward.normalized * _velocity);
+                _attachedRigidbody.AddTorque(new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1)).normalized);
+                return;
             }
 
             _raycast = new Ray(position, forward);
@@ -64,8 +77,11 @@ namespace CMIYC.Projectiles
                     return;
                 }
 
-                // Move along our ray by the velocity
-                transform.position = _raycast.origin = targetPoint;
+                if (!_useRigidbody)
+                {
+                    // Move along our ray by the velocity
+                    transform.position = _raycast.origin = targetPoint;
+                }
 
                 // Early return if our projectile has infinite life
                 if (_lifetime <= 0) return;
@@ -92,16 +108,27 @@ namespace CMIYC.Projectiles
             if ((_layerMask.value & 1 << collision.gameObject.layer) > 0) return;
 
             var hitEvent = new ProjectileHitEvent(this, collision.collider);
-            CallbackAndDestroy(hitEvent);
+
+            Callback(hitEvent);
+
+            if (!_useRigidbody)
+            {
+                Destroy(gameObject);
+            }
         }
 
         private void CallbackAndDestroy(ProjectileHitEvent projectileHitEvent)
         {
+            Callback(projectileHitEvent);
+
+            Destroy(gameObject);
+        }
+
+        private void Callback(ProjectileHitEvent projectileHitEvent)
+        {
             // I think using Messages would be more performant than manually iterating through every component?
             projectileHitEvent.Collider
                 .BroadcastMessage(nameof(IProjectileTarget.OnProjectileHit), projectileHitEvent, SendMessageOptions.DontRequireReceiver);
-
-            Destroy(gameObject);
         }
     }
 }
