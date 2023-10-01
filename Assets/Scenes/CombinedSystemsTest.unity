@@ -1875,9 +1875,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a086e8f5987f7454e9a3d81209d469f4, type: 2}
   - {fileID: 11400000, guid: 211efee740ed29142af845c706369dba, type: 2}
   - {fileID: 11400000, guid: 993579f13d17fc449942ce26e4dbc92a, type: 2}
+  <PngMetadata>k__BackingField: []
   _enemyContainer: {fileID: 1361197741}
   _inputBroadcaster: {fileID: 285328000}
-  _debugSpawnDefinition: {fileID: 1268590700}
+  _debugSpawnDefinitions:
+  - {fileID: 1268590700}
   _enemyTextPool: {fileID: 309602796}
   _tweenManager: {fileID: 1928460390}
   _mainCamera: {fileID: 242381956}
