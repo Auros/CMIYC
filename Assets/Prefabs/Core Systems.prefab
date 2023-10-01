@@ -32,6 +32,7 @@ Transform:
   - {fileID: 1059193385545910081}
   - {fileID: 1473233467558398666}
   - {fileID: 2669646372936329279}
+  - {fileID: 4118130562738437712}
   - {fileID: 6941786113278733277}
   - {fileID: 5683832656128007879}
   - {fileID: 4707844634303637529}
@@ -109,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 4123269377522676767}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.5913854, y: 4.192514, z: 0.42366531}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -129,6 +130,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicLoop: {fileID: 2170364830091866560}
   _inputController: {fileID: 516639606693136211}
+--- !u!1 &4161298593064417968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4118130562738437712}
+  - component: {fileID: 2299807934711773451}
+  m_Layer: 0
+  m_Name: Player Fall Detection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4118130562738437712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4161298593064417968}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2911587348959925494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2299807934711773451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4161298593064417968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dfa034c2b255244ae8d1d929b06fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerController: {fileID: 4588683588013571955}
+  _playerRigidbody: {fileID: 3104770910396766604}
+  _deathController: {fileID: 2980596473541964107}
 --- !u!1 &4603819589476910964
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +646,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 74316443169068620}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2615342334743526033 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2685141081799896285, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
+    type: 3}
+  m_PrefabInstance: {fileID: 74316443169068620}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc943db7cf44f35448c6291cf2f3d02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &3104770910396766604 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 3034963083647406016, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
+    type: 3}
+  m_PrefabInstance: {fileID: 74316443169068620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4588683588013571955 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4514367145247156543, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
@@ -655,6 +721,11 @@ PrefabInstance:
       propertyPath: _weaponManager
       value: 
       objectReference: {fileID: 2308979762558989558}
+    - target: {fileID: 6748677617891656905, guid: 985a747c887dc6a4daaf8e1e5f136c35,
+        type: 3}
+      propertyPath: _playerHealthController
+      value: 
+      objectReference: {fileID: 2615342334743526033}
     - target: {fileID: 6993210897615391582, guid: 985a747c887dc6a4daaf8e1e5f136c35,
         type: 3}
       propertyPath: m_Camera

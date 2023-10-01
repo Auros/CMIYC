@@ -1,10 +1,13 @@
-﻿using CMIYC.Projectiles;
+﻿using System;
+using CMIYC.Projectiles;
 using UnityEngine;
 
 namespace CMIYC
 {
     public class PlayerHealthController : MonoBehaviour, IProjectileTarget
     {
+        public event Action PlayerTookDamage;
+
         [field: SerializeField]
         public float InitialHealth { get; private set; } = 100f;
 
@@ -17,9 +20,17 @@ namespace CMIYC
 
         public void OnProjectileHit(ProjectileHitEvent hitEvent)
         {
+            if (Health <= 0) return;
+
             Health -= hitEvent.Instance.Damage;
 
-            if (Health < 0) _deathController.Die();
+            PlayerTookDamage?.Invoke();
+
+            if (Health < 0)
+            {
+                Health = 0;
+                _deathController.Die();
+            }
         }
     }
 }

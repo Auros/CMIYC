@@ -335,7 +335,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CACHE
+  m_text: PROCESS HEALTH
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 467ab216f519e34448a3eae74435ae28, type: 2}
   m_sharedMaterial: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,
@@ -419,6 +419,7 @@ GameObject:
   - component: {fileID: 8125227882269484089}
   - component: {fileID: 5020753806508446428}
   - component: {fileID: 8159173327359514430}
+  - component: {fileID: 6748677617891656905}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -537,6 +538,21 @@ MonoBehaviour:
   _deathController: {fileID: 0}
   _tweenManager: {fileID: 8125227882269484089}
   _scaleProxy: {fileID: 8386547404071849913}
+--- !u!114 &6748677617891656905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2653215865125207177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01364bfea9ca2444acffa70263d084f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 1702852423419770182}
+  _playerHealthController: {fileID: 0}
+  _lerpStrength: 5
 --- !u!1 &2914759734784007847
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +708,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5120969385673230682
 GameObject:
@@ -826,7 +842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1068,7 +1084,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &262311370189912960
 CanvasRenderer:
@@ -1091,7 +1107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8301887, g: 0.16055535, b: 0.16055535, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1193,7 +1209,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.302
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

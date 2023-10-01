@@ -15,8 +15,13 @@ namespace CMIYC
         [SerializeField]
         private InputController _inputController = null!;
 
+        private bool _isDie = false;
+
         public void Die()
         {
+            if (_isDie) return;
+            _isDie = true;
+
             _musicLoop.EnableLowPass(2f);
             _inputController.Disable();
 
