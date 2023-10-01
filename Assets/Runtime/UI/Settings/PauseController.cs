@@ -1,10 +1,11 @@
 ﻿using AuraTween;
+using CMIYC.Audio;
 using CMIYC.Input;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
 
-namespace CMIYC.Settings
+namespace CMIYC.UI.Settings
 {
     /* TODO:
      * Okay, so I need to disable other sources of input during pausing, but currently every other class makes their own CacheInput instance.
@@ -33,6 +34,15 @@ namespace CMIYC.Settings
         [SerializeField]
         private RectTransform _menuPanel = null!;
 
+        [SerializeField]
+        private MusicLoop _musicLoop = null!;
+
+        [SerializeField]
+        private AudioSource _pauseSFX = null!;
+
+        [SerializeField]
+        private AudioSource _unpauseSFX = null!;
+
         private CursorLockMode _cachedCursorLockMode;
         private float _cachedTimeScale;
 
@@ -50,6 +60,8 @@ namespace CMIYC.Settings
             TogglePause();
         }
 
+        public void Quit() => Application.Quit();
+
         public void TogglePause()
         {
             Paused = !Paused;
@@ -65,6 +77,8 @@ namespace CMIYC.Settings
 
                 PresentPauseMenu(_settingsDuration);
 
+                _pauseSFX.Play();
+
                 _inputController.Disable(_inputController.Input.Pause.Pause);
             }
             // Restore cursor lock mode on unpause
@@ -72,7 +86,11 @@ namespace CMIYC.Settings
             {
                 Cursor.lockState = _cachedCursorLockMode;
                 Time.timeScale = _cachedTimeScale;
+
                 _inputController.Enable();
+
+                _unpauseSFX.Play();
+
                 HidePauseMenu(_settingsDuration);
             }
         }
@@ -85,6 +103,9 @@ namespace CMIYC.Settings
             // Settings panel bounce animation
             _tweenManager.Run(0, 1, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
             _tweenManager.Run(0, 1, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.OutBack);
+
+            // Lowpass
+            _musicLoop.EnableLowPass(duration);
         }
 
         private void HidePauseMenu(float duration)
@@ -95,6 +116,9 @@ namespace CMIYC.Settings
             // Settings panel bounce animation
             _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
             _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.InBack);
+
+            // Lowpass
+            _musicLoop.DisableLowPass(duration);
         }
     }
 }

@@ -2,24 +2,27 @@
 using CMIYC.Projectiles;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
+using UnityEngine.Serialization;
 
 namespace CMIYC.Player
 {
     public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions, IProjectileTarget
     {
+        public bool IsGrounded => _grounded;
+
         private CapsuleCollider _capsuleCollider = null!;
         private Rigidbody _rigidbody = null!;
         private Camera _camera = null!;
+
+        [field: FormerlySerializedAs("_sensitivity")]
+        [field: SerializeField]
+        public float Sensitivity { get; set; } = 1f;
 
         [SerializeField]
         private InputController _inputController = null!;
 
         [SerializeField]
         private LayerMask _collisionMask;
-
-        [SerializeField]
-        private float _sensitivity = 1f;
 
         [SerializeField]
         private float _maxSpeed = 0f;
@@ -56,7 +59,7 @@ namespace CMIYC.Player
             if (!_inputController.Enabled) return;
 
             Vector2 lookValue = _inputController.Input.Player.Look.ReadValue<Vector2>();
-            lookValue *= _sensitivity * 0.1f;
+            lookValue *= Sensitivity * 0.1f;
             Vector3 angles = _camera.transform.localEulerAngles;
             angles.x -= lookValue.y;
             angles.y += lookValue.x;
