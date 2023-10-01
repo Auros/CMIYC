@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1251831165570805705}
   - component: {fileID: 6578046672531336030}
   - component: {fileID: 3076001902378870742}
+  - component: {fileID: 4077831515719047247}
   - component: {fileID: 6610942933108717792}
   m_Layer: 5
   m_Name: Settings
@@ -122,6 +123,21 @@ MonoBehaviour:
   _musicLoop: {fileID: 0}
   _pauseSFX: {fileID: 3848708587605801237}
   _unpauseSFX: {fileID: 599143487550933186}
+--- !u!114 &4077831515719047247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026622374771172308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de0aaa20055b0a4e8517860f4995469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deathController: {fileID: 0}
+  _tweenManager: {fileID: 6578046672531336030}
+  _scaleProxy: {fileID: 3611292126018535411}
 --- !u!114 &6610942933108717792
 MonoBehaviour:
   m_ObjectHideFlags: 0

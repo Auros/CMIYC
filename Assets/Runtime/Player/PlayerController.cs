@@ -21,6 +21,9 @@ namespace CMIYC.Player
         private InputController _inputController = null!;
 
         [SerializeField]
+        private DeathController _deathController = null!;
+
+        [SerializeField]
         private LayerMask _collisionMask;
 
         [SerializeField]
@@ -50,7 +53,14 @@ namespace CMIYC.Player
 
             _inputController.Input.Player.AddCallbacks(this);
 
+            _deathController.OnPlayerDeath += OnPlayerDeath;
+
             Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        private void OnPlayerDeath()
+        {
+            _rigidbody.constraints = RigidbodyConstraints.None;
         }
 
         void Update()
@@ -147,6 +157,11 @@ namespace CMIYC.Player
                 _inputMovement = context.ReadValue<Vector2>();
             else
                 _inputMovement = Vector2.zero;
+        }
+
+        private void OnDestroy()
+        {
+            _deathController.OnPlayerDeath -= OnPlayerDeath;
         }
     }
 }
