@@ -19,6 +19,10 @@ namespace CMIYC.Enemy
         [field: SerializeField]
         public TxtMetadataScriptableObject[] TxtMetadata { get; private set; } = Array.Empty<TxtMetadataScriptableObject>();
 
+        [Tooltip("PNG File Metadata")]
+        [field: SerializeField]
+        public PngMetadataScriptableObject[] PngMetadata { get; private set; } = Array.Empty<PngMetadataScriptableObject>();
+
         [SerializeField]
         private Transform _enemyContainer = null!;
         [SerializeField]
@@ -116,6 +120,12 @@ namespace CMIYC.Enemy
                 // TODO: Prevent same file from spawning twice in the same "chunk?"
                 var metadata = RandomFromArray(TxtMetadata);
                 txtBehaviour.SetMetadata(metadata, enemy, _mainCamera);
+            }
+            else if (enemyBehaviour is PngBehaviour pngBehaviour)
+            {
+                // TODO: Prevent same file from spawning twice in the same "chunk?"
+                var metadata = RandomFromArray(PngMetadata);
+                pngBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
         }
 
