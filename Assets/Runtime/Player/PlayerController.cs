@@ -1,11 +1,12 @@
 ﻿using CMIYC.Input;
+using CMIYC.Projectiles;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 namespace CMIYC.Player
 {
-    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
+    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions, IProjectileTarget
     {
         public bool IsGrounded => _grounded;
 
@@ -147,6 +148,11 @@ namespace CMIYC.Player
                 _inputMovement = context.ReadValue<Vector2>();
             else
                 _inputMovement = Vector2.zero;
+        }
+
+        public void OnProjectileHit(ProjectileHitEvent hitEvent)
+        {
+            Debug.Log("Player took damage..");
         }
     }
 }
