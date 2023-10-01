@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _deathController: {fileID: 0}
+  _healthController: {fileID: 0}
   _wrapperObject: {fileID: 8700918408411396869}
   _deathPanelParent: {fileID: 2804114840602065383}
   _tweenManager: {fileID: 5135539070701787932}
@@ -369,7 +370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Saved 31KB.
+  m_text: 'Saved: 0 bytes'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 467ab216f519e34448a3eae74435ae28, type: 2}
   m_sharedMaterial: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,

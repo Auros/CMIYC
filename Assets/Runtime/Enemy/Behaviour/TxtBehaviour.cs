@@ -9,6 +9,8 @@ namespace CMIYC.Enemy.Behaviour
 {
     public class TxtBehaviour : EnemyBehaviour
     {
+        public TxtMetadataScriptableObject AssignedMetadata { get; private set; }
+
         [SerializeField]
         private TMP_Text _documentText = null!;
 
@@ -24,6 +26,8 @@ namespace CMIYC.Enemy.Behaviour
 
         public void SetMetadata(TxtMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
+            AssignedMetadata = metadata;
+
             // should prob be cached or something
             var fileExtension = "." + enemy.EnemyTypeName.ToLower();
 

@@ -6,11 +6,15 @@ namespace CMIYC.Enemy.Behaviour
 {
     public class PngBehaviour : EnemyBehaviour
     {
+        public PngMetadataScriptableObject AssignedMetadata { get; private set; }
+
         [SerializeField]
         private Renderer _imageRenderer;
 
         public void SetMetadata(PngMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
+            AssignedMetadata = metadata;
+
             // should prob be cached or something
             var fileExtension = "." + enemy.EnemyTypeName.ToLower();
 

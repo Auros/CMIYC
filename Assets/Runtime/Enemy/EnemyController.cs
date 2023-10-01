@@ -15,6 +15,8 @@ namespace CMIYC.Enemy
 {
     public class EnemyController : MonoBehaviour, IInputReceiver
     {
+        public event Action<EnemyBehaviour> OnEnemyDeath;
+
         [Tooltip("TXT File Metadata")]
         [field: SerializeField]
         public TxtMetadataScriptableObject[] TxtMetadata { get; private set; } = Array.Empty<TxtMetadataScriptableObject>();
@@ -187,7 +189,7 @@ namespace CMIYC.Enemy
             Debug.Log("Enemy is DEAD!");
             if (_spawnedEnemies.Contains(enemy)) _spawnedEnemies.Remove(enemy);
 
-            // push event here ( when we need it)
+            OnEnemyDeath?.Invoke(enemy);
 
             Destroy(enemy.gameObject);
         }
