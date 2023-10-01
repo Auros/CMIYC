@@ -2,9 +2,8 @@
 using CMIYC.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
 
-namespace CMIYC.Settings
+namespace CMIYC.UI.Settings
 {
     /* TODO:
      * Okay, so I need to disable other sources of input during pausing, but currently every other class makes their own CacheInput instance.
@@ -49,6 +48,8 @@ namespace CMIYC.Settings
 
             TogglePause();
         }
+
+        public void Quit() => Application.Quit();
 
         public void TogglePause()
         {
