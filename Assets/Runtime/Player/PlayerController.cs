@@ -1,11 +1,12 @@
 ﻿using CMIYC.Input;
+using CMIYC.Projectiles;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XInput;
 
 namespace CMIYC.Player
 {
-    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
+    public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions, IProjectileTarget
     {
         private CapsuleCollider _capsuleCollider = null!;
         private Rigidbody _rigidbody = null!;
@@ -144,6 +145,11 @@ namespace CMIYC.Player
                 _inputMovement = context.ReadValue<Vector2>();
             else
                 _inputMovement = Vector2.zero;
+        }
+
+        public void OnProjectileHit(ProjectileHitEvent hitEvent)
+        {
+            Debug.Log("Player took damage..");
         }
     }
 }

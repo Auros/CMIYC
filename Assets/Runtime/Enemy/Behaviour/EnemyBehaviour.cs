@@ -11,11 +11,11 @@ namespace CMIYC.Enemy.Behaviour
 {
     public abstract class EnemyBehaviour : MonoBehaviour, IProjectileTarget
     {
-        private bool _isAlive = true;
+        private bool _isAlive = false;
 
         private float _health;
         private float _maxHealth;
-        private Camera _cameraToLookAt;
+        protected Camera _cameraToLookAt;
         protected TweenManager _tweenManager;
         private Action<EnemyBehaviour>? _onDeath;
 
@@ -50,6 +50,7 @@ namespace CMIYC.Enemy.Behaviour
             _health = health;
             _maxHealth = health;
             _onDeath = onDeath;
+            _isAlive = true;
         }
 
         void Update()

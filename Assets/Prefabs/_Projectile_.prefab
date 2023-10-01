@@ -61,7 +61,7 @@ MonoBehaviour:
   _lifetime: 5
   _layerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 65591
 --- !u!23 &4774093747897829041
 MeshRenderer:
   m_ObjectHideFlags: 0

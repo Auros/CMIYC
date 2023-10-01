@@ -157,7 +157,11 @@ namespace CMIYC.Enemy
             {
                 if (enemy is TxtBehaviour txtBehaviour)
                 {
-                    _enemyTextPool.SpawnText(txtBehaviour.transform, keyDisplayName).Forget();
+                    // old behaviour
+                    // _enemyTextPool.SpawnText(txtBehaviour.transform, keyDisplayName).Forget();
+
+                    // new behaviour
+                    txtBehaviour.CreateTextProjectile(keyDisplayName);
                 }
             }
             // do stuff

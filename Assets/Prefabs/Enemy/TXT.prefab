@@ -380,6 +380,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 673725648006589809}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8851116772476302973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7956294374256551431}
+  m_Layer: 16
+  m_Name: ProjectileOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7956294374256551431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851116772476302973}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.571, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 673725648006589809}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1068255352165616282
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -548,6 +579,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TXT
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3cec9fd07d4590e43b62ad680dc93bd8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 5148817236446094103, guid: 3cec9fd07d4590e43b62ad680dc93bd8,
         type: 3}
       propertyPath: m_Name
@@ -570,6 +606,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6247933195576471502}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3cec9fd07d4590e43b62ad680dc93bd8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7956294374256551431}
     - targetCorrespondingSourceObject: {fileID: -7493596028755563170, guid: 3cec9fd07d4590e43b62ad680dc93bd8,
         type: 3}
       insertIndex: -1
@@ -609,6 +649,9 @@ MonoBehaviour:
   - {fileID: 2075975610822043712}
   - {fileID: 211318195883087327}
   _documentText: {fileID: 3154773226175366356}
+  _textProjectile: {fileID: 7789704010832952306, guid: 629fc80f1570c6346a490217f7015fa6,
+    type: 3}
+  _projectileOrigin: {fileID: 7956294374256551431}
 --- !u!65 &7522161271894398185
 BoxCollider:
   m_ObjectHideFlags: 0
