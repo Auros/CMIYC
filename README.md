@@ -16,7 +16,7 @@ You are a virus dead-set on clearing as much hard drive space as possible. Navig
 
 **Credits:**
 - Auros (Programming)
-- Caeden117 (Programming, SFX)
+- Caeden117 (Programming, UI, SFX)
 - Bobbie (Programming, Visuals, SFX)
 - Rabbit (Programming, Visuals)
 - Goobwabber (Programming, Visuals)
