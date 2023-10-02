@@ -52,9 +52,11 @@ namespace CMIYC.Platform
         private bool _buildOnStart;
 
         private Random _random = new(0);
-        private IObjectPool<HallDefinition> _hallPool = null!;
-        private IObjectPool<Motherboard> _motherboardPool = null!;
-        private IDictionary<RoomDefinition, IObjectPool<RoomDefinition>> _roomDefinitionPools = null!;
+        private ObjectPool<HallDefinition> _hallPool = null!;
+        private ObjectPool<Motherboard> _motherboardPool = null!;
+        private Dictionary<RoomDefinition, ObjectPool<RoomDefinition>> _roomDefinitionPools = null!;
+
+        private ObjectPool<UnexploredCell> _unexploredCellPool = new(() => new UnexploredCell());
 
         public MotherboardGenerationResult? Next { get; private set; }
 
@@ -97,7 +99,7 @@ namespace CMIYC.Platform
                 m => Destroy(m.gameObject)
             );
 
-            _roomDefinitionPools = new Dictionary<RoomDefinition, IObjectPool<RoomDefinition>>(_roomSpawnOptions.Length);
+            _roomDefinitionPools = new Dictionary<RoomDefinition, ObjectPool<RoomDefinition>>(_roomSpawnOptions.Length);
 
             foreach (var option in _roomSpawnOptions)
             {
@@ -367,8 +369,7 @@ namespace CMIYC.Platform
                     {
                         if (defRel is HallDefinition)
                         {
-
-                            wall.SetType(WallSegmentType.None);
+                            wall.SetType(WallSegmentType.Door);
                             continue;
                         }
 
@@ -402,8 +403,7 @@ namespace CMIYC.Platform
                 Hallways = hallInstances,
                 Position = physicalPosition,
                 Entrance = entrance,
-                Origin = from,
-                Exit = exit
+                Origin = from
             };
         }
 
@@ -503,6 +503,15 @@ namespace CMIYC.Platform
             ListPool<Vector2>.Release(motherboards);
         }
 
+        private void OnDestroy()
+        {
+            _hallPool.Dispose();
+            _motherboardPool.Dispose();
+            _unexploredCellPool.Dispose();
+            foreach (var objectPool in _roomDefinitionPools.Values)
+                objectPool.Dispose();
+        }
+
         private struct WallLookup
         {
             public Cardinal Direction { get; set; }
@@ -557,8 +566,6 @@ namespace CMIYC.Platform
             public IReadOnlyList<HallInstance> Hallways { get; set; } = null!;
 
             public HallDefinition Entrance { get; set; } = null!;
-
-            public HallDefinition Exit { get; set; } = null!;
         }
     }
 }
