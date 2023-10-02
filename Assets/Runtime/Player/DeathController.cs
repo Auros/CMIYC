@@ -19,7 +19,6 @@ namespace CMIYC
 
         public void Die()
         {
-            Debug.Log("DIE");
             if (_isDie) return;
             _isDie = true;
 

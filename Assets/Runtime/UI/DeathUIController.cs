@@ -14,6 +14,9 @@ namespace CMIYC.UI
         private DeathController _deathController = null!;
 
         [SerializeField]
+        private PlayerHealthController _healthController = null!;
+
+        [SerializeField]
         private GameObject _wrapperObject = null!;
 
         [SerializeField]
@@ -34,23 +37,43 @@ namespace CMIYC.UI
         [SerializeField]
         private float _animationLength = 0.5f;
 
+        private Tween? _damageTween;
+
         private void Start()
         {
             _deathController.OnPlayerDeath += OnPlayerDeath;
+            _healthController.PlayerTookDamage += PlayerTookDamage;
         }
 
         private void OnPlayerDeath() => DeathAsync().Forget();
 
+        private void PlayerTookDamage()
+        {
+            _damageTween?.Cancel();
+
+            if (_healthController.Health <= 0) return;
+
+            // Alpha will be 0 - 0.5 depending on health of the player
+            var inverseHealth = 1f - (_healthController.Health / _healthController.InitialHealth);
+
+            var alpha = Mathf.Lerp(0.25f, 0.6f, inverseHealth);
+
+            _damageTween = _tweenManager.Run(alpha, 0, 1f, a => _background.color = _background.color.WithA(a), Easer.OutCubic);
+        }
+
         private void OnDestroy()
         {
             _deathController.OnPlayerDeath -= OnPlayerDeath;
+            _healthController.PlayerTookDamage -= PlayerTookDamage;
         }
 
         private async UniTask DeathAsync()
         {
             _wrapperObject.SetActive(true);
+            _damageTween?.Cancel();
 
 #pragma warning disable CS4014 // We do *not* want to await TweenManager.Run calls here
+            _background.color = _background.color.WithA(0.75f);
             _tweenManager.Run(1f, 0.5f, 2f, r => _background.color = _background.color.WithR(r), Easer.OutCubic);
 
             for (var i = 0; i < _deathPanelParent.childCount; i++)

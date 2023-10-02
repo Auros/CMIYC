@@ -18,9 +18,11 @@ namespace CMIYC.Input
         /// </summary>
         public bool Enabled { get; private set; }
 
-        private void Awake() => Input = new();
-
-        private void Start() => Enable();
+        private void Awake()
+        {
+            Input = new();
+            Enable();
+        }
 
         public void Enable()
         {

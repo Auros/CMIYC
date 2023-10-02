@@ -7,6 +7,8 @@ namespace CMIYC.UI
         [Tooltip("Transform for the HUD to react to")]
         [SerializeField] private Transform _characterTransform;
 
+        [SerializeField] private PlayerHealthController _playerHealthController;
+
         [Header("Parameters")]
         [SerializeField] private bool _useUnscaledTime;
         [SerializeField] private float _reactionStrength;
@@ -31,7 +33,18 @@ namespace CMIYC.UI
                 Debug.LogWarning($"lmao someone forgot to assign {nameof(_characterTransform)}, disabling {nameof(HUDMovementReaction)}...");
                 enabled = false;
             }
+
+            if (_playerHealthController == null)
+            {
+                Debug.LogWarning($"lmao someone forgot to assign {nameof(_playerHealthController)}, disabling {nameof(HUDMovementReaction)}...");
+                enabled = false;
+                return;
+            }
+
+            _playerHealthController.PlayerTookDamage += PlayerTookDamage;
         }
+
+        private void PlayerTookDamage() => _offsetEuler += 5f * Random.Range(-1, 1f) * Vector3.forward;
 
         private void LateUpdate()
         {
@@ -59,6 +72,11 @@ namespace CMIYC.UI
             // Store the offsets for the next frame
             _characterPreviousPos = characterPos;
             _characterPerviousEuler = characterEuler;
+        }
+
+        private void OnDestroy()
+        {
+            _playerHealthController.PlayerTookDamage -= PlayerTookDamage;
         }
     }
 }

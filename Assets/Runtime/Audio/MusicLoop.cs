@@ -37,7 +37,7 @@ namespace CMIYC.Audio
         private float _pausedLowpassAmount = 377f;
 
         private float _targetVolume;
-        private float _riffTime;
+        private float _riffTime = 100f;
 
         public void ResetRiff() => _riffTime = 0;
 
@@ -54,6 +54,6 @@ namespace CMIYC.Audio
             => _tweenManager.Run(_normalLowpassAmount, _pausedLowpassAmount, duration, l => _audioMixer.SetFloat("LowPass", l), Easer.OutSine);
 
         public void DisableLowPass(float duration = 0f)
-            => _tweenManager.Run(_pausedLowpassAmount, _normalLowpassAmount, duration, l => _audioMixer.SetFloat("LowPass", l), Easer.OutSine);
+            => _tweenManager.Run(_pausedLowpassAmount, _normalLowpassAmount, duration, l => _audioMixer.SetFloat("LowPass", l), Easer.InSine);
     }
 }
