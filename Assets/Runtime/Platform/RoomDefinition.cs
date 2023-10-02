@@ -20,6 +20,18 @@ namespace CMIYC.Platform
         [field: SerializeField]
         public EnemySpawnData[] SpawnDatas { get; private set; } = Array.Empty<EnemySpawnData>();
 
+        [SerializeField]
+        private Renderer[] _coloredRenderers = Array.Empty<Renderer>();
+
+        public void SetColor(Color color)
+        {
+            foreach (var coloredRenderer in _coloredRenderers)
+            {
+                if (coloredRenderer == null || !coloredRenderer.enabled) continue;
+                coloredRenderer.material.color = color;
+            }
+        }
+
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
