@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 using Random = System.Random;
@@ -27,15 +28,10 @@ namespace CMIYC.Platform
         private int _sampleAttempts = 5;
 
         [SerializeField]
-<<<<<<< Updated upstream
         private int _seed;
 
-=======
         [Tooltip("Attempt to re-roll a motherboard until one with at least this many rooms is generated")]
         private int _minRooms = 3;
-
-        [SerializeField]
-        private int _seed;
 
         [SerializeField]
         private bool _drawGizmos;
@@ -43,7 +39,6 @@ namespace CMIYC.Platform
         [SerializeField]
         private bool _buildOnStart;
 
->>>>>>> Stashed changes
         private Random _random = new(0);
         private const int _maxRerollTries = 50;
         private IObjectPool<Motherboard> _motherboardPool = null!;
@@ -61,41 +56,11 @@ namespace CMIYC.Platform
         private void Awake()
         {
             _motherboardPool = new ObjectPool<Motherboard>(() => new GameObject("Motherboard").AddComponent<Motherboard>());
+            _random = _seed != -1 ? new Random(_seed) : new Random();
         }
 
         private void Start()
         {
-<<<<<<< Updated upstream
-            _random = new Random(_seed);
-            var result = BuildMotherboard(Cardinal.South, new Vector2Int(0, 0));
-            if (result is null)
-                return;
-
-            /*BuildMotherboard(result.Advancement switch
-            {
-                Cardinal.North => Cardinal.South,
-                Cardinal.East => Cardinal.West,
-                Cardinal.South => Cardinal.North,
-                Cardinal.West => Cardinal.East,
-                _ => throw new ArgumentOutOfRangeException()
-            }, result.Advancement switch
-            {
-                Cardinal.North => new Vector2Int(result.End.x, 0),
-                Cardinal.East => new Vector2Int(0, result.End.y),
-                Cardinal.South => new Vector2Int(result.End.x, _motherboardSize.y - 1),
-                Cardinal.West => new Vector2Int(_motherboardSize.x - 1, result.End.y),
-                _ => throw new ArgumentOutOfRangeException()
-            });*/
-
-            Debug.Log(result.Advancement);
-        }
-
-        private class MotherboardGenerationResult
-        {
-            public Vector2Int End { get; set; }
-
-            public Cardinal Advancement { get; set; }
-=======
             if (!_buildOnStart)
                 return;
 
@@ -161,7 +126,6 @@ namespace CMIYC.Platform
             }*/
 
             return null;
->>>>>>> Stashed changes
         }
 
         private Random GetRandom() => _random;
@@ -299,6 +263,7 @@ namespace CMIYC.Platform
             var (exitDir, exitTarget) = GetRandomExitNodes(random, from);
             GenerateHallway(start, exitTarget, motherboardTransform, roomInstances, hallInstances, definitionLookup);
 
+            int roomCount = roomInstances.Count;
             ListPool<RoomDefinition>.Release(roomPrefabs);
             DictionaryPool<Vector2Int, Definition>.Release(definitionLookup);
 
@@ -307,16 +272,12 @@ namespace CMIYC.Platform
             return new MotherboardGenerationResult
             {
                 End = exitTarget,
-<<<<<<< Updated upstream
-                Advancement = exitDir
-=======
                 Advancement = exitDir,
                 RoomCount = roomCount,
                 Motherboard = motherboard,
                 Rooms = roomInstances,
                 Hallways = hallInstances,
                 Position = physicalPosition
->>>>>>> Stashed changes
             };
         }
 
@@ -348,6 +309,10 @@ namespace CMIYC.Platform
 
         private void OnDrawGizmos()
         {
+            if (!_drawGizmos)
+            {
+                return;
+            }
             const int height = 10;
             var target = transform;
             Gizmos.matrix = target.localToWorldMatrix;

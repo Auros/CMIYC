@@ -21,6 +21,7 @@ namespace CMIYC.Enemy.Behaviour
 
         private float _health;
         private float _maxHealth;
+        private Vector3 _globalPlayerPosition;
         protected Camera _cameraToLookAt;
         protected TweenManager _tweenManager;
         private Action<EnemyBehaviour>? _onDeath;
@@ -28,6 +29,9 @@ namespace CMIYC.Enemy.Behaviour
         private float _initialYPos = 0f;
         private float _previousDissolve = _maxDissolve;
         private List<float> _queuedDissolves = new();
+
+        private float _moveCurve;
+        private float _timeOffset;
 
         [SerializeField]
         private Transform _nameTag = null!;
@@ -62,6 +66,8 @@ namespace CMIYC.Enemy.Behaviour
             _maxHealth = health;
             _onDeath = onDeath;
             _isAlive = true;
+            _moveCurve = UnityEngine.Random.Range(0.01f, 0.5f);
+            _timeOffset = UnityEngine.Random.Range(0, 69f);
 
             foreach (var dissolvingRenderer in _dissolvingRenderers)
             {
@@ -72,6 +78,8 @@ namespace CMIYC.Enemy.Behaviour
         public void UpdatePlayerPosition(Vector3 globalPlayerPosition)
         {
             if (!_isAlive) return;
+
+            _globalPlayerPosition = globalPlayerPosition;
             _isWithinPlayerRange = Vector3.Distance(globalPlayerPosition, this.transform.position) < _maxPlayerDistance;
 
             if (_isDebugging && _playerVisibleDebugger != null)
@@ -86,6 +94,20 @@ namespace CMIYC.Enemy.Behaviour
 
             _nameTag.LookAt(_cameraToLookAt.transform);
             _nameTag.localRotation = Quaternion.Euler(0, _nameTag.localRotation.eulerAngles.y + 180, 0);
+
+            if (!_isWithinPlayerRange) return;
+
+            // Slowly turn to player
+            var playerDirection = (transform.position - _globalPlayerPosition).normalized;
+            playerDirection.y = 0;
+
+            var forwardDirection = Vector3.RotateTowards(transform.forward, playerDirection, Time.deltaTime, 0);
+            transform.forward = forwardDirection;
+
+            // Move in a randomly shifting direction
+            var movementRotation = 360 * Mathf.Sin((Time.time * _moveCurve) + _timeOffset) * Vector3.up;
+            var wtfIsAQuaternion = Quaternion.Euler(movementRotation);
+            transform.position += Time.deltaTime * (wtfIsAQuaternion * Vector3.forward);
         }
 
         public void OnProjectileHit(ProjectileHitEvent hitEvent)

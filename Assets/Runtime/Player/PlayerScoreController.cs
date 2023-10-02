@@ -26,8 +26,12 @@ namespace CMIYC.Player
                 // TXT: Length of metadata contents * hardcoded value to keep score comparable to png
                 TxtBehaviour txt => txt.AssignedMetadata.TextContents.Length * 16,
 
-                // PNG: width * height
-                PngBehaviour png => png.AssignedMetadata.Texture.width * png.AssignedMetadata.Texture.height,
+                // Images: width * height * 4 bytes per pixel
+                PngBehaviour png => png.AssignedMetadata.Texture.width * png.AssignedMetadata.Texture.height * 4,
+                JpgBehaviour jpg => jpg.AssignedMetadata.Texture.width * jpg.AssignedMetadata.Texture.height * 4,
+
+                // i dont really know on this one but hey, it works
+                FbxBehaviour fbx => fbx.AssignedMetadata.Texture.width * fbx.AssignedMetadata.Texture.height * 16,
 
                 // Fallback to random score
                 _ => UnityEngine.Random.Range(50, 150)

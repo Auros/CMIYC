@@ -49,7 +49,7 @@ namespace CMIYC.Audio
             _activeSources.Add(source);
         }
 
-        private void Start()
+        private void Awake()
             => _objectPool = new ObjectPool<AudioSource>(
                 CreateNewAudioSource,
                 PrepareAudioSource,

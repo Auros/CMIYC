@@ -74,7 +74,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.05
+  m_Time: 0.2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 439627066280688513}
   - component: {fileID: 6747524472276028961}
   m_Layer: 6
-  m_Name: _Projectile_ minigun
+  m_Name: shotgun bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,12 +194,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47a2e11253f00e4dbfb2a1db79bfa08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 2
+  <Damage>k__BackingField: 30
   _hitScan: 0
-  _velocity: 100
+  _velocity: 50
   _attachedRigidbody: {fileID: 6747524472276028961}
-  _toss: 0
-  _lifetime: 3
+  _lifetime: 5
   _sizeCurve:
     serializedVersion: 2
     m_Curve:

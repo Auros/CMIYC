@@ -6,6 +6,9 @@ namespace CMIYC.Platform
 {
     public class HallDefinition : Definition
     {
+        [field: SerializeField]
+        public TempWallsDefinition TempWallsDefinition = null!;
+
         [SerializeField]
         private Transform _northWallAnchorTarget = null!;
 

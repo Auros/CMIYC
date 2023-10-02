@@ -1,4 +1,5 @@
-﻿using AuraTween;
+﻿using System.Collections.Generic;
+using AuraTween;
 using CMIYC.Input;
 using CMIYC.Projectiles;
 using UnityEngine;
@@ -53,6 +54,7 @@ namespace CMIYC.Player
         private bool _inputJumping = false;
         private bool _inputCrouching = false;
         private Vector2 _inputMovement = Vector2.zero;
+        private List<Collision> _collisions = new();
 
         void Start()
         {
@@ -141,6 +143,7 @@ namespace CMIYC.Player
             }
 
             velocity.y = yVelocity;
+
             _rigidbody.velocity = velocity;
         }
 

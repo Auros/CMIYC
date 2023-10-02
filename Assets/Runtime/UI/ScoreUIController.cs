@@ -23,6 +23,12 @@ namespace CMIYC
 
         private void Start()
         {
+            if (_scoreController == null)
+            {
+                Debug.LogWarning("yo we need a Score Controller... eventually. not now tho");
+                return;
+            }
+
             _scoreController.OnScoreIncrease += OnScoreIncrease;
         }
 
@@ -46,6 +52,12 @@ namespace CMIYC
 
         private void OnDestroy()
         {
+            if (_scoreController == null)
+            {
+                Debug.LogWarning("yo we need a Score Controller... eventually. not now tho");
+                return;
+            }
+
             _scoreController.OnScoreIncrease -= OnScoreIncrease;
         }
     }

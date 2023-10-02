@@ -54,11 +54,11 @@ namespace CMIYC.Weapons
 
         [field: Tooltip("The audioclip to use for shooting sound effect.")]
         [field: SerializeField]
-        private AudioClip _shootClip = null!;
+        private AudioClip[] _shootClip = null!;
 
         [field: Tooltip("The reloadclip to use for reloading sound effect")]
         [field: SerializeField]
-        private AudioClip _reloadClip = null!;
+        private AudioClip[] _reloadClip = null!;
 
         [field: Tooltip("The time to play the reload sound during the animation")]
         [field: SerializeField]
@@ -83,7 +83,11 @@ namespace CMIYC.Weapons
             if (Ammo == 0)
             {
                 FireProjectile(SelfProjectile, target);
-                ReloadAsync().Forget();
+                if (ReloadTime >= 0)
+                {
+                    ReloadAsync().Forget();
+                    ReloadSoundAsync().Forget();
+                }
                 return false;
             }
 
@@ -91,6 +95,7 @@ namespace CMIYC.Weapons
 
             Ammo--;
             FireProjectile(BulletProjectile, target);
+            BroadcastMessage("OnBulletFire", SendMessageOptions.DontRequireReceiver);
 
             if (ShellParticles != null)
             {
@@ -106,7 +111,7 @@ namespace CMIYC.Weapons
             {
                 if (_shootClip != null)
                 {
-                    _audioPool.Play(_shootClip);
+                    _audioPool.Play(_shootClip[UnityEngine.Random.Range(0, _shootClip.Length)]);
                 }
             }
 
@@ -117,16 +122,22 @@ namespace CMIYC.Weapons
         {
             if (Reloading) return;
             FireProjectile(SelfProjectile, target);
-            ReloadAsync().Forget();
-
-            if (_audioPool != null)
+            if (ReloadTime >= 0)
             {
-                if (_reloadClip != null)
-                {
-                    ReloadSoundAsync().Forget();
-                }
+                ReloadAsync().Forget();
+                ReloadSoundAsync().Forget();
             }
         }
+
+        public void ThrowReloadInstant(Vector3 target)
+        {
+            if (Reloading) return;
+            FireProjectile(SelfProjectile, target);
+            InstantReloadAsync().Forget();
+        }
+
+        public void PlayReloadSound()
+            => _audioPool.Play(_reloadClip[UnityEngine.Random.Range(0, _reloadClip.Length)]);
 
         private void FireProjectile(ProjectileDefinition projectile, Vector3 target)
         {
@@ -150,6 +161,24 @@ namespace CMIYC.Weapons
             RoundReady = true;
         }
 
+        private async UniTask InstantReloadAsync()
+        {
+            Reloading = true;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
+            if (_audioPool != null && _reloadClip != null)
+            {
+                PlayReloadSound();
+            }
+
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
+            Ammo = InitialAmmo;
+
+            Reloading = false;
+        }
+
         private async UniTask ReloadAsync()
         {
             Reloading = true;
@@ -163,7 +192,14 @@ namespace CMIYC.Weapons
         private async UniTask ReloadSoundAsync()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(ReloadSoundTime));
-            _audioPool.Play(_reloadClip);
+
+            if (_audioPool != null)
+            {
+                if (_reloadClip != null)
+                {
+                    PlayReloadSound();
+                }
+            }
         }
     }
 }

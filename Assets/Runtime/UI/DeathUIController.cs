@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using AuraTween;
+using CMIYC.Runtime.UI.Behaviour;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,9 @@ namespace CMIYC.UI
 
         [SerializeField]
         private PlayerHealthController _healthController = null!;
+
+        [SerializeField]
+        private ScreenJpegBehaviour _glitchyEffect = null!;
 
         [SerializeField]
         private GameObject _wrapperObject = null!;
@@ -75,6 +79,7 @@ namespace CMIYC.UI
 #pragma warning disable CS4014 // We do *not* want to await TweenManager.Run calls here
             _background.color = _background.color.WithA(0.75f);
             _tweenManager.Run(1f, 0.5f, 2f, r => _background.color = _background.color.WithR(r), Easer.OutCubic);
+            _glitchyEffect.AddEffectTime(float.MaxValue);
 
             for (var i = 0; i < _deathPanelParent.childCount; i++)
             {

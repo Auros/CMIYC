@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using AuraTween;
 using CMIYC.Audio;
 using CMIYC.Input;
+using CMIYC.Location;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -49,6 +51,11 @@ namespace CMIYC.UI
         [SerializeField]
         private MusicLoop _musicLoop = null!;
 
+        [SerializeField]
+        private LocationController _locationController = null!;
+
+        private CancellationTokenSource? _cts = null!;
+
         private async UniTask Start()
         {
             _musicLoop.EnableLowPass(0);
@@ -65,6 +72,8 @@ namespace CMIYC.UI
             // delay 1
             await UniTask.Delay(TimeSpan.FromSeconds(_initialDelay));
 
+            _locationText.text = $"{_locationController.GetFullLocation()} DRIVE";
+
             // Type-in effect
             await UniTask.WhenAll(
                 TypeInEffect(_gameplayTipText),
@@ -76,25 +85,74 @@ namespace CMIYC.UI
 
             _musicLoop.DisableLowPass(_animationLength);
             _inputController.Enable();
+            _locationController.OnLocationEnter += OnLocationEnter;
 
             // fade out background
-            await _tweenManager.Run(1f, 0f, _animationLength, a => _background.color = _background.color.WithA(a), Easer.InCubic);
-
-            // delay 3
-            await UniTask.Delay(TimeSpan.FromSeconds(_initialDelay));
-
-            // slowly fade out location, then tip
-            _tweenManager.Run(1f, 0f, _animationLength, a => gameplayGroup.alpha = a, Easer.InSine);
-            _tweenManager.Run(0, -400f, _animationLength, x => _gameplayTipText.rectTransform.anchoredPosition = _gameplayTipText.rectTransform.anchoredPosition.WithX(x), Easer.InCubic);
+            _tweenManager.Run(1f, 0f, _animationLength, a => _background.color = _background.color.WithA(a), Easer.InCubic);
 
             await UniTask.Delay(TimeSpan.FromSeconds(_animationOffset));
 
+            // slowly fade out location, then tip
             _tweenManager.Run(1f, 0f, _animationLength, a => locationGroup.alpha = a, Easer.InSine);
             _tweenManager.Run(0f, -400f, _animationLength, x => _locationText.rectTransform.anchoredPosition = _locationText.rectTransform.anchoredPosition.WithX(x), Easer.InCubic);
+
+            await UniTask.Delay(TimeSpan.FromSeconds(_animationOffset));
+
+            _tweenManager.Run(1f, 0f, _animationLength, a => gameplayGroup.alpha = a, Easer.InSine);
+            _tweenManager.Run(0, -400f, _animationLength, x => _gameplayTipText.rectTransform.anchoredPosition = _gameplayTipText.rectTransform.anchoredPosition.WithX(x), Easer.InCubic);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-        private async UniTask TypeInEffect(TMP_Text tmp)
+        private void OnLocationEnter(string obj)
+        {
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = new();
+            NewLocationAsync(_cts.Token).Forget();
+        }
+
+        private async UniTask NewLocationAsync(CancellationToken cancellationToken = default)
+        {
+            var locationGroup = GetOrCreateCanvasGroup(_locationText);
+
+            locationGroup.alpha = 1f;
+            _locationText.rectTransform.anchoredPosition = _locationText.rectTransform.anchoredPosition.WithX(0);
+            _locationText.text = _locationController.GetFullLocation();
+
+            if (cancellationToken.IsCancellationRequested) return;
+
+            // Type-in effect
+            await TypeInEffect(_locationText, cancellationToken);
+
+            if (cancellationToken.IsCancellationRequested) return;
+
+            // delay
+            await UniTask.Delay(TimeSpan.FromSeconds(_initialDelay), cancellationToken: cancellationToken);
+
+            if (cancellationToken.IsCancellationRequested) return;
+
+            // slowly fade out location
+            var tweenA = _tweenManager.Run(1f, 0f, _animationLength, a => locationGroup.alpha = a, Easer.InSine);
+            var tweenB = _tweenManager.Run(0f, -400f, _animationLength, x => _locationText.rectTransform.anchoredPosition = _locationText.rectTransform.anchoredPosition.WithX(x), Easer.InCubic);
+
+            // THIS IS NOT #1 VICTORY ROYALE
+            var t = 0f;
+            while (t <= _animationLength)
+            {
+                await UniTask.Yield();
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    tweenA.Cancel();
+                    tweenB.Cancel();
+                    return;
+                }
+
+                t += Time.deltaTime;
+            }
+        }
+
+        private async UniTask TypeInEffect(TMP_Text tmp, CancellationToken cancellationToken = default)
         {
             var characterDelay = TimeSpan.FromSeconds(1 / (_charactersPerMinute / 60));
 
@@ -102,8 +160,12 @@ namespace CMIYC.UI
             tmp.SetText(string.Empty);
             GetOrCreateCanvasGroup(tmp).alpha = 1f;
 
+            if (cancellationToken.IsCancellationRequested) return;
+
             for (var i = 0; i < text.Length; i++)
             {
+                if (cancellationToken.IsCancellationRequested) return;
+
                 var character = text[i];
 
                 tmp.SetText(tmp.text + character);
@@ -126,6 +188,11 @@ namespace CMIYC.UI
             }
 
             return group;
+        }
+
+        private void OnDestroy()
+        {
+            _locationController.OnLocationEnter -= OnLocationEnter;
         }
     }
 }
