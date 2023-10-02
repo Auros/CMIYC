@@ -27,7 +27,7 @@ namespace CMIYC.UI
                 Destroy(child.gameObject);
             }
 
-            await UniTask.Delay(25000);
+            await UniTask.Delay(35000);
             Debug.Log("guh2");
             foreach (var child in _locationTracker.RootNode.children)
             {

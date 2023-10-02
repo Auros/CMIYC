@@ -16,6 +16,9 @@ namespace CMIYC.UI
         private RectTransform _rectTransform = null!;
 
         [SerializeField]
+        private RectTransform _seperatorTransform = null!;
+
+        [SerializeField]
         private RawImage _icon = null!;
 
         [SerializeField]
@@ -63,7 +66,13 @@ namespace CMIYC.UI
                 }
             }
 
-            _rectTransform.sizeDelta = new Vector2(_rectTransform.sizeDelta.x, _height + _height * RecursiveChildCount(this));
+            var height = _height + _height * RecursiveChildCount(this);
+            _rectTransform.sizeDelta = new Vector2(_rectTransform.sizeDelta.x, height);
+
+            // height = 200y = 60
+            var seperatorHeight = (height - _height) * (200 / _height);
+            _seperatorTransform.sizeDelta = new Vector2(_seperatorTransform.sizeDelta.x, seperatorHeight);
+            _seperatorTransform.anchoredPosition = new Vector2(-1.3f, -60 - (seperatorHeight / 2) / (200 / _height));
         }
     }
 }
