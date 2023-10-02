@@ -796,7 +796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxMixerGroup: {fileID: -7547405672701232151, guid: 3358d5c7039dcc6448ab7a71344eedbe,
     type: 2}
-  _volume: 1
+  _volume: 0.4
   _pitchBase: 0.9
   _pitchRandomness: 0.1
   _initialPoolSize: 0
@@ -813,7 +813,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 196608
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

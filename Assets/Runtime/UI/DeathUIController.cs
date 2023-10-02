@@ -56,7 +56,7 @@ namespace CMIYC.UI
             _healthController.PlayerTookDamage += PlayerTookDamage;
         }
 
-        private void OnPlayerDeath() => DeathAsync().Forget();
+        private void OnPlayerDeath() => DeathAsync().AttachExternalCancellation(this.GetCancellationTokenOnDestroy()).Forget();
 
         private void PlayerTookDamage()
         {
