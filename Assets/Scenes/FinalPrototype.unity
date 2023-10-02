@@ -3573,7 +3573,7 @@ MonoBehaviour:
   - {fileID: 307470639}
   _enemyTextPool: {fileID: 1584656977}
   _tweenManager: {fileID: 549250822}
-  _musicLoop: {fileID: 0}
+  _musicLoop: {fileID: 1118416833}
   _mainCamera: {fileID: 2001372532}
 --- !u!1 &256834554
 GameObject:
@@ -10612,6 +10612,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1117967280}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1118416833 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2170364830091866560, guid: b2daad300bf508946b6b029056f77ffc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1491424097}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a531ffba024be4ba8e34ca3853d370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1119290920
 GameObject:
   m_ObjectHideFlags: 0
