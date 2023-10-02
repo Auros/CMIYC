@@ -363,7 +363,7 @@ MonoBehaviour:
     _east: 0
     _south: 0
     _west: 1
-  <SpawnDefinitions>k__BackingField: []
+  <SpawnDatas>k__BackingField: []
 --- !u!4 &419660842
 Transform:
   m_ObjectHideFlags: 0
@@ -515,7 +515,7 @@ MonoBehaviour:
     _east: 0
     _south: 2
     _west: 2
-  <SpawnDefinitions>k__BackingField: []
+  <SpawnDatas>k__BackingField: []
 --- !u!4 &1062036485
 Transform:
   m_ObjectHideFlags: 0
@@ -732,6 +732,72 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!1 &1345798188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1345798191}
+  - component: {fileID: 1345798190}
+  - component: {fileID: 1345798189}
+  m_Layer: 0
+  m_Name: Motherboard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1345798189
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345798188}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 250, y: 20, z: 250}
+  m_Center: {x: 125, y: 10, z: 125}
+--- !u!114 &1345798190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345798188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c4f6908cb640a98972ac700383156f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1345798191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345798188}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -57, y: 0, z: -14.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1544444475
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,8 +932,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aecc86e9e876fd14ab5374940ee43ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _recyclingBin: {fileID: 2113079093}
   _motherboardSize: {x: 25, y: 25}
   _hallwayPrefab: {fileID: 2036567762}
+  _motherboardPrefab: {fileID: 1345798190}
   _roomSpawnOptions:
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 419660841}
@@ -875,11 +943,11 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 1715824668}
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 1639925197}
-  _targetMotherboardVolume: 0.08
+  _targetMotherboardVolume: 0.136
+  _initialRoomPoolSizePerRoom: 10
   _sampleAttempts: 5
-  _minRooms: 3
-  _seed: 40
-  _drawGizmos: 1
+  _seed: 30
+  _drawGizmos: 0
   _buildOnStart: 1
 --- !u!4 &1560506414
 Transform:
@@ -893,7 +961,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2113079093}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1639925195
@@ -955,7 +1024,7 @@ MonoBehaviour:
     _east: 0
     _south: 0
     _west: 0
-  <SpawnDefinitions>k__BackingField: []
+  <SpawnDatas>k__BackingField: []
 --- !u!1 &1667400255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,7 +1098,7 @@ MonoBehaviour:
     _east: 2
     _south: 0
     _west: 0
-  <SpawnDefinitions>k__BackingField: []
+  <SpawnDatas>k__BackingField: []
 --- !u!4 &1715824669
 Transform:
   m_ObjectHideFlags: 0
@@ -1566,6 +1635,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054301962}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2113079092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2113079093}
+  m_Layer: 0
+  m_Name: '[Recycling Bin]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2113079093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113079092}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1560506414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1578,3 +1678,4 @@ SceneRoots:
   - {fileID: 1715824669}
   - {fileID: 419660842}
   - {fileID: 1062036485}
+  - {fileID: 1345798191}

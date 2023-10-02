@@ -17,26 +17,28 @@ namespace CMIYC.Platform
         {
             bool reachedExitNode = false;
 
-            var allRoomEntrances = roomInstances.SelectMany(r => r.Definition.GetEntranceNodes().Select(w => new RoomDoorInfo()
+            var allRoomEntrances = roomInstances.SelectMany(r => r.Definition.GetEntranceNodes().Select(w => new RoomDoorInfo
             {
                 Location = r.Definition.TransformLocation(w),
-                Room = r.Definition
+                Instance = r
             })).ToList();
 
             foreach (var roomEntrance in allRoomEntrances.Where(r => definitionLookup.ContainsKey(r.Location)).ToList())
             {
                 var location = roomEntrance.Location;
-                var roomDefinition = roomEntrance.Room;
-                allRoomEntrances.RemoveAll(r => r.Room == roomDefinition);
-                roomInstances.RemoveAll(r => r.Definition == roomDefinition);
-                Destroy(roomDefinition.gameObject);
+                var roomDefinition = roomEntrance.Instance.Definition;
+                allRoomEntrances.RemoveAll(r => r.Instance.Definition == roomDefinition);
+                int removed = roomInstances.RemoveAll(r => r.Definition == roomDefinition);
+
+                if (removed > 0)
+                    DespawnRoomDefinition(roomEntrance.Instance);
 
                 definitionLookup.Remove(location);
             }
 
             int test = 0;
 
-            while (!reachedExitNode && 10 > test++)
+            while (!reachedExitNode && 1000 > test++)
             {
                 var explored = DictionaryPool<Vector2Int, int>.Get();
                 var unexplored = ListPool<UnexploredCell>.Get();
@@ -84,10 +86,10 @@ namespace CMIYC.Platform
                     Vector2Int southwest = new(x - 1, y - 1);
                     Vector2Int southeast = new(x + 1, y - 1);
 
-                    evaluations.Add(new EvaluatedCell(5, northwest));
+                    /*evaluations.Add(new EvaluatedCell(5, northwest));
                     evaluations.Add(new EvaluatedCell(5, northeast));
                     evaluations.Add(new EvaluatedCell(5, southwest));
-                    evaluations.Add(new EvaluatedCell(5, southeast));
+                    evaluations.Add(new EvaluatedCell(5, southeast));*/
 
                     foreach (var evaluation in evaluations)
                     {
@@ -129,7 +131,7 @@ namespace CMIYC.Platform
 
                         var last = minimumUnexplored.Location;
                         var path = ListPool<Vector2Int>.Get();
-                        bool reachedStart = false;
+                        bool reachedStart = last == start;
                         path.Add(last);
 
                         while (!reachedStart && 1_000 > tracker)
@@ -163,6 +165,11 @@ namespace CMIYC.Platform
                             }
                         }
 
+                        if (tracker >= 1000)
+                        {
+                            Debug.LogWarning($"Failed to find path from {start} to {minimumUnexplored.Location}");
+                        }
+
                         foreach (var p in path)
                         {
                             if (definitionLookup.ContainsKey(p))
@@ -172,7 +179,7 @@ namespace CMIYC.Platform
                             var daughterCenter = new Vector3(0 * daughterboardUnit + cellOffset, 0, 0 * daughterboardUnit + cellOffset) +
                                                  new Vector3(p.x * daughterboardUnit, 0f, p.y * daughterboardUnit);
 
-                            var def = Instantiate(_hallwayPrefab, null, true);
+                            var def = _hallPool.Get();
                             var defTransform = def.transform;
                             def.Cell = p;
 
@@ -197,7 +204,7 @@ namespace CMIYC.Platform
                         if (!isExitNode && roomEntrance != null)
                         {
                             allRoomEntrances.Remove(roomEntrance);
-                            var newStart = allRoomEntrances.FirstOrDefault(r => r.Room == roomEntrance.Room);
+                            var newStart = allRoomEntrances.FirstOrDefault(r => r.Instance.Definition == roomEntrance.Instance.Definition);
 
                             if (newStart != null)
                             {
@@ -222,11 +229,11 @@ namespace CMIYC.Platform
             }
 
             // Cull non-connected rooms
-            var nonConnected = roomInstances.Where(r => r.Definition.GetEntranceNodes().Count == allRoomEntrances.Count(e => e.Room == r.Definition)).Select(r => r.Definition).ToList();
+            var nonConnected = roomInstances.Where(r => r.Definition.GetEntranceNodes().Count == allRoomEntrances.Count(e => e.Instance.Definition == r.Definition)).Select(r => r.Definition).ToList();
 
             foreach (var roomDefinition in nonConnected)
             {
-                allRoomEntrances.RemoveAll(r => r.Room == roomDefinition);
+                allRoomEntrances.RemoveAll(r => r.Instance.Definition == roomDefinition);
                 roomInstances.RemoveAll(r => r.Definition == roomDefinition);
                 Destroy(roomDefinition.gameObject);
             }
@@ -236,7 +243,7 @@ namespace CMIYC.Platform
         {
             public Vector2Int Location { get; set; }
 
-            public RoomDefinition Room { get; set; } = null!;
+            public RoomInstance Instance { get; set; } = null!;
         }
 
         private readonly struct EvaluatedCell
