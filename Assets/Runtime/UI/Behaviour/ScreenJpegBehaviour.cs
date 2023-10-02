@@ -29,6 +29,7 @@ namespace CMIYC.Runtime.UI.Behaviour
 
         public void Awake()
         {
+            _image.material = new Material(_image.material);
             _playerHealthController.PlayerTookJpegDamage += OnTakeJpegDamage;
         }
 
