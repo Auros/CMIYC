@@ -39,7 +39,7 @@ namespace CMIYC.Runtime.UI.Behaviour
 
         public void OnEnable()
         {
-            ChangeLoop().Forget();
+            ChangeLoop().AttachExternalCancellation(this.GetCancellationTokenOnDestroy()).Forget();
 
             var ratio = (float)Screen.width / Screen.height;
             _image.material.SetVector(_uvMultProperty, new Vector4(ratio, 1, 1, 1));

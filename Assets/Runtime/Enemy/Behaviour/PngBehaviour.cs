@@ -34,7 +34,7 @@ namespace CMIYC.Enemy.Behaviour
             GetPixels();
 
             // super simple attack loop
-            AttackLoop().Forget();
+            AttackLoop().AttachExternalCancellation(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
         private async UniTask AttackLoop()
