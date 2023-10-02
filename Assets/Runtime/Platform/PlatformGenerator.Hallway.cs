@@ -230,8 +230,6 @@ namespace CMIYC.Platform
                 roomInstances.RemoveAll(r => r.Definition == roomDefinition);
                 Destroy(roomDefinition.gameObject);
             }
-
-            Debug.Log(allRoomEntrances.Count);
         }
 
         private class RoomDoorInfo
