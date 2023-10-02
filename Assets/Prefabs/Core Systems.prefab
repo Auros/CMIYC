@@ -792,6 +792,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797238173990f454d814c4ba29f4f294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4960291746207331432 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5034594915509428772, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
+    type: 3}
+  m_PrefabInstance: {fileID: 74316443169068620}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2612229d493b8d4dbacd9ca7f17fbd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6941786113278733277 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7016093482924637585, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
@@ -1287,6 +1299,11 @@ PrefabInstance:
       propertyPath: _inputController
       value: 
       objectReference: {fileID: 516639606693136211}
+    - target: {fileID: 2534329889277539165, guid: ad325aa5e4212bc4c8b2f129975bcd6c,
+        type: 3}
+      propertyPath: _locationController
+      value: 
+      objectReference: {fileID: 4960291746207331432}
     - target: {fileID: 4471013345617059936, guid: ad325aa5e4212bc4c8b2f129975bcd6c,
         type: 3}
       propertyPath: m_Name

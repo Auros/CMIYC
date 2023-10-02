@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterTransform: {fileID: 0}
+  _playerHealthController: {fileID: 0}
   _useUnscaledTime: 0
   _reactionStrength: 5
   _movementSensitivity: 10
@@ -419,7 +420,7 @@ MonoBehaviour:
   _locationText: {fileID: 8278373384039809201}
   _background: {fileID: 527442774919542311}
   _initialDelay: 1
-  _animationOffset: 1
+  _animationOffset: 0.25
   _animationLength: 1.5
   _charactersPerMinute: 900
   _typeSfx:
@@ -430,6 +431,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 14b9c44668f29e949a4b75b4f87527c9, type: 3}
   _audioPool: {fileID: 1254375304855942874}
   _tweenManager: {fileID: 5792682859121430603}
+  _inputController: {fileID: 0}
+  _musicLoop: {fileID: 0}
+  _locationController: {fileID: 0}
 --- !u!114 &1717603244403966645
 MonoBehaviour:
   m_ObjectHideFlags: 0
