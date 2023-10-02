@@ -283,6 +283,7 @@ MonoBehaviour:
   _glitchyEffect: {fileID: 0}
   _wrapperObject: {fileID: 8700918408411396869}
   _deathPanelParent: {fileID: 2804114840602065383}
+  _leftDeathPanelParent: {fileID: 0}
   _tweenManager: {fileID: 5135539070701787932}
   _background: {fileID: 4223304721813067686}
   _initialDelay: 1
@@ -468,7 +469,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0, y: 0}
-  m_SizeDelta: {x: 0, y: -792.6502}
+  m_SizeDelta: {x: 0, y: -842.6502}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4677085033098647633
 CanvasRenderer:
