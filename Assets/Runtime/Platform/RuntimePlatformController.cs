@@ -16,8 +16,13 @@ namespace CMIYC.Platform
         [SerializeField]
         private EnemyController _enemyController = null!;
 
+        [SerializeField]
+        private GameObject _roof = null!;
+
         public void Start()
         {
+            _roof?.SetActive(true);
+
             var result = _platformGenerator.BuildMotherboardUntilMinRoomsMet(Cardinal.South, new Vector2Int(0, 0));
             if (result is null)
                 return; // TODO handle

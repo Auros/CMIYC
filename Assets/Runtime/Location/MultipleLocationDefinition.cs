@@ -41,13 +41,17 @@ namespace CMIYC.Location
         {
             // pick a name
             PickBestName();
+
+            Debug.Log(_location);
         }
 
         private void PickBestName()
         {
-            if (_usedLocations.Count == 0)
+            if (_locations.Count == 0)
             {
                 // idk do something
+                Debug.LogWarning("No locations found in _locations!");
+                _location = "";
                 return;
             }
 
@@ -113,7 +117,7 @@ namespace CMIYC.Location
         {
             if (other.gameObject.TryGetComponent<PlayerController>(out var player))
             {
-                player.BroadcastMessage(nameof(LocationController.EnterLocation), _locations, SendMessageOptions.DontRequireReceiver);
+                player.BroadcastMessage(nameof(LocationController.EnterLocation), _location, SendMessageOptions.DontRequireReceiver);
             }
         }
 
