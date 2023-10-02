@@ -53,7 +53,27 @@ namespace CMIYC.Platform
                 if (roomSegment.Location != location)
                     continue;
 
-                var localizedCardinal = (Cardinal)Mathf.Abs(((int)cardinal - (int)Cardinal) % 4);
+                var localizedCardinal = (Cardinal, cardinal) switch
+                {
+                    (Cardinal.North, Cardinal.North) => Cardinal.North,
+                    (Cardinal.North, Cardinal.East) => Cardinal.East,
+                    (Cardinal.North, Cardinal.South) => Cardinal.South,
+                    (Cardinal.North, Cardinal.West) => Cardinal.West,
+                    (Cardinal.East, Cardinal.North) => Cardinal.West,
+                    (Cardinal.East, Cardinal.East) => Cardinal.North,
+                    (Cardinal.East, Cardinal.South) => Cardinal.East,
+                    (Cardinal.East, Cardinal.West) => Cardinal.South,
+                    (Cardinal.South, Cardinal.North) => Cardinal.South,
+                    (Cardinal.South, Cardinal.East) => Cardinal.West,
+                    (Cardinal.South, Cardinal.South) => Cardinal.North,
+                    (Cardinal.South, Cardinal.West) => Cardinal.East,
+                    (Cardinal.West, Cardinal.North) => Cardinal.East,
+                    (Cardinal.West, Cardinal.East) => Cardinal.South,
+                    (Cardinal.West, Cardinal.South) => Cardinal.West,
+                    (Cardinal.West, Cardinal.West) => Cardinal.North,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
                 return roomSegment.GetWallSegmentType(localizedCardinal);
             }
             return WallSegmentType.None;

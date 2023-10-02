@@ -52,11 +52,11 @@ namespace CMIYC.Platform
                     if (definitionLookup.TryGetValue(cell, out var localDef) && localDef is RoomDefinition)
                         continue;
 
-                    unexplored.Add(new UnexploredCell
-                    {
-                        Location = cell,
-                        Value = cell == start ? 0 : int.MaxValue
-                    });
+                    var unexploredCell = _unexploredCellPool.Get();
+                    unexploredCell.Value = cell == start ? 0 : int.MaxValue;
+                    unexploredCell.Location = cell;
+
+                    unexplored.Add(unexploredCell);
                 }
 
                 int attempts = 0;
@@ -64,12 +64,12 @@ namespace CMIYC.Platform
 
                 while (!found && unexplored.Count != 0 && 10_000 > attempts++)
                 {
-                    var minimumUnexplored = unexplored.OrderBy(u => u.Value).First();
+                    unexplored.Sort((a, b) => a.Value.CompareTo(b.Value));
+                    var minimumUnexplored = unexplored[0];
 
                     var (x, y) = minimumUnexplored.Location;
                     var evaluations = ListPool<EvaluatedCell>.Get();
 
-                    // Base Cost: 1
                     Vector2Int west = new(x - 1, y);
                     Vector2Int east = new(x + 1, y);
                     Vector2Int north = new(x, y + 1);
@@ -79,17 +79,6 @@ namespace CMIYC.Platform
                     evaluations.Add(new EvaluatedCell(2, east));
                     evaluations.Add(new EvaluatedCell(2, north));
                     evaluations.Add(new EvaluatedCell(2, south));
-
-                    // Base Cost: 3
-                    Vector2Int northwest = new(x - 1, y + 1);
-                    Vector2Int northeast = new(x + 1, y + 1);
-                    Vector2Int southwest = new(x - 1, y - 1);
-                    Vector2Int southeast = new(x + 1, y - 1);
-
-                    /*evaluations.Add(new EvaluatedCell(5, northwest));
-                    evaluations.Add(new EvaluatedCell(5, northeast));
-                    evaluations.Add(new EvaluatedCell(5, southwest));
-                    evaluations.Add(new EvaluatedCell(5, southeast));*/
 
                     foreach (var evaluation in evaluations)
                     {
@@ -117,10 +106,14 @@ namespace CMIYC.Platform
                     }
 
                     explored.Add(minimumUnexplored.Location, minimumUnexplored.Value);
+                    _unexploredCellPool.Release(minimumUnexplored);
                     unexplored.Remove(minimumUnexplored);
 
                     var isExitNode = exitTarget == minimumUnexplored.Location;
-                    var roomEntrance = allRoomEntrances.FirstOrDefault(r => r.Location == minimumUnexplored.Location);
+                    RoomDoorInfo? roomEntrance = null;
+                    foreach (var entran in allRoomEntrances)
+                        if (entran.Location == minimumUnexplored.Location)
+                            roomEntrance = entran;
 
                     if (roomEntrance != null || isExitNode)
                     {
@@ -158,7 +151,11 @@ namespace CMIYC.Platform
                                 if (explored.TryGetValue(aSouth, out var southPow))
                                     nextTargets.Add((southPow, aSouth));
 
-                                var next = nextTargets.OrderBy(w => w.Item1).FirstOrDefault();
+                                nextTargets.Sort((a, b) => a.Item1.CompareTo(b.Item1));
+                                if (nextTargets.Count <= 0)
+                                    continue;
+
+                                var next = nextTargets[0];
                                 reachedStart = next.Item2 == start;
                                 path.Add(next.Item2);
                                 last = next.Item2;
@@ -181,7 +178,7 @@ namespace CMIYC.Platform
 
                             var def = _hallPool.Get();
                             var defTransform = def.transform;
-                            def.Cell = p;
+                            // RE: .Cell
 
                             defTransform.position = daughterCenter;
                             defTransform.SetParent(def.Anchor);
@@ -204,7 +201,7 @@ namespace CMIYC.Platform
                         if (!isExitNode && roomEntrance != null)
                         {
                             allRoomEntrances.Remove(roomEntrance);
-                            var newStart = allRoomEntrances.FirstOrDefault(r => r.Instance.Definition == roomEntrance.Instance.Definition);
+                            var newStart = FindRoomDoorEntrance(allRoomEntrances, roomEntrance.Instance.Definition);
 
                             if (newStart != null)
                             {
@@ -224,6 +221,9 @@ namespace CMIYC.Platform
                 if (attempts >= 10_000)
                     Debug.LogWarning("Failed to dijkstra");
 
+                foreach (var cell in unexplored)
+                    _unexploredCellPool.Release(cell);
+
                 ListPool<UnexploredCell>.Release(unexplored);
                 DictionaryPool<Vector2Int, int>.Release(explored);
             }
@@ -234,9 +234,21 @@ namespace CMIYC.Platform
             foreach (var roomDefinition in nonConnected)
             {
                 allRoomEntrances.RemoveAll(r => r.Instance.Definition == roomDefinition);
-                roomInstances.RemoveAll(r => r.Definition == roomDefinition);
-                Destroy(roomDefinition.gameObject);
+                foreach (var room in roomInstances.Where(r => r.Definition == roomDefinition).ToList())
+                {
+                    roomInstances.Remove(room);
+                    definitionLookup.Remove(room.Position);
+                    DespawnRoomDefinition(room);
+                }
             }
+        }
+
+        private RoomDoorInfo? FindRoomDoorEntrance(List<RoomDoorInfo> rooms, RoomDefinition roomDef)
+        {
+            foreach (var room in rooms)
+                if (room.Instance.Definition == roomDef)
+                    return room;
+            return null;
         }
 
         private class RoomDoorInfo
