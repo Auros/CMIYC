@@ -22,9 +22,14 @@ namespace CMIYC.Platform
         [SerializeField]
         private GameObject _roof = null!;
 
+        [SerializeField]
+        private Color _defaultRoomColor = new();
+
         // a bit gross
         private Motherboard? _activeMotherboard;
         private List<PlatformGenerator.MotherboardGenerationResult> _setupMotherboards = new();
+        private Dictionary<PlatformGenerator.MotherboardGenerationResult, Color> _colorByMotherboard = new();
+        private List<GameObject> _existingFakeWalls = new();
 
         public void Start()
         {
@@ -35,11 +40,51 @@ namespace CMIYC.Platform
 
         public void OnMotherboardEntered(Motherboard motherboard)
         {
-            if (motherboard != _activeMotherboard)
+            if (motherboard != _setupMotherboards.Last().Motherboard) return;
+
+            // close off CURRENT beginning before switching
+            var current = _platformGenerator.Current;
+            if (current != null && _colorByMotherboard.TryGetValue(current!, out Color roomColor))
             {
-                Debug.Log("CHANGING!!!!!!!!!!!!!!!");
-                Regenerate();
+                Debug.Log("new fake wall just dropped");
+                MakeFakeWall(current, roomColor);
             }
+            // only 3 active at a time, close off the last one
+            Debug.Log("CHANGING!!!!!!!!!!!!!!!");
+            Regenerate();
+        }
+
+        private void MakeFakeWall(PlatformGenerator.MotherboardGenerationResult result, Color roomColor)
+        {
+            foreach (var existingWall in _existingFakeWalls)
+            {
+                Destroy(existingWall);
+            }
+            _existingFakeWalls.Clear();
+
+            // create cube or some shit idk
+            var blockOffCube = Instantiate(_closeDoor);
+
+            var additionVector = result.Origin switch
+            {
+                Cardinal.North => new Vector2(0, 4.5f),
+                Cardinal.East => new Vector2(4.5f, 0f),
+                Cardinal.South => new Vector2(0f, -4.5f),
+                Cardinal.West => new Vector2(-4.5f, 0f),
+            };
+
+            blockOffCube.transform.position = result.Entrance.transform.position + new Vector3(additionVector.x, 0, additionVector.y);
+            if (result.Origin == Cardinal.East || result.Origin == Cardinal.West)
+            {
+                blockOffCube.transform.Rotate(new Vector3(0, 90f, 0));
+            }
+
+            foreach (var blockRenderer in blockOffCube.GetComponentsInChildren<Renderer>())
+            {
+                blockRenderer.material.color = roomColor;
+            }
+
+            _existingFakeWalls.Add(blockOffCube);
         }
 
         public void OnMotherboardReleased(Motherboard motherboard)
@@ -66,6 +111,13 @@ namespace CMIYC.Platform
         {
             if (result == null || _setupMotherboards.Contains(result)) return;
 
+            // create room color for thing
+            Color.RGBToHSV(_defaultRoomColor, out float H, out float S, out float V);
+            H = Random.Range(0, 1f);
+
+            var roomColor = Color.HSVToRGB(H, S, V);
+
+            _colorByMotherboard.TryAdd(result, roomColor);
             var halls = result.Hallways.Select(x => x.Definition);
             var rooms = result.Rooms.Select(x => x.Definition);
 
@@ -73,24 +125,19 @@ namespace CMIYC.Platform
 
             SpawnEnemies(rooms);
 
+            foreach (var room in rooms)
+            {
+                room.SetColor(roomColor);
+            }
+
+            foreach (var hall in halls)
+            {
+                hall.SetColor(roomColor);
+            }
+
             if (isCurrent)
             {
-                // create cube or some shit idk
-                var blockOffCube = Instantiate(_closeDoor);
-
-                var additionVector = result.Origin switch
-                {
-                    Cardinal.North => new Vector2(0, 4.5f),
-                    Cardinal.East => new Vector2(4.5f, 0f),
-                    Cardinal.South => new Vector2(0f, -4.5f),
-                    Cardinal.West => new Vector2(-4.5f, 0f),
-                };
-
-                blockOffCube.transform.position = result.Entrance.transform.position + new Vector3(additionVector.x, 0, additionVector.y);
-                if (result.Origin == Cardinal.East || result.Origin == Cardinal.West)
-                {
-                    blockOffCube.transform.Rotate(new Vector3(0, 90f, 0));
-                }
+                MakeFakeWall(result, roomColor);
             }
             _setupMotherboards.Add(result);
             result.Motherboard.OnEntered += OnMotherboardEntered;

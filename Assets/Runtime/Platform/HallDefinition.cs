@@ -17,6 +17,18 @@ namespace CMIYC.Platform
         [SerializeField]
         private WallController _westWall = null!;
 
+        [SerializeField]
+        private Renderer[] _coloredRenderers = Array.Empty<Renderer>();
+
+        public void SetColor(Color color)
+        {
+            foreach (var coloredRenderer in _coloredRenderers)
+            {
+                if (coloredRenderer == null || !coloredRenderer.enabled) continue;
+                coloredRenderer.material.color = color;
+            }
+        }
+
         public WallController GetWall(Cardinal cardinal) => cardinal switch
         {
             Cardinal.North => _northWall,
