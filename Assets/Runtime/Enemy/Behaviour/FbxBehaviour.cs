@@ -1,7 +1,9 @@
 ﻿using System;
+using CMIYC.Items;
 using CMIYC.Metadata;
 using CMIYC.Projectiles;
 using Cysharp.Threading.Tasks;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace CMIYC.Enemy.Behaviour
@@ -11,15 +13,20 @@ namespace CMIYC.Enemy.Behaviour
         [SerializeField]
         private Renderer _imageRenderer;
 
+        [SerializeField]
+        private Transform _projectileEmitPoint;
+
         private static int _mainTexProperty = Shader.PropertyToID("_MainTex");
 
         private float _fireRate;
         private ProjectileDefinition _projectile;
+        private GameObject _droppedItem;
 
         public void SetMetadata(FbxMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
             _fireRate = metadata.FireRate;
             _projectile = metadata.Projectile;
+            _droppedItem = metadata.DroppedItem;
 
             // should prob be cached or something
             var fileExtension = "." + enemy.EnemyTypeName.ToLower();
@@ -41,8 +48,25 @@ namespace CMIYC.Enemy.Behaviour
                     // GOOBIE: create projectiles here
                     // Check PngBehaviour/JpgBehaviour for example of how i'm spawning projectiles using enemies
                     // Those both use multiple bullets at a time but it should be fairly easy to just do one
+
+                    if (_projectile == null) return;
+
+                    // Calculate projectile direction from emission point
+                    var spawnPoint = _projectileEmitPoint.position;
+                    var projectileForward = _cameraToLookAt.transform.position - spawnPoint;
+
+                    // Emit a new projectile at the weapon emission point, and let it loose.
+                    var newProjectile = Instantiate(_projectile);
+                    newProjectile.Initialize(spawnPoint, projectileForward);
                 }
             }
+        }
+
+        protected override async UniTask DeathTween()
+        {
+            await base.DeathTween();
+            var item = Instantiate(_droppedItem);
+            item.transform.position = transform.position;
         }
     }
 }

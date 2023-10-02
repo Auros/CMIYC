@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 7719281961138693708}
   - component: {fileID: 7789704010832952306}
   m_Layer: 17
-  m_Name: _TextProjectile_
+  m_Name: Text Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

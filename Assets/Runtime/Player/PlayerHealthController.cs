@@ -1,10 +1,11 @@
 ﻿using System;
+using CMIYC.Items;
 using CMIYC.Projectiles;
 using UnityEngine;
 
 namespace CMIYC
 {
-    public class PlayerHealthController : MonoBehaviour, IProjectileTarget
+    public class PlayerHealthController : MonoBehaviour, IProjectileTarget, IItemPickerUpper
     {
         public event Action PlayerHealed;
         public event Action PlayerTookDamage;
@@ -48,6 +49,16 @@ namespace CMIYC
             Health = Mathf.Min(Health + hp, InitialHealth);
 
             PlayerHealed?.Invoke();
+        }
+
+        public void OnItemPickup(ItemPickupEvent pickupEvent)
+        {
+            if (pickupEvent.Instance is not HealthItemDefinition healthItemDefinition)
+                return;
+
+            Heal(healthItemDefinition.Health);
+
+            PlayerTookDamage?.Invoke();
         }
     }
 }
