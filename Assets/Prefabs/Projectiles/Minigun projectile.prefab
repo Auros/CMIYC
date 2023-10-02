@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 1000
   _hitScan: 0
-  _velocity: 50
+  _velocity: 100
   _attachedRigidbody: {fileID: 1829264013586282760}
   _toss: 1
   _lifetime: 20
