@@ -30,12 +30,13 @@ namespace CMIYC
                 return;
             }
 
+            OnScoreIncrease(0);
             _scoreController.OnScoreIncrease += OnScoreIncrease;
         }
 
         private void OnScoreIncrease(int scoreIncrease)
         {
-            _text.text = $"SCORE: {FileSizeUtilities.GetFileSizeText((long)_scoreController.Score)}";
+            _text.text = $"SAVED: {FileSizeUtilities.GetFileSizeText((long)_scoreController.Score)}";
         }
 
         private void OnDestroy()
