@@ -478,7 +478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000091552734}
+  m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7566529597708000220
@@ -841,6 +841,11 @@ PrefabInstance:
       objectReference: {fileID: 2499787152736206103}
     - target: {fileID: 3869921312883164155, guid: 985a747c887dc6a4daaf8e1e5f136c35,
         type: 3}
+      propertyPath: _movementSensitivity
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869921312883164155, guid: 985a747c887dc6a4daaf8e1e5f136c35,
+        type: 3}
       propertyPath: _playerHealthController
       value: 
       objectReference: {fileID: 2615342334743526033}
@@ -1108,6 +1113,11 @@ PrefabInstance:
       objectReference: {fileID: 2499787152736206103}
     - target: {fileID: 5856024504854187029, guid: 1811d4e4950245944a7ca33bdfa4e78b,
         type: 3}
+      propertyPath: _movementSensitivity
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5856024504854187029, guid: 1811d4e4950245944a7ca33bdfa4e78b,
+        type: 3}
       propertyPath: _playerHealthController
       value: 
       objectReference: {fileID: 2615342334743526033}
@@ -1275,6 +1285,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 2499787152736206103}
+    - target: {fileID: 604646279460864655, guid: ad325aa5e4212bc4c8b2f129975bcd6c,
+        type: 3}
+      propertyPath: _movementSensitivity
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 604646279460864655, guid: ad325aa5e4212bc4c8b2f129975bcd6c,
         type: 3}
       propertyPath: _playerHealthController
@@ -1754,6 +1769,11 @@ PrefabInstance:
       propertyPath: _characterTransform
       value: 
       objectReference: {fileID: 2499787152736206103}
+    - target: {fileID: 3662644304434915692, guid: dcb985326e82a47489e1851839e2c395,
+        type: 3}
+      propertyPath: _movementSensitivity
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 3662644304434915692, guid: dcb985326e82a47489e1851839e2c395,
         type: 3}
       propertyPath: _playerHealthController
