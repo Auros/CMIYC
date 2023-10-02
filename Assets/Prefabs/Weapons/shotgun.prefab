@@ -5126,7 +5126,10 @@ MonoBehaviour:
   <ReloadTime>k__BackingField: 3
   _audioPool: {fileID: 3470568170760121030}
   _shootClip:
-  - {fileID: 8300000, guid: 37167fc5f49e7274e9dcfb8720b6c4f4, type: 3}
+  - {fileID: 8300000, guid: 046a5bc6170f69240ba8577d57740f17, type: 3}
+  - {fileID: 8300000, guid: fa72a0aa4f2788249bb3372ccce62c5c, type: 3}
+  - {fileID: 8300000, guid: ea6f4f2d1f93c064c80c0fcb99c31009, type: 3}
+  - {fileID: 8300000, guid: 69c0964967550d940aaef378a40bd90a, type: 3}
   _reloadClip:
   - {fileID: 8300000, guid: 88f2440743d1dc74092068d7d8bb0b3e, type: 3}
   - {fileID: 8300000, guid: a0b208450def4e14d9840f19e35c5722, type: 3}

@@ -15377,6 +15377,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2562062152471727418, guid: b2daad300bf508946b6b029056f77ffc,
+        type: 3}
+      propertyPath: _shootClip.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 69c0964967550d940aaef378a40bd90a, type: 3}
     - target: {fileID: 2572079868310295139, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       propertyPath: m_Name
