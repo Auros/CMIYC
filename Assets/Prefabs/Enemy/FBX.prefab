@@ -961,6 +961,8 @@ MonoBehaviour:
   - {fileID: 978947408124909758}
   _imageRenderer: {fileID: 978947408124909758}
   _projectileEmitPoint: {fileID: 5026084534176140705}
+  _droppedItem: {fileID: 8137678804233666024, guid: 7a3972af1e6017a4e9d9ebe4c591efb5,
+    type: 3}
 --- !u!4 &9004757070816066935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3cec9fd07d4590e43b62ad680dc93bd8,

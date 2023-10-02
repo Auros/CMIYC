@@ -2,7 +2,7 @@
 
 namespace CMIYC.Items
 {
-    public readonly struct WeaponItemPickupEvent
+    public readonly struct ItemPickupEvent
     {
         /// <summary>
         /// Collider the projectile hit.
@@ -12,9 +12,9 @@ namespace CMIYC.Items
         /// <summary>
         /// The instance of the projectile triggering this event.
         /// </summary>
-        public readonly WeaponItemDefinition Instance { get; }
+        public readonly ItemDefinition Instance { get; }
 
-        public WeaponItemPickupEvent(WeaponItemDefinition instance, Collider collider)
+        public ItemPickupEvent(ItemDefinition instance, Collider collider)
         {
             Instance = instance;
             Collider = collider;

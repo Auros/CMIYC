@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FBX
   m_EditorClassIdentifier: 
   EnemyTypeName: fbx
-  Health: 50
+  Health: 200
   Prefab: {fileID: 8284785836628564337, guid: fed740f3e0f7c7c41877250b42e484ce, type: 3}

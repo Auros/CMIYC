@@ -1,10 +1,11 @@
 ﻿using System;
+using CMIYC.Items;
 using CMIYC.Projectiles;
 using UnityEngine;
 
 namespace CMIYC
 {
-    public class PlayerHealthController : MonoBehaviour, IProjectileTarget
+    public class PlayerHealthController : MonoBehaviour, IProjectileTarget, IItemPickerUpper
     {
         public event Action PlayerTookDamage;
         public event Action PlayerTookJpegDamage;
@@ -38,6 +39,20 @@ namespace CMIYC
                 Health = 0;
                 _deathController.Die();
             }
+        }
+
+        public void OnItemPickup(ItemPickupEvent pickupEvent)
+        {
+            if (pickupEvent.Instance is not HealthItemDefinition healthItemDefinition)
+                return;
+
+            Health += healthItemDefinition.Health;
+            if (Health > InitialHealth)
+            {
+                Health = InitialHealth;
+            }
+
+            PlayerTookDamage?.Invoke();
         }
     }
 }

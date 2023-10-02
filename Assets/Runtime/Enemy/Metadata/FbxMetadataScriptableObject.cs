@@ -10,6 +10,7 @@ namespace CMIYC.Metadata
         public string NameTag = String.Empty;
         public Texture2D Texture;
         public ProjectileDefinition Projectile;
+        public GameObject DroppedItem;
         public float FireRate;
     }
 }

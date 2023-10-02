@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace CMIYC.Player
 {
-    public class PlayerWeaponManager : MonoBehaviour, CacheInput.IShootingActions, IWeaponItemPickerUpper
+    public class PlayerWeaponManager : MonoBehaviour, CacheInput.IShootingActions, IItemPickerUpper
     {
         private static readonly Vector2 _crosshairPosition = new(0.5f, 0.5f);
         private const float _crosshairMaxDistance = 100f;
@@ -178,8 +178,11 @@ namespace CMIYC.Player
             return newTime * newTime * ((backOvershoot + 1) * newTime + backOvershoot) + 1;
         }
 
-        public void OnItemPickup(WeaponItemPickupEvent pickupEvent)
+        public void OnItemPickup(ItemPickupEvent pickupEvent)
         {
+            if (pickupEvent.Instance is not WeaponItemDefinition weaponItemDefinition)
+                return;
+
             // GET RID OF THE WEAPON / reload it
 
             // Convert our 0-1 crosshair constant to screen space (0,0 to screen width,height)
@@ -199,14 +202,14 @@ namespace CMIYC.Player
             SwitchWeaponAsync().Forget();
 
             // if same type of weapon, thats all folks.
-            if (pickupEvent.Instance.Weapon.name == CurrentWeaponInstance.name)
+            if (weaponItemDefinition.Weapon.name == CurrentWeaponInstance.name)
             {
                 return;
             }
 
             // fuck
             CurrentWeaponInstance.gameObject.SetActive(false);
-            var newWeaponInstance = Instantiate(pickupEvent.Instance.Weapon, _weaponRoot);
+            var newWeaponInstance = Instantiate(weaponItemDefinition.Weapon, _weaponRoot);
             CurrentWeaponInstance = newWeaponInstance;
         }
     }
