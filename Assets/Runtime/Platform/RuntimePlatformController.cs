@@ -29,23 +29,14 @@ namespace CMIYC.Platform
             var result = _platformGenerator.Current;
             if (result is null)
                 return; // TODO handle
-            
+
             // lmao i'm losing it
             // i really just don't have enough time to do anything else rn
             var halls = result.Hallways.Select(x => x.Definition);
             var rooms = result.Rooms.Select(x => x.Definition);
 
             // i literally do not know why the grid direction isn't consistent
-            List<Vector2Int> _takenVectors = halls.Select(x => x.Cell).Distinct().ToList();
             Dictionary<Vector2Int, Cardinal> _roomCardinals = new();
-
-
-            var hall = GetConnectedHall(result.End, halls);
-            if (hall != null)
-            {
-                _player.transform.LookAt(GetConnectedHall(result.End, halls)?.transform);
-                _player.transform.localRotation = Quaternion.Euler(0, _player.transform.localRotation.eulerAngles.y, 0);
-            }
 
             // temp wall impl incase auros doesn't have time
             foreach (var room in rooms)
@@ -74,14 +65,6 @@ namespace CMIYC.Platform
                         _roomCardinals.TryAdd(location, Multiply(room.Cardinal, segmentCardinal));
                     }
                 }
-            }
-
-            foreach (var otherHall in halls)
-            {
-                ApplyTempWalls(otherHall, Cardinal.North, HallExists(otherHall.Cell, Cardinal.North, _takenVectors, _roomCardinals));
-                ApplyTempWalls(otherHall, Cardinal.South, HallExists(otherHall.Cell, Cardinal.South, _takenVectors, _roomCardinals));
-                ApplyTempWalls(otherHall, Cardinal.East, HallExists(otherHall.Cell, Cardinal.East, _takenVectors, _roomCardinals));
-                ApplyTempWalls(otherHall, Cardinal.West, HallExists(otherHall.Cell, Cardinal.West, _takenVectors, _roomCardinals));
             }
 
             SpawnEnemies(rooms);
@@ -169,60 +152,6 @@ namespace CMIYC.Platform
             }
 
             return false;
-        }
-
-        private void ApplyTempWalls(HallDefinition hall, Cardinal cardinal, bool hallExists)
-        {
-            TempWallDirection? wallDirection = null;
-            if (cardinal == Cardinal.East) wallDirection = hall.TempWallsDefinition.EastWalls;
-            if (cardinal == Cardinal.South) wallDirection = hall.TempWallsDefinition.SouthWalls;
-            if (cardinal == Cardinal.North) wallDirection = hall.TempWallsDefinition.NorthWalls;
-            if (cardinal == Cardinal.West) wallDirection = hall.TempWallsDefinition.WestWalls;
-
-            if (wallDirection == null) return;
-            foreach (var wall in wallDirection.Doors)
-            {
-                wall.gameObject.SetActive(hallExists);
-            }
-            foreach (var wall in wallDirection.Walls)
-            {
-                wall.gameObject.SetActive(!hallExists);
-            }
-        }
-
-        // please rewrite if we have time i'm sure this data is accessible idk where tho
-        public HallDefinition? GetConnectedHall(Vector2Int hallCell, IEnumerable<HallDefinition> halls)
-        {
-            foreach (var otherHall in halls)
-            {
-                if (otherHall.Cell == hallCell) continue;
-
-                if (otherHall.Cell.x == hallCell.x)
-                {
-                    if (otherHall.Cell.y == hallCell.y + 1)
-                    {
-                        return otherHall;
-                    }
-                    if (otherHall.Cell.y == hallCell.y - 1)
-                    {
-                        return otherHall;
-                    }
-                }
-
-                if (otherHall.Cell.y == hallCell.y)
-                {
-                    if (otherHall.Cell.x == hallCell.x + 1)
-                    {
-                        return otherHall;
-                    }
-                    if (otherHall.Cell.x == hallCell.x - 1)
-                    {
-                        return otherHall;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

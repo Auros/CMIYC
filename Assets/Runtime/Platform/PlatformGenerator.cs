@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -35,6 +34,10 @@ namespace CMIYC.Platform
         [Min(0)]
         [SerializeField]
         private int _initialRoomPoolSizePerRoom = 10;
+
+        [Min(0)]
+        [SerializeField]
+        private int _initialHallwayPoolSize = 100;
 
         [SerializeField]
         private int _sampleAttempts = 5;
@@ -124,6 +127,14 @@ namespace CMIYC.Platform
 
                 _roomDefinitionPools[prefab] = pool;
             }
+
+            using (ListPool<HallDefinition>.Get(out var prespawned))
+            {
+                for (int i = 0; i < _initialHallwayPoolSize; i++)
+                    prespawned.Add(_hallPool.Get());
+
+                prespawned.ForEach(_hallPool.Release);
+            }
         }
 
         private void Start()
@@ -132,6 +143,15 @@ namespace CMIYC.Platform
                 return;
 
             Advance();
+
+            /*Cysharp.Threading.Tasks.UniTask.Void(async () =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    await Cysharp.Threading.Tasks.UniTask.Delay(TimeSpan.FromSeconds(1f));
+                    Advance();
+                }
+            });*/
         }
 
         public void Advance()
@@ -152,10 +172,8 @@ namespace CMIYC.Platform
                 _motherboardPool.Release(Previous.Motherboard);
             }
 
-            if (Current is not null)
-            {
-                // TODO: Close off
-            }
+            // Close off the previous motherboard
+            Current?.Entrance.GetWall(Current.Origin).SetType(WallSegmentType.Wall);
 
             Previous = Current;
             Current = Next;
@@ -163,14 +181,7 @@ namespace CMIYC.Platform
             if (Next is null || Next != Current)
                 return;
 
-            var previousDirection = Next.Advancement switch
-            {
-                Cardinal.North => Cardinal.South,
-                Cardinal.East => Cardinal.West,
-                Cardinal.South => Cardinal.North,
-                Cardinal.West => Cardinal.East,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            var previousDirection = Adjacant(Next.Advancement);
 
             var startPoint = Next.Advancement switch
             {
@@ -190,15 +201,7 @@ namespace CMIYC.Platform
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            Debug.Log($"Previous Direction: {previousDirection}, Previous Exit: {Next.End} Start Point: {startPoint}, Target Position: {targetPos}");
-
             Next = BuildMotherboard(previousDirection, startPoint, targetPos);
-        }
-
-        // ReSharper disable once MemberCanBeMadeStatic.Global
-        public MotherboardGenerationResult? BuildMotherboardUntilMinRoomsMet(Cardinal from, Vector2Int start)
-        {
-            return null;
         }
 
         private Random GetRandom() => _random;
@@ -334,23 +337,85 @@ namespace CMIYC.Platform
             var (exitDir, exitTarget) = GetRandomExitNodes(random, from);
             GenerateHallway(start, exitTarget, motherboardTransform, roomInstances, hallInstances, definitionLookup);
 
-            int roomCount = roomInstances.Count;
+            motherboardTransform.SetLocalPositionAndRotation(new Vector3(physicalPosition.x, 0, physicalPosition.y), Quaternion.identity);
+
+            HallDefinition entrance = null!;
+            HallDefinition exit = null!;
+
+            foreach (var hall in hallInstances)
+            {
+                var hallDef = hall.Definition;
+                var (x, y) = hall.Position;
+
+                if (hall.Position == start)
+                    entrance = hallDef;
+                if (hall.Position == exitTarget)
+                    exit = hallDef;
+
+                var wallChecks = ListPool<WallLookup>.Get();
+                wallChecks.Add(new WallLookup { Position = new Vector2Int(x, y + 1), Direction = Cardinal.North });
+                wallChecks.Add(new WallLookup { Position = new Vector2Int(x + 1, y), Direction = Cardinal.East });
+                wallChecks.Add(new WallLookup { Position = new Vector2Int(x, y - 1), Direction = Cardinal.South });
+                wallChecks.Add(new WallLookup { Position = new Vector2Int(x - 1, y), Direction = Cardinal.West });
+
+                foreach (var wallCheck in wallChecks)
+                {
+                    var pos = wallCheck.Position;
+                    var cardinal = wallCheck.Direction;
+                    var wall = hallDef.GetWall(cardinal);
+                    if (definitionLookup.TryGetValue(pos, out var defRel))
+                    {
+                        if (defRel is HallDefinition)
+                        {
+
+                            wall.SetType(WallSegmentType.None);
+                            continue;
+                        }
+
+                        var isValidForDoor = defRel is RoomDefinition roomDef && roomDef.GetWallSegmentType(Adjacant(cardinal), pos) is WallSegmentType.Door;
+                        wall.SetType(isValidForDoor ? WallSegmentType.Door : WallSegmentType.Wall);
+                    }
+                    else
+                    {
+                        wall.SetType(WallSegmentType.Wall);
+                    }
+                }
+
+                ListPool<WallLookup>.Release(wallChecks);
+            }
+
             ListPool<RoomDefinition>.Release(roomPrefabs);
             DictionaryPool<Vector2Int, Definition>.Release(definitionLookup);
 
-            motherboardTransform.SetLocalPositionAndRotation(new Vector3(physicalPosition.x, 0, physicalPosition.y), Quaternion.identity);
+            var entranceWall = entrance.GetWall(from);
+            entranceWall.SetType(WallSegmentType.Door);
 
-            Debug.Log(exitDir);
+            var exitWall = exit.GetWall(exitDir);
+            exitWall.SetType(WallSegmentType.Door);
 
             return new MotherboardGenerationResult
             {
                 End = exitTarget,
                 Advancement = exitDir,
-                RoomCount = roomCount,
                 Motherboard = motherboard,
                 Rooms = roomInstances,
                 Hallways = hallInstances,
-                Position = physicalPosition
+                Position = physicalPosition,
+                Entrance = entrance,
+                Origin = from,
+                Exit = exit
+            };
+        }
+
+        private static Cardinal Adjacant(Cardinal cardinal)
+        {
+            return cardinal switch
+            {
+                Cardinal.North => Cardinal.South,
+                Cardinal.East => Cardinal.West,
+                Cardinal.South => Cardinal.North,
+                Cardinal.West => Cardinal.East,
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
 
@@ -438,6 +503,13 @@ namespace CMIYC.Platform
             ListPool<Vector2>.Release(motherboards);
         }
 
+        private struct WallLookup
+        {
+            public Cardinal Direction { get; set; }
+
+            public Vector2Int Position { get; set; }
+        }
+
         [Serializable]
         protected class RoomSpawnOption
         {
@@ -470,19 +542,23 @@ namespace CMIYC.Platform
 
         public class MotherboardGenerationResult
         {
-            public Vector2 Position { get; set; }
-
-            public Vector2Int End { get; set; }
+            public Cardinal Origin { get; set; }
 
             public Cardinal Advancement { get; set; }
 
-            public int RoomCount { get; set; }
+            public Vector2 Position { get; set; }
+
+            public Vector2Int End { get; set; }
 
             public Motherboard Motherboard { get; set; } = null!;
 
             public IReadOnlyList<RoomInstance> Rooms { get; set; } = null!;
 
             public IReadOnlyList<HallInstance> Hallways { get; set; } = null!;
+
+            public HallDefinition Entrance { get; set; } = null!;
+
+            public HallDefinition Exit { get; set; } = null!;
         }
     }
 }

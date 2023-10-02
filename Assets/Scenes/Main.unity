@@ -553,8 +553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aecc86e9e876fd14ab5374940ee43ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _recyclingBin: {fileID: 0}
   _motherboardSize: {x: 25, y: 25}
   _hallwayPrefab: {fileID: 1865503140}
+  _motherboardPrefab: {fileID: 0}
   _roomSpawnOptions:
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: d816cf847fed39e408cc9b807b85e286,
@@ -572,6 +574,7 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: 4a2772240a27329489ddf399e09b0b11,
       type: 3}
   _targetMotherboardVolume: 0.08
+  _initialRoomPoolSizePerRoom: 10
   _sampleAttempts: 5
   _seed: -1
   _drawGizmos: 0
@@ -676,10 +679,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1712853976}
     m_Modifications:
+    - target: {fileID: 621449058254445110, guid: ab78077afccfa6a4f8bea4fb7ad5436d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1082422236073219417, guid: ab78077afccfa6a4f8bea4fb7ad5436d,
         type: 3}
       propertyPath: m_Name
       value: NorthWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 1082422236073219417, guid: ab78077afccfa6a4f8bea4fb7ad5436d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4713896569490306011, guid: ab78077afccfa6a4f8bea4fb7ad5436d,
         type: 3}
@@ -886,6 +899,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 148110800}
     m_Modifications:
+    - target: {fileID: 349695454531649953, guid: 5e0928b9f4a0d094a8092be489d8f45f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1892229149178704039, guid: 5e0928b9f4a0d094a8092be489d8f45f,
         type: 3}
       propertyPath: m_LocalScale.z

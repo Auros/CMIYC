@@ -181,7 +181,7 @@ namespace CMIYC.Platform
 
                             var def = _hallPool.Get();
                             var defTransform = def.transform;
-                            def.Cell = p;
+                            // RE: .Cell
 
                             defTransform.position = daughterCenter;
                             defTransform.SetParent(def.Anchor);
@@ -234,7 +234,11 @@ namespace CMIYC.Platform
             foreach (var roomDefinition in nonConnected)
             {
                 allRoomEntrances.RemoveAll(r => r.Instance.Definition == roomDefinition);
-                roomInstances.RemoveAll(r => r.Definition == roomDefinition);
+                foreach (var room in roomInstances.Where(r => r.Definition == roomDefinition).ToList())
+                {
+                    roomInstances.Remove(room);
+                    definitionLookup.Remove(room.Position);
+                }
                 Destroy(roomDefinition.gameObject);
             }
         }

@@ -4,7 +4,6 @@
     {
         None,
         Wall,
-        Door,
-        Gate
+        Door
     }
 }
