@@ -54,8 +54,13 @@ namespace CMIYC.UI
 
             // Calculate offsets based on normalized difference, multiplied by sensitivity
             // (we inverse transform the position offset to get away from world space, which causes some problems)
-            var posOffset = _characterTransform.InverseTransformDirection(_movementSensitivity * (_characterPreviousPos - characterPos).normalized);
-            var eulerOffset = _rotationSensitivity * (_characterPerviousEuler - characterEuler).normalized;
+            var movementDirection = _characterPreviousPos - characterPos;
+            movementDirection = Mathf.Min(movementDirection.magnitude, 1f) * movementDirection.normalized;
+            var posOffset = _characterTransform.InverseTransformDirection(_movementSensitivity * movementDirection);
+
+            var rotationDirection = _characterPerviousEuler - characterEuler;
+            rotationDirection = Mathf.Min(rotationDirection.magnitude, 1f) * rotationDirection.normalized;
+            var eulerOffset = _rotationSensitivity * rotationDirection;
 
             // Lerp between our old offset and the current offset
             var dT = _useUnscaledTime
