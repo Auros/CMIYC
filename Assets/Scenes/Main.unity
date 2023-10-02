@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aecc86e9e876fd14ab5374940ee43ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherboardSize: {x: 50, y: 50}
+  _motherboardSize: {x: 25, y: 25}
   _hallwayPrefab: {fileID: 1865503140}
   _roomSpawnOptions:
   - <Weight>k__BackingField: 1
@@ -556,11 +556,11 @@ MonoBehaviour:
   - <Weight>k__BackingField: 2
     <Prefab>k__BackingField: {fileID: 3510235668012989961, guid: 1ff5b7508e729cc459d46a10432c3f0a,
       type: 3}
-  _targetMotherboardVolume: 0.087
-  _sampleAttempts: 9999
-  _minRooms: 10
+  _targetMotherboardVolume: 0.08
+  _sampleAttempts: 5
   _seed: -1
   _drawGizmos: 0
+  _buildOnStart: 0
 --- !u!1 &503661934
 GameObject:
   m_ObjectHideFlags: 0
@@ -2169,7 +2169,7 @@ PrefabInstance:
     - target: {fileID: 2911587348959925494, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2911587348959925494, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
@@ -2179,7 +2179,7 @@ PrefabInstance:
     - target: {fileID: 2911587348959925494, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2911587348959925494, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}

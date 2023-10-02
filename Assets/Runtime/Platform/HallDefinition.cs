@@ -43,8 +43,6 @@ namespace CMIYC.Platform
             var wallTransform = wall.transform;
             var positionalOffset = target.position - wallTransform.position;
             var rotationalOffset = target.rotation * Quaternion.Inverse(wallTransform.rotation);
-
-
         }
 
         protected override void OnDrawGizmos()
