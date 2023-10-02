@@ -83,7 +83,10 @@ namespace CMIYC.Weapons
             if (Ammo == 0)
             {
                 FireProjectile(SelfProjectile, target);
-                ReloadAsync().Forget();
+                if (ReloadTime >= 0)
+                {
+                    ReloadAsync().Forget();
+                }
                 return false;
             }
 
@@ -117,7 +120,10 @@ namespace CMIYC.Weapons
         {
             if (Reloading) return;
             FireProjectile(SelfProjectile, target);
-            ReloadAsync().Forget();
+            if (ReloadTime >= 0)
+            {
+                ReloadAsync().Forget();
+            }
 
             if (_audioPool != null)
             {
@@ -126,6 +132,13 @@ namespace CMIYC.Weapons
                     ReloadSoundAsync().Forget();
                 }
             }
+        }
+
+        public void ThrowReloadInstant(Vector3 target)
+        {
+            if (Reloading) return;
+            FireProjectile(SelfProjectile, target);
+            InstantReloadAsync().Forget();
         }
 
         private void FireProjectile(ProjectileDefinition projectile, Vector3 target)
@@ -148,6 +161,27 @@ namespace CMIYC.Weapons
             await UniTask.Delay(TimeSpan.FromSeconds(FireSpeed));
 
             RoundReady = true;
+        }
+
+        private async UniTask InstantReloadAsync()
+        {
+            Reloading = true;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
+            if (_audioPool != null)
+            {
+                if (_reloadClip != null)
+                {
+                    _audioPool.Play(_reloadClip);
+                }
+            }
+
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
+            Ammo = InitialAmmo;
+
+            Reloading = false;
         }
 
         private async UniTask ReloadAsync()
