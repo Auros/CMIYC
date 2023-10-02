@@ -57,8 +57,6 @@ namespace CMIYC
                 return;
 
             Heal(healthItemDefinition.Health);
-
-            PlayerTookDamage?.Invoke();
         }
     }
 }
