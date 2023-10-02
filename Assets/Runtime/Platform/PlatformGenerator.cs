@@ -27,12 +27,34 @@ namespace CMIYC.Platform
         private int _sampleAttempts = 5;
 
         [SerializeField]
+<<<<<<< Updated upstream
         private int _seed;
 
+=======
+        [Tooltip("Attempt to re-roll a motherboard until one with at least this many rooms is generated")]
+        private int _minRooms = 3;
+
+        [SerializeField]
+        private int _seed;
+
+        [SerializeField]
+        private bool _drawGizmos;
+
+        [SerializeField]
+        private bool _buildOnStart;
+
+>>>>>>> Stashed changes
         private Random _random = new(0);
+        private const int _maxRerollTries = 50;
+        private IObjectPool<Motherboard> _motherboardPool = null!;
+
+        private readonly List<MotherboardGenerationResult> _activeMotherboards = new();
         private readonly ObjectPool<RoomInstance> _roomInstancePool = new(() => new RoomInstance());
 
-        private IObjectPool<Motherboard> _motherboardPool = null!;
+        /// <summary>
+        /// All the active motherboard instances, where the first element is the most recent one.
+        /// </summary>
+        public IReadOnlyList<MotherboardGenerationResult> ActiveMotherboards => _activeMotherboards;
 
         private Vector2 MotherboardSize => _motherboardSize;
 
@@ -43,6 +65,7 @@ namespace CMIYC.Platform
 
         private void Start()
         {
+<<<<<<< Updated upstream
             _random = new Random(_seed);
             var result = BuildMotherboard(Cardinal.South, new Vector2Int(0, 0));
             if (result is null)
@@ -72,11 +95,78 @@ namespace CMIYC.Platform
             public Vector2Int End { get; set; }
 
             public Cardinal Advancement { get; set; }
+=======
+            if (!_buildOnStart)
+                return;
+
+            var result = BuildMotherboard(Cardinal.South, new Vector2Int(0, 0), Vector2.zero);
+            var motherboardPhysicalWidth = _motherboardSize.x * daughterboardUnit;
+            var motherboardPhysicalHeight = _motherboardSize.y * daughterboardUnit;
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (result is null)
+                    return;
+
+                result = BuildMotherboard(result.Advancement switch
+                {
+                    Cardinal.North => Cardinal.South,
+                    Cardinal.East => Cardinal.West,
+                    Cardinal.South => Cardinal.North,
+                    Cardinal.West => Cardinal.East,
+                    _ => throw new ArgumentOutOfRangeException()
+                }, result.Advancement switch
+                {
+                    Cardinal.North => new Vector2Int(result.End.x, 0),
+                    Cardinal.East => new Vector2Int(0, result.End.y),
+                    Cardinal.South => new Vector2Int(result.End.x, _motherboardSize.y - 1),
+                    Cardinal.West => new Vector2Int(_motherboardSize.x - 1, result.End.y),
+                    _ => throw new ArgumentOutOfRangeException()
+                }, result.Advancement switch
+                {
+                    Cardinal.North => new Vector2(result.Position.x, result.Position.y + motherboardPhysicalHeight),
+                    Cardinal.East => new Vector2(result.Position.x + motherboardPhysicalWidth, result.Position.y),
+                    Cardinal.South => new Vector2(result.Position.x, result.Position.y - motherboardPhysicalHeight),
+                    Cardinal.West => new Vector2(result.Position.x - motherboardPhysicalWidth, result.Position.y),
+                    _ => throw new ArgumentOutOfRangeException()
+                });
+            }
+        }
+
+        // idk how a lot of this works so low-tech solution
+        public MotherboardGenerationResult? BuildMotherboardUntilMinRoomsMet(Cardinal from, Vector2Int start)
+        {
+            // guh
+            /*int rerollTries = 0;
+            while (rerollTries < _maxRerollTries)
+            {
+                rerollTries++;
+                if (rerollTries > _maxRerollTries) return null;
+
+                var result = BuildMotherboard(from, start);
+
+                if (result?.RoomCount >= _minRooms)
+                {
+                    return result;
+                }
+                else
+                {
+                    // this is very bad, but i don't know how any of this works and I do not have nearly enough time to figure it out.
+                    foreach (Transform child in result?.Motherboard.Root)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                }
+            }*/
+
+            return null;
+>>>>>>> Stashed changes
         }
 
         private Random GetRandom() => _random;
 
-        private MotherboardGenerationResult? BuildMotherboard(Cardinal from, Vector2Int start)
+        private MotherboardGenerationResult? BuildMotherboard(Cardinal from, Vector2Int start, Vector2 physicalPosition)
         {
             var random = GetRandom();
             var maxDaughters = _motherboardSize.x * _motherboardSize.y;
@@ -93,7 +183,6 @@ namespace CMIYC.Platform
 
             while (targetArea > currentArea)
             {
-                //Debug.Log($"Target Area: {targetArea}, Current Area: {currentArea}");
                 var index = random.Next(0, validWeightedRooms.Length);
                 var roomPrefab = validWeightedRooms[index];
 
@@ -104,9 +193,8 @@ namespace CMIYC.Platform
                 roomPrefabs.Add(roomPrefab);
             }
 
-            //Debug.Log($"Selected Prefab Count: {roomPrefabs.Count}");
-
-            var roomInstances = ListPool<RoomInstance>.Get();
+            List<RoomInstance> roomInstances = new();
+            List<HallInstance> hallInstances = new();
 
             // We now know what rooms we want to place, now we pick random points to place them.
             foreach (var roomPrefab in roomPrefabs)
@@ -165,13 +253,12 @@ namespace CMIYC.Platform
 
             var motherboard = _motherboardPool.Get();
             var motherboardTransform = motherboard.transform;
-            motherboardTransform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            motherboardTransform.SetParent(transform);
 
-            Dictionary<Vector2Int, Definition> definitionLookup = new();
+            var definitionLookup = DictionaryPool<Vector2Int, Definition>.Get();
 
             foreach (var inst in roomInstances)
             {
-                //Debug.Log($"{inst.Prefab.name}: {inst.Rect}, {inst.Cardinal}");
                 var def = inst.Definition = Instantiate(inst.Prefab);
 
                 var defTransform = def.transform;
@@ -210,15 +297,26 @@ namespace CMIYC.Platform
             }
 
             var (exitDir, exitTarget) = GetRandomExitNodes(random, from);
-            GenerateHallway(exitTarget, start, motherboardTransform, roomInstances, definitionLookup);
+            GenerateHallway(start, exitTarget, motherboardTransform, roomInstances, hallInstances, definitionLookup);
 
             ListPool<RoomDefinition>.Release(roomPrefabs);
-            ListPool<RoomInstance>.Release(roomInstances);
+            DictionaryPool<Vector2Int, Definition>.Release(definitionLookup);
+
+            motherboardTransform.SetLocalPositionAndRotation(new Vector3(physicalPosition.x, 0, physicalPosition.y), Quaternion.identity);
 
             return new MotherboardGenerationResult
             {
                 End = exitTarget,
+<<<<<<< Updated upstream
                 Advancement = exitDir
+=======
+                Advancement = exitDir,
+                RoomCount = roomCount,
+                Motherboard = motherboard,
+                Rooms = roomInstances,
+                Hallways = hallInstances,
+                Position = physicalPosition
+>>>>>>> Stashed changes
             };
         }
 
@@ -306,7 +404,7 @@ namespace CMIYC.Platform
             public RoomDefinition Prefab { get; private set; }
         }
 
-        protected class RoomInstance
+        public class RoomInstance
         {
             public Rect Rect { get; set; }
 
@@ -317,6 +415,30 @@ namespace CMIYC.Platform
             public RoomDefinition Prefab { get; set; } = null!;
 
             public RoomDefinition Definition { get; set; } = null!;
+        }
+
+        public class HallInstance
+        {
+            public Vector2Int Position { get; set; }
+
+            public HallDefinition Definition { get; set; } = null!;
+        }
+
+        public class MotherboardGenerationResult
+        {
+            public Vector2 Position { get; set; }
+
+            public Vector2Int End { get; set; }
+
+            public Cardinal Advancement { get; set; }
+
+            public int RoomCount { get; set; }
+
+            public Motherboard Motherboard { get; set; } = null!;
+
+            public IReadOnlyList<RoomInstance> Rooms { get; set; } = null!;
+
+            public IReadOnlyList<HallInstance> Hallways { get; set; } = null!;
         }
     }
 }

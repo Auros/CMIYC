@@ -12,6 +12,7 @@ namespace CMIYC.Platform
             Vector2Int exitTarget,
             Transform motherboardTransform,
             List<RoomInstance> roomInstances,
+            ICollection<HallInstance> hallInstances,
             IDictionary<Vector2Int, Definition> definitionLookup)
         {
             bool reachedExitNode = false;
@@ -22,12 +23,23 @@ namespace CMIYC.Platform
                 Room = r.Definition
             })).ToList();
 
+            foreach (var roomEntrance in allRoomEntrances.Where(r => definitionLookup.ContainsKey(r.Location)).ToList())
+            {
+                var location = roomEntrance.Location;
+                var roomDefinition = roomEntrance.Room;
+                allRoomEntrances.RemoveAll(r => r.Room == roomDefinition);
+                roomInstances.RemoveAll(r => r.Definition == roomDefinition);
+                Destroy(roomDefinition.gameObject);
+
+                definitionLookup.Remove(location);
+            }
+
             int test = 0;
 
             while (!reachedExitNode && 10 > test++)
             {
-                Dictionary<Vector2Int, int> explored = new();
-                List<UnexploredCell> unexplored = new();
+                var explored = DictionaryPool<Vector2Int, int>.Get();
+                var unexplored = ListPool<UnexploredCell>.Get();
 
                 for (int x = 0; x < _motherboardSize.x; x++)
                 for (int y = 0; y < _motherboardSize.y; y++)
@@ -46,8 +58,8 @@ namespace CMIYC.Platform
                 }
 
                 int attempts = 0;
-
                 bool found = false;
+
                 while (!found && unexplored.Count != 0 && 10_000 > attempts++)
                 {
                     var minimumUnexplored = unexplored.OrderBy(u => u.Value).First();
@@ -61,10 +73,10 @@ namespace CMIYC.Platform
                     Vector2Int north = new(x, y + 1);
                     Vector2Int south = new(x, y - 1);
 
-                    evaluations.Add(new EvaluatedCell(1, west));
-                    evaluations.Add(new EvaluatedCell(1, east));
-                    evaluations.Add(new EvaluatedCell(1, north));
-                    evaluations.Add(new EvaluatedCell(1, south));
+                    evaluations.Add(new EvaluatedCell(2, west));
+                    evaluations.Add(new EvaluatedCell(2, east));
+                    evaluations.Add(new EvaluatedCell(2, north));
+                    evaluations.Add(new EvaluatedCell(2, south));
 
                     // Base Cost: 3
                     Vector2Int northwest = new(x - 1, y + 1);
@@ -72,10 +84,10 @@ namespace CMIYC.Platform
                     Vector2Int southwest = new(x - 1, y - 1);
                     Vector2Int southeast = new(x + 1, y - 1);
 
-                    evaluations.Add(new EvaluatedCell(3, northwest));
-                    evaluations.Add(new EvaluatedCell(3, northeast));
-                    evaluations.Add(new EvaluatedCell(3, southwest));
-                    evaluations.Add(new EvaluatedCell(3, southeast));
+                    evaluations.Add(new EvaluatedCell(5, northwest));
+                    evaluations.Add(new EvaluatedCell(5, northeast));
+                    evaluations.Add(new EvaluatedCell(5, southwest));
+                    evaluations.Add(new EvaluatedCell(5, southeast));
 
                     foreach (var evaluation in evaluations)
                     {
@@ -93,7 +105,7 @@ namespace CMIYC.Platform
 
                         int cost = evaluation.baseCost + minimumUnexplored.Value;
                         if (definitionLookup.TryGetValue(evaluation.location, out var def) && def is HallDefinition)
-                            cost += 10; // Costs more to go through hallways
+                            cost -= 1; // Costs LESS to go through hallways
 
                         // Already specified value is cheaper to execute
                         if (cost > evalCell.Value)
@@ -111,13 +123,12 @@ namespace CMIYC.Platform
                     if (roomEntrance != null || isExitNode)
                     {
                         found = true;
-
                         int tracker = 0;
 
                         // Calculate right angle path (avoid squiggily)
 
                         var last = minimumUnexplored.Location;
-                        List<Vector2Int> path = new();
+                        var path = ListPool<Vector2Int>.Get();
                         bool reachedStart = false;
                         path.Add(last);
 
@@ -172,7 +183,15 @@ namespace CMIYC.Platform
                             def.Anchor.SetParent(defTransform, true);
 
                             definitionLookup[p] = def;
+
+                            hallInstances.Add(new HallInstance
+                            {
+                                Definition = def,
+                                Position = p
+                            });
                         }
+
+                        ListPool<Vector2Int>.Release(path);
 
                         // ReSharper disable once ConvertIfStatementToSwitchStatement
                         if (!isExitNode && roomEntrance != null)
@@ -197,15 +216,22 @@ namespace CMIYC.Platform
 
                 if (attempts >= 10_000)
                     Debug.LogWarning("Failed to dijkstra");
+
+                ListPool<UnexploredCell>.Release(unexplored);
+                DictionaryPool<Vector2Int, int>.Release(explored);
             }
 
+            // Cull non-connected rooms
             var nonConnected = roomInstances.Where(r => r.Definition.GetEntranceNodes().Count == allRoomEntrances.Count(e => e.Room == r.Definition)).Select(r => r.Definition).ToList();
 
             foreach (var roomDefinition in nonConnected)
             {
+                allRoomEntrances.RemoveAll(r => r.Room == roomDefinition);
                 roomInstances.RemoveAll(r => r.Definition == roomDefinition);
                 Destroy(roomDefinition.gameObject);
             }
+
+            Debug.Log(allRoomEntrances.Count);
         }
 
         private class RoomDoorInfo
