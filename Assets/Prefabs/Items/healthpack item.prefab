@@ -135,7 +135,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 8
-  <Health>k__BackingField: 20
+  <Health>k__BackingField: 75
 --- !u!54 &4113006015339505827
 Rigidbody:
   m_ObjectHideFlags: 0
