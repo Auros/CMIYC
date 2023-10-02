@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CMIYC.Location;
+using CMIYC.Runtime.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,7 +50,7 @@ namespace CMIYC.UI
             }
             // TODO: formatting
             _savedSpace.text = node.size.HasValue
-                ? $"-{node.size} bytes"
+                ? $"-{FileSizeUtilities.GetFileSizeText((long)node.size)}"
                 : string.Empty;
 
             foreach (var child in node.children)

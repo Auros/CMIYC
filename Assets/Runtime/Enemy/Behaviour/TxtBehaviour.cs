@@ -19,6 +19,9 @@ namespace CMIYC.Enemy.Behaviour
         [SerializeField]
         private Transform _projectileOrigin = null!;
 
+        // TXT: Length of metadata contents * hardcoded value to keep score comparable to png
+        public override int Size => AssignedMetadata.TextContents.Length * 16;
+
         void Start()
         {
 

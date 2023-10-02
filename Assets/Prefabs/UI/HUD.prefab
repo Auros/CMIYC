@@ -939,7 +939,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SAVED: 0 bytes'
+  m_text: 'SCORE: 0B'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 467ab216f519e34448a3eae74435ae28, type: 2}
   m_sharedMaterial: {fileID: -7979742999615655558, guid: 467ab216f519e34448a3eae74435ae28,

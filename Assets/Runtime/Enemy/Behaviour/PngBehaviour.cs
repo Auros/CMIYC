@@ -25,6 +25,10 @@ namespace CMIYC.Enemy.Behaviour
         private List<Color> _projectileColors = new();
 
         private static int _mainTexProperty = Shader.PropertyToID("_MainTex");
+
+        // Images: width * height * 4 bytes per pixel
+        public override int Size => AssignedMetadata.Texture.width * AssignedMetadata.Texture.height * 4;
+
         public void SetMetadata(PngMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
             AssignedMetadata = metadata;

@@ -90,7 +90,7 @@ namespace CMIYC.Location
                 _ => null
             };
 
-            var size = 0; // TODO calculate points at the enemy level, shared between here and ScoreController
+            var size = obj.Size; // TODO calculate points at the enemy level, shared between here and ScoreController
 
             var enemyNode = new LocationNode(_workingNode, name + extension, texture, size);
             _workingNode.AddChildNode(enemyNode);
