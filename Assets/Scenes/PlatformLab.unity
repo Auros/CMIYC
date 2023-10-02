@@ -769,8 +769,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 250, y: 20, z: 250}
-  m_Center: {x: 125, y: 10, z: 125}
+  m_Size: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1345798190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,6 +783,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c4f6908cb640a98972ac700383156f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: 1345798189}
+  _height: 10
 --- !u!4 &1345798191
 Transform:
   m_ObjectHideFlags: 0
@@ -933,7 +935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _recyclingBin: {fileID: 2113079093}
-  _motherboardSize: {x: 25, y: 25}
+  _motherboardSize: {x: 15, y: 15}
   _hallwayPrefab: {fileID: 2036567762}
   _motherboardPrefab: {fileID: 1345798190}
   _roomSpawnOptions:
@@ -943,7 +945,7 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 1715824668}
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 1639925197}
-  _targetMotherboardVolume: 0.136
+  _targetMotherboardVolume: 0.35
   _initialRoomPoolSizePerRoom: 10
   _sampleAttempts: 5
   _seed: 30

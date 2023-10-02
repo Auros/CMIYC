@@ -78,7 +78,12 @@ namespace CMIYC.Platform
             );
 
             _motherboardPool = new ObjectPool<Motherboard>(
-                () => Instantiate(_motherboardPrefab, transform),
+                () =>
+                {
+                    var mp = Instantiate(_motherboardPrefab, transform);
+                    mp.SetDimensionsSize(_motherboardSize);
+                    return mp;
+                },
                 m =>
                 {
                     var mT = m.transform;
