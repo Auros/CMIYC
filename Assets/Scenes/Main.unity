@@ -633,6 +633,9 @@ MonoBehaviour:
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: 4a2772240a27329489ddf399e09b0b11,
       type: 3}
+  - <Weight>k__BackingField: 0.5
+    <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: c06b4bf905a888a448c8e0586d856a10,
+      type: 3}
   _targetMotherboardVolume: 0.192
   _initialRoomPoolSizePerRoom: 10
   _initialHallwayPoolSize: 100
