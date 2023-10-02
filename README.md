@@ -1,6 +1,6 @@
 # Cache Me If You Can
 
-[Our submission for Ludum Dare 54!](https://ldjam.com/events/ludum-dare/54/$373927)
+[Our submission for Ludum Dare 54!](https://ldjam.com/events/ludum-dare/54/cache-me-if-you-can)
 
 You are a virus dead-set on clearing as much hard drive space as possible. Navigate filesystems and delete files by force.
 
