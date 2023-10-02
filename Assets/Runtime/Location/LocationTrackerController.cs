@@ -1,6 +1,7 @@
 ﻿using System;
 using CMIYC.Enemy;
 using CMIYC.Enemy.Behaviour;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CMIYC.Location
@@ -33,9 +34,19 @@ namespace CMIYC.Location
             _locationController.OnLocationExit += OnLocationExit;
 
             OnLocationEnter(_locationController.GetFullLocation()[0..^1]);
+            DoNodeStuff();
         }
 
 
+        private async void DoNodeStuff()
+        {
+            await UniTask.Delay(15000);
+            Debug.Log(RootNode.location);
+            foreach (var child in RootNode.children)
+            {
+                Debug.Log(child.location);
+            }
+        }
 
         private void OnLocationEnter(string obj)
         {
@@ -69,9 +80,19 @@ namespace CMIYC.Location
                 _ => null
             };
 
+            // hardcode... fior now..
+            var extension = obj switch
+            {
+                TxtBehaviour => ".txt",
+                PngBehaviour png => ".png",
+                JpgBehaviour jpg => ".jpg",
+                FbxBehaviour fbx => ".txt",
+                _ => null
+            };
+
             var size = 0; // TODO calculate points at the enemy level, shared between here and ScoreController
 
-            var enemyNode = new LocationNode(_workingNode, name, texture, size);
+            var enemyNode = new LocationNode(_workingNode, name + extension, texture, size);
             _workingNode.AddChildNode(enemyNode);
         }
 
