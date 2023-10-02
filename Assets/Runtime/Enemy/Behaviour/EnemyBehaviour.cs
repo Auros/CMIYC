@@ -11,9 +11,9 @@ namespace CMIYC.Enemy.Behaviour
 {
     public abstract class EnemyBehaviour : MonoBehaviour, IProjectileTarget
     {
-        private bool _isDebugging = true; // TODO BUG IMPORTANT CHANGE FOR PRODUCTION!!!!!!!!!!!!!!!!!!!
+        private bool _isDebugging = false; // TODO BUG IMPORTANT CHANGE FOR PRODUCTION!!!!!!!!!!!!!!!!!!!
 
-        protected float _maxPlayerDistance = 15f; // enemies will not attack/move/whatever if the player is further than this
+        protected float _maxPlayerDistance = 20f; // enemies will not attack/move/whatever if the player is further than this
         // ideally this would include the player being in the same room but idk if we'll have time
 
         protected bool _isAlive = false;
