@@ -55,6 +55,15 @@ namespace CMIYC.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""b912e412-7881-4ff1-b77e-fb775a1188d6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -167,6 +176,98 @@ namespace CMIYC.Input
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9413947-cf69-49bb-a0ad-3c8041a60bd9"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""661d1600-6e08-44f4-a4c2-fa7ea6545af6"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Shooting"",
+            ""id"": ""ec086781-29d3-4677-9aa2-f7097cf6d193"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa603b8b-afa5-4892-87c2-3d348f5e2225"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""344a17e8-33e4-41b0-ab96-71ec45e8f9f3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""35824307-a7f6-4c3e-b511-e63b6913ea56"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b91f3126-058e-45bb-9ca9-f5049253e711"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dee80fdf-8b4b-4138-b4b0-0953cf8436f9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39150ec5-406e-42dc-817a-9d85571bb1e3"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -217,6 +318,11 @@ namespace CMIYC.Input
             m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+            m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+            // Shooting
+            m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
+            m_Shooting_Shoot = m_Shooting.FindAction("Shoot", throwIfNotFound: true);
+            m_Shooting_Throw = m_Shooting.FindAction("Throw", throwIfNotFound: true);
             // Pause
             m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
             m_Pause_Pause = m_Pause.FindAction("Pause", throwIfNotFound: true);
@@ -284,6 +390,7 @@ namespace CMIYC.Input
         private readonly InputAction m_Player_Movement;
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_Jump;
+        private readonly InputAction m_Player_Crouch;
         public struct PlayerActions
         {
             private @CacheInput m_Wrapper;
@@ -291,6 +398,7 @@ namespace CMIYC.Input
             public InputAction @Movement => m_Wrapper.m_Player_Movement;
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
+            public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -309,6 +417,9 @@ namespace CMIYC.Input
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -322,6 +433,9 @@ namespace CMIYC.Input
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
+                @Crouch.started -= instance.OnCrouch;
+                @Crouch.performed -= instance.OnCrouch;
+                @Crouch.canceled -= instance.OnCrouch;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -339,6 +453,60 @@ namespace CMIYC.Input
             }
         }
         public PlayerActions @Player => new PlayerActions(this);
+
+        // Shooting
+        private readonly InputActionMap m_Shooting;
+        private List<IShootingActions> m_ShootingActionsCallbackInterfaces = new List<IShootingActions>();
+        private readonly InputAction m_Shooting_Shoot;
+        private readonly InputAction m_Shooting_Throw;
+        public struct ShootingActions
+        {
+            private @CacheInput m_Wrapper;
+            public ShootingActions(@CacheInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Shoot => m_Wrapper.m_Shooting_Shoot;
+            public InputAction @Throw => m_Wrapper.m_Shooting_Throw;
+            public InputActionMap Get() { return m_Wrapper.m_Shooting; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(ShootingActions set) { return set.Get(); }
+            public void AddCallbacks(IShootingActions instance)
+            {
+                if (instance == null || m_Wrapper.m_ShootingActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_ShootingActionsCallbackInterfaces.Add(instance);
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
+            }
+
+            private void UnregisterCallbacks(IShootingActions instance)
+            {
+                @Shoot.started -= instance.OnShoot;
+                @Shoot.performed -= instance.OnShoot;
+                @Shoot.canceled -= instance.OnShoot;
+                @Throw.started -= instance.OnThrow;
+                @Throw.performed -= instance.OnThrow;
+                @Throw.canceled -= instance.OnThrow;
+            }
+
+            public void RemoveCallbacks(IShootingActions instance)
+            {
+                if (m_Wrapper.m_ShootingActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IShootingActions instance)
+            {
+                foreach (var item in m_Wrapper.m_ShootingActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_ShootingActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public ShootingActions @Shooting => new ShootingActions(this);
 
         // Pause
         private readonly InputActionMap m_Pause;
@@ -390,6 +558,12 @@ namespace CMIYC.Input
             void OnMovement(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
+            void OnCrouch(InputAction.CallbackContext context);
+        }
+        public interface IShootingActions
+        {
+            void OnShoot(InputAction.CallbackContext context);
+            void OnThrow(InputAction.CallbackContext context);
         }
         public interface IPauseActions
         {

@@ -1,24 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using AuraTween;
 using CMIYC.Input;
+using CMIYC.Projectiles;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
-namespace CMIYC
+namespace CMIYC.Player
 {
     public class PlayerController : MonoBehaviour, CacheInput.IPlayerActions
     {
+        public bool IsGrounded => _grounded;
+
         private CapsuleCollider _capsuleCollider = null!;
         private Rigidbody _rigidbody = null!;
         private Camera _camera = null!;
 
-        private CacheInput _cacheInput = null!;
+        [field: FormerlySerializedAs("_sensitivity")]
+        [field: SerializeField]
+        public float Sensitivity { get; set; } = 1f;
+
+        [SerializeField]
+        private InputController _inputController = null!;
+
+        [SerializeField]
+        private DeathController _deathController = null!;
 
         [SerializeField]
         private LayerMask _collisionMask;
 
         [SerializeField]
-        private float _sensitivity = 1f;
+        private float _defaultCameraHeight = 0.75f;
+
+        [SerializeField]
+        private float _crouchedCameraHeight = 0.4f;
 
         [SerializeField]
         private float _maxSpeed = 0f;
@@ -37,6 +51,7 @@ namespace CMIYC
 
         private bool _grounded = false;
         private bool _inputJumping = false;
+        private bool _inputCrouching = false;
         private Vector2 _inputMovement = Vector2.zero;
 
         void Start()
@@ -45,21 +60,30 @@ namespace CMIYC
             _rigidbody = GetComponent<Rigidbody>();
             _camera = GetComponentInChildren<Camera>();
 
-            _cacheInput = new CacheInput();
-            _cacheInput.Player.AddCallbacks(this);
-            _cacheInput.Player.Enable();
+            _inputController.Input.Player.AddCallbacks(this);
+
+            _deathController.OnPlayerDeath += OnPlayerDeath;
 
             Cursor.lockState = CursorLockMode.Locked;
         }
 
+        private void OnPlayerDeath()
+        {
+            _rigidbody.constraints = RigidbodyConstraints.None;
+        }
+
         void Update()
         {
-            Vector2 lookValue = _cacheInput.Player.Look.ReadValue<Vector2>();
-            lookValue *= _sensitivity * 0.1f;
+            if (!_inputController.Enabled) return;
+
+            Vector2 lookValue = _inputController.Input.Player.Look.ReadValue<Vector2>();
+            lookValue *= Sensitivity * 0.1f;
             Vector3 angles = _camera.transform.localEulerAngles;
             angles.x -= lookValue.y;
             angles.y += lookValue.x;
             _camera.transform.localEulerAngles = angles;
+
+            _camera.transform.localPosition = _camera.transform.localPosition.WithY(_inputCrouching ? _crouchedCameraHeight : _defaultCameraHeight);
         }
 
         void FixedUpdate()
@@ -144,6 +168,19 @@ namespace CMIYC
                 _inputMovement = context.ReadValue<Vector2>();
             else
                 _inputMovement = Vector2.zero;
+        }
+
+        public void OnCrouch(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                _inputCrouching = true;
+            else if (context.canceled)
+                _inputCrouching = false;
+        }
+
+        private void OnDestroy()
+        {
+            _deathController.OnPlayerDeath -= OnPlayerDeath;
         }
     }
 }
