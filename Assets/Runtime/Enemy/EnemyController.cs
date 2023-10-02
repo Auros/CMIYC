@@ -26,8 +26,8 @@ namespace CMIYC.Enemy
         private InputBroadcaster _inputBroadcaster = null!;
         //[SerializeField]
         //private List<EnemySpawnDefinition> _debugSpawnDefinitions = null!;
-        [SerializeField]
-        private EnemyTextPool _enemyTextPool = null!;
+        //[SerializeField]
+        //private EnemyTextPool _enemyTextPool = null!;
         [SerializeField]
         private TweenManager _tweenManager = null!;
         [SerializeField]
