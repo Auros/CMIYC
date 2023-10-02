@@ -92,11 +92,12 @@ namespace CMIYC.Platform
         {
             foreach (var room in rooms)
             {
-                foreach (var spawnDefinition in room.SpawnDefinitions)
+                foreach (var spawnData in room.SpawnDatas)
                 {
+                    _enemyController.Spawn(spawnData);
                     // ar cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     // cube.transform.position = spawnDefinition.transform.position;
-                    _enemyController.Spawn(spawnDefinition);
+                    // _enemyController.Spawn(spawnDefinition);
                 }
             }
         }

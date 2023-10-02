@@ -18,7 +18,7 @@ namespace CMIYC.Platform
         public Vector2Int AnchorLocation { get; private set; }
 
         [field: SerializeField]
-        public EnemySpawnDefinition[] SpawnDefinitions { get; private set; } = Array.Empty<EnemySpawnDefinition>();
+        public EnemySpawnData[] SpawnDatas { get; private set; } = Array.Empty<EnemySpawnData>();
 
         protected override void OnDrawGizmos()
         {

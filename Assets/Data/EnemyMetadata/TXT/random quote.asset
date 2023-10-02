@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edeb36797184ece809c12418a76906d, type: 3}
   m_Name: random quote
   m_EditorClassIdentifier: 
-  NameTag: quotes.txt
+  NameTag: quotes
   TextContents: there you go, eggs fresh from my..... uh.... inventory

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edeb36797184ece809c12418a76906d, type: 3}
   m_Name: i hardly know her
   m_EditorClassIdentifier: 
-  NameTag: ihardlyknowher.txt
+  NameTag: ihardlyknowher
   TextContents: 'Computer? I hardly know her!!
 
     Cleaner? I hardly know her!!

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35cf69d64f2144fba6cf18e5779d084d, type: 3}
   m_Name: AmeliaTummyFull
   m_EditorClassIdentifier: 
-  NameTag: 
+  NameTag: AmeliaTummyFull
   Texture: {fileID: 2800000, guid: f8cc454c390c438499036dcd7cdd1d06, type: 3}

@@ -18,36 +18,32 @@ namespace CMIYC.Enemy
     {
         public event Action<EnemyBehaviour> OnEnemyDeath;
 
-        [Tooltip("TXT File Metadata")]
-        [field: SerializeField]
-        public TxtMetadataScriptableObject[] TxtMetadata { get; private set; } = Array.Empty<TxtMetadataScriptableObject>();
-
-        [Tooltip("PNG File Metadata")]
-        [field: SerializeField]
-        public PngMetadataScriptableObject[] PngMetadata { get; private set; } = Array.Empty<PngMetadataScriptableObject>();
-
-        [Tooltip("JPG File Metadata")]
-        [field: SerializeField]
-        public JpgMetadataScriptableObject[] JpgMetadata { get; private set; } = Array.Empty<JpgMetadataScriptableObject>();
-
-        [Tooltip("FBX File Metadata")]
-        [field: SerializeField]
-        public FbxMetadataScriptableObject[] FbxMetadata { get; private set; } = Array.Empty<FbxMetadataScriptableObject>();
-
         [SerializeField]
         private Transform _enemyContainer = null!;
         [SerializeField]
         private Transform _player = null!;
         [SerializeField]
         private InputBroadcaster _inputBroadcaster = null!;
-        [SerializeField]
-        private List<EnemySpawnDefinition> _debugSpawnDefinitions = null!;
+        //[SerializeField]
+        //private List<EnemySpawnDefinition> _debugSpawnDefinitions = null!;
         [SerializeField]
         private EnemyTextPool _enemyTextPool = null!;
         [SerializeField]
         private TweenManager _tweenManager = null!;
         [SerializeField]
         private MusicLoop _musicLoop = null!;
+
+        [field: SerializeField]
+        public List<EnemySpawnChance> SpawnedEnemies { get; set; } = new();
+
+        [field: SerializeField]
+        public TxtMetadataScriptableObjectInstance[] DefaultTxtMetadata { get; set; } = Array.Empty<TxtMetadataScriptableObjectInstance>();
+        [field: SerializeField]
+        public PngMetadataScriptableObjectInstance[] DefaultPngMetadata { get; set; } = Array.Empty<PngMetadataScriptableObjectInstance>();
+        [field: SerializeField]
+        public JpgMetadataScriptableObjectInstance[] DefaultJpgMetadata { get; set; } = Array.Empty<JpgMetadataScriptableObjectInstance>();
+        [field: SerializeField]
+        public FbxMetadataScriptableObjectInstance[] DefaultFbxMetadata { get; set; } = Array.Empty<FbxMetadataScriptableObjectInstance>();
 
         private const float _spawnOffset = 1.11f; // assuming spawn is at foot of enemy, how much height needs to be added
 
@@ -59,14 +55,6 @@ namespace CMIYC.Enemy
         public void Start()
         {
             _inputBroadcaster.Register(this);
-
-            if (_debugSpawnDefinitions != null && _debugSpawnDefinitions.Count > 0)
-            {
-                foreach (var spawnPosition in _debugSpawnDefinitions)
-                {
-                    Spawn(spawnPosition);
-                }
-            }
         }
 
         public void Update()
@@ -81,121 +69,107 @@ namespace CMIYC.Enemy
             }
         }
 
-        public void Spawn(EnemySpawnDefinition spawnDefinition)
+        public void Spawn(EnemySpawnData spawnData)
         {
-            if (spawnDefinition.SpawnPoints?.Count == 0)
+            if (spawnData.SpawnPoints?.Count == 0)
             {
                 throw new InvalidOperationException("Cannot spawn on an EnemySpawnDefinition with no points");
             }
+            /*
             if (spawnDefinition.SpawnedEnemies?.Count == 0)
             {
                 throw new InvalidOperationException("Cannot spawn on an EnemySpawnDefinition with no enemies");
-            }
+            }*/
 
-            var spawnPoints = PickSpawnPoints(spawnDefinition);
+            var spawnPoints = PickSpawnPoints(spawnData);
 
+            var spawnedEnemies = spawnData.OverrideDefaultSpawns ? spawnData.SpawnedEnemies : SpawnedEnemies;
+            var enemyWeights = spawnedEnemies.Select(x => x.SpawnWeight).ToList();
             foreach (var spawnPoint in spawnPoints)
             {
-                var randomEnemy = PickRandomEnemyType(spawnDefinition);
-                // Debug.Log($"enemy: {randomEnemy.EnemyTypeName}");
-                SpawnEnemy(randomEnemy, spawnPoint);
+                var randomEnemy = spawnedEnemies[IndexFromWeights(enemyWeights)].Enemy;
+                SpawnEnemy(spawnData, randomEnemy, spawnPoint);
             }
         }
 
-        private EnemyScriptableObject PickRandomEnemyType(EnemySpawnDefinition spawnDefinition)
+        private int IndexFromWeights(List<float> weights)
         {
-            var totalWeight = spawnDefinition.SpawnedEnemies.Sum(x => x.SpawnWeight);
+            var totalWeight = weights.Sum(x => x);
             var weightedRandom = Random.Range(0f, totalWeight);
 
             var traversedWeight = 0f;
-            foreach (var spawnedEnemy in spawnDefinition.SpawnedEnemies)
+            for (int i = 0; i < weights.Count; i++)
             {
-                if (spawnedEnemy.SpawnWeight == 0)
-                {
-                    Debug.LogWarning($"Enemy {spawnedEnemy.Enemy.EnemyTypeName} has a weight of 0 in {spawnDefinition.gameObject.name}! This will cause unintended consequences");
-                }
+                var currentWeightedIndex = traversedWeight + weights[i];
 
-                var currentEnemyWeightedIndex = traversedWeight + spawnedEnemy.SpawnWeight;
-
-                if (weightedRandom <= currentEnemyWeightedIndex)
+                if (weightedRandom <= currentWeightedIndex)
                 {
-                    return spawnedEnemy.Enemy;
+                    return i;
                 }
-                traversedWeight = currentEnemyWeightedIndex;
+                traversedWeight = currentWeightedIndex;
             }
 
-            Debug.LogWarning("Couldn't select enemy with weighted logic, returning first");
-            return spawnDefinition.SpawnedEnemies.First().Enemy;
+            Debug.Log("Weighted random failed");
+            return 0;
         }
 
-        private void SpawnEnemy(EnemyScriptableObject enemy, Transform spawnPoint)
+        private void SpawnEnemy(EnemySpawnData spawnData, EnemyScriptableObject enemy, Transform spawnPoint)
         {
             var enemyBehaviour = Instantiate(enemy.Prefab, _enemyContainer);
             enemyBehaviour.transform.position = spawnPoint.position + new Vector3(0f, _spawnOffset, 0f);
             enemyBehaviour.transform.localRotation = spawnPoint.localRotation; // ? is this even necessary?
-            SetMetadata(enemyBehaviour, enemy);
+            SetMetadata(spawnData, enemyBehaviour, enemy);
 
             _spawnedEnemies.Add(enemyBehaviour);
         }
 
-        private void SetMetadata(EnemyBehaviour enemyBehaviour, EnemyScriptableObject enemy)
+        private void SetMetadata(EnemySpawnData spawnData, EnemyBehaviour enemyBehaviour, EnemyScriptableObject enemy)
         {
             // TODO: Prevent same file from spawning twice in the same "chunk?"
 
             enemyBehaviour.Setup(enemy.Health, _tweenManager, OnDeath);
             if (enemyBehaviour is TxtBehaviour txtBehaviour)
             {
-                var metadata = RandomFromArray(TxtMetadata);
+                var metadatas = spawnData.OverrideDefaultSpawns && spawnData.TxtMetadata.Length > 0 ? spawnData.TxtMetadata : DefaultTxtMetadata;
+                var metadata = metadatas[IndexFromWeights(metadatas.Select(x => x.SpawnWeight).ToList())].Metadata;
                 txtBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
             else if (enemyBehaviour is PngBehaviour pngBehaviour)
             {
-                var metadata = RandomFromArray(PngMetadata);
+                var metadatas = spawnData.OverrideDefaultSpawns && spawnData.PngMetadata.Length > 0 ? spawnData.PngMetadata : DefaultPngMetadata;
+                var metadata = metadatas[IndexFromWeights(metadatas.Select(x => x.SpawnWeight).ToList())].Metadata;
                 pngBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
             else if (enemyBehaviour is JpgBehaviour jpgBehaviour)
             {
-                var metadata = RandomFromArray(JpgMetadata);
+                var metadatas = spawnData.OverrideDefaultSpawns && spawnData.JpgMetadata.Length > 0 ? spawnData.JpgMetadata : DefaultJpgMetadata;
+                var metadata = metadatas[IndexFromWeights(metadatas.Select(x => x.SpawnWeight).ToList())].Metadata;
                 jpgBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
             else if (enemyBehaviour is FbxBehaviour fbxBehaviour)
             {
-                var metadata = RandomFromArray(FbxMetadata);
+                var metadatas = spawnData.OverrideDefaultSpawns && spawnData.FbxMetadata.Length > 0 ? spawnData.FbxMetadata : DefaultFbxMetadata;
+                var metadata = metadatas[IndexFromWeights(metadatas.Select(x => x.SpawnWeight).ToList())].Metadata;
                 fbxBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
         }
 
-        private T RandomFromArray<T>(T[] array)
+        private List<Transform> PickSpawnPoints(EnemySpawnData spawnData)
         {
-            return array[Random.Range(0, array.Length)];
-        }
+            // im not doing more validation than this i will simply not have bad data
+            var min = spawnData.MinEnemies > 0 ? spawnData.MinEnemies : 0;
+            var max = spawnData.MaxEnemies < spawnData.SpawnPoints.Count ? spawnData.MaxEnemies : spawnData.SpawnPoints.Count;
+            var roomsToGenerate = Random.Range(min, max); // max is exclusive, might need to add one?
 
-        private List<Transform> PickSpawnPoints(EnemySpawnDefinition spawnDefinition)
-        {
             List<Transform> spawnPoints = new();
-            foreach (var spawnPoint in spawnDefinition.SpawnPoints)
-            {
-                if (Random.Range(0f, 1f) >= spawnDefinition.SpawnChance)
-                {
-                    spawnPoints.Add(spawnPoint);
-                }
-            }
 
             // gross
-            int breakOut = 0;
-            while (spawnDefinition.MaxSpawnCount > -1 && spawnPoints.Count >= spawnDefinition.MaxSpawnCount && breakOut < 50)
+            int breakout = 0;
+            while (spawnPoints.Count < roomsToGenerate && breakout < 300)
             {
-                breakOut++;
-                spawnPoints.RemoveAt(Random.Range(0, spawnPoints.Count));
-            }
-
-            // loop while min spawn point isn't met and spawnPoints hasn't exhausted all points,
-            while (spawnDefinition.MinSpawnCount > -1 && spawnPoints.Count != spawnDefinition.SpawnPoints.Count && spawnPoints.Count <= spawnDefinition.MinSpawnCount && breakOut < 50)
-            {
-                breakOut++;
-                var randomSpawnPoint = spawnDefinition.SpawnPoints[Random.Range(0, spawnDefinition.SpawnPoints.Count)];
-                if (spawnPoints.Contains(randomSpawnPoint)) continue;
-                spawnPoints.Add(randomSpawnPoint);
+                breakout++;
+                var randomSpawnPoint = spawnData.SpawnPoints[Random.Range(0, spawnData.SpawnPoints.Count)];
+                if (!spawnPoints.Contains(randomSpawnPoint)) spawnPoints.Add(randomSpawnPoint);
             }
 
             return spawnPoints;

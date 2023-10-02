@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CMIYC.Enemy
 {
-    public class EnemySpawner : MonoBehaviour
+    public class EnemySpawnData : MonoBehaviour
     {
         [field: Tooltip("All potential spawn transforms")]
         [field: SerializeField]
@@ -31,6 +31,8 @@ namespace CMIYC.Enemy
         public List<EnemySpawnChance> SpawnedEnemies { get; set; } = new();
 
         [field: Header("If metadata is not set on a spawned enemy type, default enemies (all) will be used")]
+        [field: Header("Weights are in-group. A txt file with a 9999 spawn chance and a png file with a 1 spawn chance")]
+        [field: Header("Will be 50/50 if they're the only two files + filetypes")]
         [field: SerializeField]
         public TxtMetadataScriptableObjectInstance[] TxtMetadata { get; set; } = Array.Empty<TxtMetadataScriptableObjectInstance>();
         [field: SerializeField]
