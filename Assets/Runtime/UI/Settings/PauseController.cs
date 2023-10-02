@@ -92,6 +92,7 @@ namespace CMIYC.UI.Settings
                 _unpauseSFX.Play();
 
                 HidePauseMenu(_settingsDuration);
+                _musicLoop.DisableLowPass(_settingsDuration);
             }
         }
 
@@ -116,9 +117,6 @@ namespace CMIYC.UI.Settings
             // Settings panel bounce animation
             _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithY(t), Easer.OutBounce);
             _tweenManager.Run(1, 0, duration, t => _menuPanel.localScale = _menuPanel.localScale.WithX(t), Easer.InBack);
-
-            // Lowpass
-            _musicLoop.DisableLowPass(duration);
         }
     }
 }

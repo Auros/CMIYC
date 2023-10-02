@@ -32,6 +32,8 @@ namespace CMIYC.UI
         // This certainly wouldnt be Auros approved but we're in a game jam, i dont give a fuck
         private void LateUpdate()
         {
+            _ammoCounter.enabled = !_weaponManager.CurrentWeaponInstance.Reloading;
+
             var ammo = _weaponManager.CurrentWeaponInstance.Ammo;
 
             if (ammo != _cachedAmmo)
