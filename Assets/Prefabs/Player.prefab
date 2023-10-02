@@ -376,6 +376,9 @@ MonoBehaviour:
   _weaponRoot: {fileID: 284327309987478461}
   _inputController: {fileID: 0}
   _deathController: {fileID: 0}
+  _crosshairRaycastMask:
+    serializedVersion: 2
+    m_Bits: 65537
 --- !u!114 &2685141081799896285
 MonoBehaviour:
   m_ObjectHideFlags: 0

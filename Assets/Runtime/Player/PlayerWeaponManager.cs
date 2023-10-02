@@ -32,6 +32,9 @@ namespace CMIYC.Player
         [SerializeField]
         private DeathController _deathController = null!;
 
+        [SerializeField]
+        private LayerMask _crosshairRaycastMask = default;
+
         private bool _inputShooting = false;
 
         private void Update()
@@ -49,7 +52,7 @@ namespace CMIYC.Player
             var crosshairRay = _mainCamera.ScreenPointToRay(crosshairScreenSpace);
 
             // Raycast against everything to see where our projectiles *should* be directed
-            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance)
+            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance, _crosshairRaycastMask)
                 ? raycastHit.point
                 : crosshairRay.GetPoint(_crosshairMaxDistance);
 
@@ -92,7 +95,7 @@ namespace CMIYC.Player
             var crosshairRay = _mainCamera.ScreenPointToRay(crosshairScreenSpace);
 
             // Raycast against everything to see where our projectiles *should* be directed
-            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance)
+            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance, _crosshairRaycastMask)
                 ? raycastHit.point
                 : crosshairRay.GetPoint(_crosshairMaxDistance);
 

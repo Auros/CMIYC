@@ -230,8 +230,10 @@ MonoBehaviour:
   <FireSpeed>k__BackingField: 0.05
   <ReloadTime>k__BackingField: -1
   _audioPool: {fileID: 8096867910002697901}
-  _shootClip: {fileID: 8300000, guid: e97e9cf23079db24dbd1aa1a4b514602, type: 3}
-  _reloadClip: {fileID: 8300000, guid: 5af9bbcea8d167645a15b0b1e091dbb4, type: 3}
+  _shootClip:
+  - {fileID: 8300000, guid: 09c0276b0dd7dc842ac04a240b001657, type: 3}
+  _reloadClip:
+  - {fileID: 8300000, guid: f1471d1fb7268b74a86d9b346c85a850, type: 3}
   <ReloadSoundTime>k__BackingField: 0.8
 --- !u!114 &8096867910002697901
 MonoBehaviour:
@@ -249,7 +251,7 @@ MonoBehaviour:
     type: 2}
   _volume: 1
   _pitchBase: 1
-  _pitchRandomness: 0
+  _pitchRandomness: 0.025
   _initialPoolSize: 0
 --- !u!1 &1684371181144043872
 GameObject:

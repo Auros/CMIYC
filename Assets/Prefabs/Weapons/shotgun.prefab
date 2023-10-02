@@ -5125,8 +5125,11 @@ MonoBehaviour:
   <FireSpeed>k__BackingField: 0.5
   <ReloadTime>k__BackingField: 3
   _audioPool: {fileID: 3470568170760121030}
-  _shootClip: {fileID: 8300000, guid: 37167fc5f49e7274e9dcfb8720b6c4f4, type: 3}
-  _reloadClip: {fileID: 8300000, guid: 7576e7a515978584da1f7c0dec6a1701, type: 3}
+  _shootClip:
+  - {fileID: 8300000, guid: 37167fc5f49e7274e9dcfb8720b6c4f4, type: 3}
+  _reloadClip:
+  - {fileID: 8300000, guid: 88f2440743d1dc74092068d7d8bb0b3e, type: 3}
+  - {fileID: 8300000, guid: a0b208450def4e14d9840f19e35c5722, type: 3}
   <ReloadSoundTime>k__BackingField: 2
 --- !u!114 &3470568170760121030
 MonoBehaviour:
@@ -5142,7 +5145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxMixerGroup: {fileID: -7547405672701232151, guid: 3358d5c7039dcc6448ab7a71344eedbe,
     type: 2}
-  _volume: 0.9
+  _volume: 1
   _pitchBase: 1
   _pitchRandomness: 0
   _initialPoolSize: 2

@@ -3562,7 +3562,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 31eac1907a51c32448a6e959f91df58a, type: 2}
   - {fileID: 11400000, guid: 8db367e4747a05840b3b2036c3a75d17, type: 2}
   - {fileID: 11400000, guid: 03ccc8e6e716db44281132ad73b56943, type: 2}
-  <FbxMetadata>k__BackingField: []
+  <FbxMetadata>k__BackingField:
+  - {fileID: 11400000, guid: 67b4f7f72a6bde745bc3e068afafd82e, type: 2}
   _enemyContainer: {fileID: 1224423184}
   _player: {fileID: 1044444512}
   _inputBroadcaster: {fileID: 35662607}
@@ -19917,6 +19918,9 @@ MonoBehaviour:
   <SpawnChance>k__BackingField: 0.3
   <SpawnedEnemies>k__BackingField:
   - <Enemy>k__BackingField: {fileID: 11400000, guid: 1b7048bfded751c4f970f196a12f85a8,
+      type: 2}
+    <SpawnWeight>k__BackingField: 1
+  - <Enemy>k__BackingField: {fileID: 11400000, guid: d5c60c043ba44fe48a1f2505165f2e4e,
       type: 2}
     <SpawnWeight>k__BackingField: 1
 --- !u!1 &1913355548
