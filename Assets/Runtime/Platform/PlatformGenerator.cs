@@ -89,7 +89,6 @@ namespace CMIYC.Platform
 
                 var result = BuildMotherboard(from, start);
 
-                Debug.Log(result?.RoomCount);
                 if (result?.RoomCount >= _minRooms)
                 {
                     return result;

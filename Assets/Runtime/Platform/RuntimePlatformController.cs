@@ -61,6 +61,13 @@ namespace CMIYC.Platform
                         if (room.Cardinal == Cardinal.South) location = room.AnchorLocation + new Vector2Int(-i, -j);
                         if (room.Cardinal == Cardinal.North) location = room.AnchorLocation + new Vector2Int(i, j);
 
+                        if ((segmentCardinal == Cardinal.East || segmentCardinal == Cardinal.West))
+                        {
+                            if (room.Cardinal == Cardinal.West || room.Cardinal == Cardinal.East)
+                            {
+                                segmentCardinal = segmentCardinal == Cardinal.East ? Cardinal.West : Cardinal.East;
+                            }
+                        }
                         _roomCardinals.TryAdd(location, Multiply(room.Cardinal, segmentCardinal));
                     }
                 }
