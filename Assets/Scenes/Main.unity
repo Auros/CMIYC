@@ -553,8 +553,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aecc86e9e876fd14ab5374940ee43ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _recyclingBin: {fileID: 2113079093}
   _motherboardSize: {x: 25, y: 25}
   _hallwayPrefab: {fileID: 1865503140}
+  _motherboardPrefab: {fileID: 1129287347168446103, guid: eff906c519643ca4dbd9062cd86e9699,
+    type: 3}
   _roomSpawnOptions:
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: d816cf847fed39e408cc9b807b85e286,
@@ -572,6 +575,7 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: 4a2772240a27329489ddf399e09b0b11,
       type: 3}
   _targetMotherboardVolume: 0.08
+  _initialRoomPoolSizePerRoom: 10
   _sampleAttempts: 5
   _seed: -1
   _drawGizmos: 0
@@ -2079,7 +2083,7 @@ PrefabInstance:
     - target: {fileID: 222402072528983881, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00024414062
+      value: -0.00079345703
       objectReference: {fileID: 0}
     - target: {fileID: 360101715030034532, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
@@ -3269,6 +3273,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2113079093}
   - {fileID: 478547058}
   - {fileID: 2085447482}
   m_Father: {fileID: 0}
@@ -4025,6 +4030,37 @@ Transform:
   - {fileID: 1921352216}
   - {fileID: 1902418346}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2113079092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2113079093}
+  m_Layer: 0
+  m_Name: '[Recycling Bin]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2113079093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113079092}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1831088123}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
