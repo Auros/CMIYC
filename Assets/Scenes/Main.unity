@@ -332,6 +332,9 @@ MonoBehaviour:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 993579f13d17fc449942ce26e4dbc92a,
       type: 2}
     SpawnWeight: 1
+  - <Metadata>k__BackingField: {fileID: 11400000, guid: ecb03a9593c88c64bb43664488bb0c15,
+      type: 2}
+    SpawnWeight: 0.25
   <DefaultPngMetadata>k__BackingField:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 9bc4436bf45cd1e40b67bd65698df883,
       type: 2}
@@ -393,6 +396,9 @@ MonoBehaviour:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: d852b51a9f9c389428fa78d076a0bde7,
       type: 2}
     SpawnWeight: 1
+  - <Metadata>k__BackingField: {fileID: 11400000, guid: cdf47ba19187f124bb74fae6b8849abf,
+      type: 2}
+    SpawnWeight: 1
   <DefaultJpgMetadata>k__BackingField:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 6d66a36290b2fe94aa1ba8f93c2dce67,
       type: 2}
@@ -452,6 +458,9 @@ MonoBehaviour:
       type: 2}
     SpawnWeight: 1
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 03ccc8e6e716db44281132ad73b56943,
+      type: 2}
+    SpawnWeight: 1
+  - <Metadata>k__BackingField: {fileID: 11400000, guid: 611f77ad958b09b4099282e913b3c396,
       type: 2}
     SpawnWeight: 1
   <DefaultFbxMetadata>k__BackingField:
@@ -553,8 +562,14 @@ MonoBehaviour:
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 8633760877094967128, guid: 61067af4649e74b4894eef9f51e939ea,
       type: 3}
-  - <Weight>k__BackingField: 2
+  - <Weight>k__BackingField: 1
+    <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: cb8e53c3f0c1dcc4e85bf43c3efa1af9,
+      type: 3}
+  - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 3510235668012989961, guid: 1ff5b7508e729cc459d46a10432c3f0a,
+      type: 3}
+  - <Weight>k__BackingField: 1
+    <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: 4a2772240a27329489ddf399e09b0b11,
       type: 3}
   _targetMotherboardVolume: 0.08
   _sampleAttempts: 5
