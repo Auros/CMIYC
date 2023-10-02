@@ -20,6 +20,6 @@ namespace CMIYC.UI.Settings
 
         // thanks, john french
         public void OnSliderValueChanged(float newValue)
-            => _audioMixer.SetFloat(_audioMixerFloatID, Mathf.Log10(newValue) * 20);
+            => _audioMixer.SetFloat(_audioMixerFloatID, Mathf.Log10(Mathf.Max(0.0001f, newValue)) * 20);
     }
 }
