@@ -3563,7 +3563,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: cc568a90cc9c9d740b3812228e0f1516, type: 2}
+  sharedProfile: {fileID: 11400000, guid: a6560a915ef98420e9faacc1c7438823, type: 2}
 --- !u!4 &1715569926
 Transform:
   m_ObjectHideFlags: 0
@@ -3759,7 +3759,7 @@ ReflectionProbe:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 249983
   m_IntensityMultiplier: 1
   m_BlendDistance: 1
   m_HDR: 1
