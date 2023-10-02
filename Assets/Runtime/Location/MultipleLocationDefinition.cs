@@ -28,21 +28,22 @@ namespace CMIYC.Location
             "_LAST",
             "LASTBACKUPFORREAL",
             "_secret",
+            "_Data",
         };
 
 
         [SerializeField]
         private List<string> _locations = new List<string>();
 
-        private string _location = null!;
+        private string? _location;
 
         // idk if awake will always trigger before OnTriggerEnter.. but probably!!
         void Awake()
         {
             // pick a name
-            PickBestName();
+            // PickBestName();
 
-            Debug.Log(_location);
+            // Debug.Log(_location);
         }
 
         private void PickBestName()
@@ -90,7 +91,7 @@ namespace CMIYC.Location
             }
             else
             {
-                _usedLocations.Add(randomLocation, 0);
+                _usedLocations.Add(randomLocation, 1);
             }
 
             _location = randomLocation;
@@ -117,7 +118,11 @@ namespace CMIYC.Location
         {
             if (other.gameObject.TryGetComponent<PlayerController>(out var player))
             {
-                player.BroadcastMessage(nameof(LocationController.EnterLocation), _location, SendMessageOptions.DontRequireReceiver);
+                if (_location == null)
+                {
+                    PickBestName();
+                }
+                player.BroadcastMessage(nameof(LocationController.EnterLocation), _location!, SendMessageOptions.DontRequireReceiver);
             }
         }
 
