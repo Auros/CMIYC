@@ -335,6 +335,7 @@ MonoBehaviour:
   _inputBroadcaster: {fileID: 35662607}
   _tweenManager: {fileID: 549250822}
   _musicLoop: {fileID: 1118416833}
+  _playerHealthController: {fileID: 1656156369}
   <SpawnedEnemies>k__BackingField:
   - <Enemy>k__BackingField: {fileID: 11400000, guid: 1b7048bfded751c4f970f196a12f85a8,
       type: 2}
@@ -347,7 +348,7 @@ MonoBehaviour:
     <SpawnWeight>k__BackingField: 1
   - <Enemy>k__BackingField: {fileID: 11400000, guid: d5c60c043ba44fe48a1f2505165f2e4e,
       type: 2}
-    <SpawnWeight>k__BackingField: 0.05
+    <SpawnWeight>k__BackingField: 1
   <DefaultTxtMetadata>k__BackingField:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: b6186b2f70d1f1d4fb07b128d57ae47a,
       type: 2}
@@ -3482,6 +3483,18 @@ MonoBehaviour:
   _folderSprite: {fileID: 2800000, guid: fa894f0e7a1d01b4fa987e790779f1ed, type: 3}
   _txtSprite: {fileID: -7699148854815889967, guid: 6073fb2b8919e334a91967345f7eb45d,
     type: 2}
+--- !u!114 &1656156369 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2615342334743526033, guid: b2daad300bf508946b6b029056f77ffc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1491424097}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc943db7cf44f35448c6291cf2f3d02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1713146253
 GameObject:
   m_ObjectHideFlags: 0
@@ -3609,7 +3622,7 @@ GameObject:
   - component: {fileID: 1902418345}
   - component: {fileID: 1902418344}
   - component: {fileID: 1902418343}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3777,8 +3790,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1921352216}
   - component: {fileID: 1921352218}
+  - component: {fileID: 1921352219}
   - component: {fileID: 1921352217}
-  m_Layer: 0
+  - component: {fileID: 1921352220}
+  m_Layer: 13
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3794,7 +3809,7 @@ Transform:
   m_GameObject: {fileID: 1921352215}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1000, y: 50, z: 1000}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3830,6 +3845,61 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1921352215}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1921352219
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921352215}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 846249de7b4e47b45bfc675ad72c74df, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1921352220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921352215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07bf511643c454a4da1a5486d8512ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deathController: {fileID: 1072690213}
 --- !u!1 &1985151206
 GameObject:
   m_ObjectHideFlags: 0
@@ -4045,7 +4115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2100534953}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}

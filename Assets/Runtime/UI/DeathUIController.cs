@@ -54,15 +54,18 @@ namespace CMIYC.UI
             _deathController.OnPlayerDeath += OnPlayerDeath;
             _deathController.OnPlayerDeath += _directoryController.OnPlayerDeath; // guh
             _healthController.PlayerTookDamage += PlayerTookDamage;
+            _healthController.PlayerHealed += PlayerHealed;
         }
 
-        private void OnPlayerDeath() => DeathAsync().Forget();
+        private void OnPlayerDeath() => DeathAsync().AttachExternalCancellation(this.GetCancellationTokenOnDestroy()).Forget();
 
         private void PlayerTookDamage()
         {
             _damageTween?.Cancel();
 
             if (_healthController.Health <= 0) return;
+
+            _background.color = new(0.75f, 0, 0, 0);
 
             // Alpha will be 0 - 0.5 depending on health of the player
             var inverseHealth = 1f - (_healthController.Health / _healthController.InitialHealth);
@@ -72,16 +75,25 @@ namespace CMIYC.UI
             _damageTween = _tweenManager.Run(alpha, 0, 1f, a => _background.color = _background.color.WithA(a), Easer.OutCubic);
         }
 
+        private void PlayerHealed()
+        {
+            _damageTween?.Cancel();
+            _background.color = new(1, 1, 1, 0);
+            _damageTween = _tweenManager.Run(0.4f, 0, 1f, a => _background.color = _background.color.WithA(a), Easer.OutCubic);
+        }
+
         private void OnDestroy()
         {
             _deathController.OnPlayerDeath -= OnPlayerDeath;
             _healthController.PlayerTookDamage -= PlayerTookDamage;
+            _healthController.PlayerHealed -= PlayerHealed;
         }
 
         private async UniTask DeathAsync()
         {
             _wrapperObject.SetActive(true);
             _damageTween?.Cancel();
+            _background.color = new(0.75f, 0, 0, 0);
 
 #pragma warning disable CS4014 // We do *not* want to await TweenManager.Run calls here
             _background.color = _background.color.WithA(0.75f);

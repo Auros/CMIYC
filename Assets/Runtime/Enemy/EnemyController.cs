@@ -32,6 +32,8 @@ namespace CMIYC.Enemy
         private TweenManager _tweenManager = null!;
         [SerializeField]
         private MusicLoop _musicLoop = null!;
+        [SerializeField]
+        private PlayerHealthController _playerHealthController = null!;
 
         [field: SerializeField]
         public List<EnemySpawnChance> SpawnedEnemies { get; set; } = new();
@@ -62,7 +64,10 @@ namespace CMIYC.Enemy
             // only update once every 10 frames
             if (Time.frameCount % 10 != 0) return;
 
-            var playerPosition = _player.position;
+            // the jank continues
+            var playerPosition = _playerHealthController.Health > 0
+                ? _player.position
+                : -1000 * Vector3.down;
             foreach (var enemy in _spawnedEnemies)
             {
                 enemy.UpdatePlayerPosition(playerPosition);

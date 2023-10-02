@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CMIYC.Audio;
 using CMIYC.Metadata;
 using CMIYC.Projectiles;
 using Cysharp.Threading.Tasks;
@@ -23,6 +24,11 @@ namespace CMIYC.Enemy.Behaviour
 
         private static int _addToNoiseProperty = Shader.PropertyToID("_AddToNoiseUV");
         private static int _mainTexProperty = Shader.PropertyToID("_MainTex");
+
+        [SerializeField]
+        private AudioPool _audioPool = null!;
+        [SerializeField]
+        private AudioClip[] _jpgSfx = null!;
 
         // Images: width * height * 4 bytes per pixel
         public override int Size => AssignedMetadata.Texture.width * AssignedMetadata.Texture.height * 4;
@@ -52,6 +58,7 @@ namespace CMIYC.Enemy.Behaviour
                 await UniTask.Delay(2500);
                 if (_isWithinPlayerRange && _isAlive)
                 {
+                    _audioPool.Play(_jpgSfx[Random.Range(0, _jpgSfx.Length)]);
                     for (int i = 0; i < bulletCount; i++)
                     {
                         CreatePngProjectile(_projectileSpawnPoints[i], _projectileColors[i], i);
