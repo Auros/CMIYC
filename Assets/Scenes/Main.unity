@@ -348,7 +348,7 @@ MonoBehaviour:
     <SpawnWeight>k__BackingField: 1
   - <Enemy>k__BackingField: {fileID: 11400000, guid: d5c60c043ba44fe48a1f2505165f2e4e,
       type: 2}
-    <SpawnWeight>k__BackingField: 1
+    <SpawnWeight>k__BackingField: 0.3
   <DefaultTxtMetadata>k__BackingField:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: b6186b2f70d1f1d4fb07b128d57ae47a,
       type: 2}
