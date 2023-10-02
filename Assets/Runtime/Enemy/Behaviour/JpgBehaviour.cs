@@ -8,6 +8,8 @@ namespace CMIYC.Enemy.Behaviour
 {
     public class JpgBehaviour : EnemyBehaviour
     {
+        public JpgMetadataScriptableObject AssignedMetadata { get; private set; }
+
         [SerializeField]
         private Renderer _imageRenderer;
 
@@ -25,6 +27,8 @@ namespace CMIYC.Enemy.Behaviour
         private int bulletCount = 4;
         public void SetMetadata(JpgMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
+            AssignedMetadata = metadata;
+
             // should prob be cached or something
             var fileExtension = "." + enemy.EnemyTypeName.ToLower();
 

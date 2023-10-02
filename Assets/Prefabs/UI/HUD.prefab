@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 5020753806508446428}
   - component: {fileID: 8159173327359514430}
   - component: {fileID: 6748677617891656905}
+  - component: {fileID: 7833045112905702837}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -553,6 +554,20 @@ MonoBehaviour:
   _slider: {fileID: 1702852423419770182}
   _playerHealthController: {fileID: 0}
   _lerpStrength: 5
+--- !u!114 &7833045112905702837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2653215865125207177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a111d40d1189f246b254fee6f8bb487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scoreController: {fileID: 0}
+  _text: {fileID: 6702751576705442903}
 --- !u!1 &2914759734784007847
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,6 +1060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterTransform: {fileID: 0}
+  _playerHealthController: {fileID: 0}
   _useUnscaledTime: 0
   _reactionStrength: 5
   _movementSensitivity: 10

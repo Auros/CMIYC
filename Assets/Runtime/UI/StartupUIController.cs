@@ -122,7 +122,7 @@ namespace CMIYC.UI
             if (cancellationToken.IsCancellationRequested) return;
 
             // Type-in effect
-            await TypeInEffect(_locationText);
+            await TypeInEffect(_locationText, cancellationToken);
 
             if (cancellationToken.IsCancellationRequested) return;
 
@@ -136,7 +136,7 @@ namespace CMIYC.UI
             var tweenB = _tweenManager.Run(0f, -400f, _animationLength, x => _locationText.rectTransform.anchoredPosition = _locationText.rectTransform.anchoredPosition.WithX(x), Easer.InCubic);
 
             // THIS IS NOT #1 VICTORY ROYALE
-            var t = 0;
+            var t = 0f;
             while (t <= _animationLength)
             {
                 await UniTask.Yield();
@@ -148,7 +148,7 @@ namespace CMIYC.UI
                     return;
                 }
 
-                _animationLength += Time.deltaTime;
+                t += Time.deltaTime;
             }
         }
 

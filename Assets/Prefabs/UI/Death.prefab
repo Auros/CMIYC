@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 5001536780431743384}
   - component: {fileID: 5135539070701787932}
   - component: {fileID: 6524623334067273482}
+  - component: {fileID: 3679663586712561517}
   - component: {fileID: 1669700840085739731}
   m_Layer: 5
   m_Name: Death
@@ -151,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deathController: {fileID: 0}
   _healthController: {fileID: 0}
+  _glitchyEffect: {fileID: 0}
   _wrapperObject: {fileID: 8700918408411396869}
   _deathPanelParent: {fileID: 2804114840602065383}
   _tweenManager: {fileID: 5135539070701787932}
@@ -158,6 +160,20 @@ MonoBehaviour:
   _initialDelay: 1
   _animationOffset: 0.3
   _animationLength: 1
+--- !u!114 &3679663586712561517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532791109132256373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a111d40d1189f246b254fee6f8bb487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scoreController: {fileID: 0}
+  _text: {fileID: 8576619655714791808}
 --- !u!114 &1669700840085739731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterTransform: {fileID: 0}
+  _playerHealthController: {fileID: 0}
   _useUnscaledTime: 1
   _reactionStrength: 5
   _movementSensitivity: 10
