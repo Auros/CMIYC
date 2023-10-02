@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CMIYC.Platform
 {
-    public class HallDefinition : MonoBehaviour
+    public class HallDefinition : Definition
     {
         [SerializeField]
         private Transform _northWallAnchorTarget = null!;
@@ -17,6 +17,9 @@ namespace CMIYC.Platform
 
         [SerializeField]
         private Transform _westWallAnchorTarget = null!;
+
+        [field: SerializeField]
+        public Vector2Int Cell { get; set; }
 
         public void SetWall(Cardinal direction, Wall? wall)
         {
@@ -38,6 +41,11 @@ namespace CMIYC.Platform
             var positionalOffset = target.position - wallTransform.position;
             var rotationalOffset = target.rotation * Quaternion.Inverse(wallTransform.rotation);
 
+
+        }
+
+        protected override void OnDrawGizmos()
+        {
 
         }
     }

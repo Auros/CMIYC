@@ -152,7 +152,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.05, z: 0}
-  m_LocalScale: {x: 8, y: 0.1, z: 8}
+  m_LocalScale: {x: 10, y: 0.1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2036567761}
@@ -290,6 +290,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 773226545}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &395508793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 395508794}
+  m_Layer: 0
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &395508794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395508793}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2036567761}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &419660840
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,7 +969,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aecc86e9e876fd14ab5374940ee43ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherboardSize: {x: 15, y: 15}
+  _motherboardSize: {x: 25, y: 25}
+  _hallwayPrefab: {fileID: 2036567762}
   _roomSpawnOptions:
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 419660841}
@@ -946,9 +978,9 @@ MonoBehaviour:
     <Prefab>k__BackingField: {fileID: 1715824668}
   - <Weight>k__BackingField: 1
     <Prefab>k__BackingField: {fileID: 1639925197}
-  _targetMotherboardVolume: 0.1
+  _targetMotherboardVolume: 0.136
   _sampleAttempts: 5
-  _seed: 1
+  _seed: 236
 --- !u!4 &1560506414
 Transform:
   m_ObjectHideFlags: 0
@@ -1023,16 +1055,6 @@ MonoBehaviour:
     _east: 0
     _south: 0
     _west: 0
-  - <Location>k__BackingField: {x: 2, y: 1}
-    _north: 0
-    _east: 2
-    _south: 0
-    _west: 0
-  - <Location>k__BackingField: {x: 0, y: 1}
-    _north: 0
-    _east: 0
-    _south: 0
-    _west: 2
 --- !u!1 &1667400255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1603,7 +1625,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2036567761
 Transform:
   m_ObjectHideFlags: 0
@@ -1613,12 +1635,13 @@ Transform:
   m_GameObject: {fileID: 2036567760}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 0, z: 4}
+  m_LocalPosition: {x: -20.5, y: 0, z: -0.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 773226545}
   - {fileID: 119656383}
+  - {fileID: 395508794}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2036567762
@@ -1633,10 +1656,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b0415113d349d0816b63c4096eb7f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _size: {x: 1, y: 1}
+  _originAnchorTarget: {fileID: 395508794}
   _northWallAnchorTarget: {fileID: 1152826604}
   _eastWallAnchorTarget: {fileID: 171556651}
   _southWallAnchorTarget: {fileID: 168998671}
   _westWallAnchorTarget: {fileID: 838563364}
+  <Cell>k__BackingField: {x: 0, y: 0}
 --- !u!1 &2054301962
 GameObject:
   m_ObjectHideFlags: 0

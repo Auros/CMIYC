@@ -14,6 +14,9 @@ namespace CMIYC.Platform
         private Vector2Int _motherboardSize = new(5, 5);
 
         [SerializeField]
+        private HallDefinition _hallwayPrefab = null!;
+
+        [SerializeField]
         private RoomSpawnOption[] _roomSpawnOptions = Array.Empty<RoomSpawnOption>();
 
         [Range(0, 1)]
@@ -41,12 +44,39 @@ namespace CMIYC.Platform
         private void Start()
         {
             _random = new Random(_seed);
-            BuildMotherboard(Cardinal.West);
+            var result = BuildMotherboard(Cardinal.South, new Vector2Int(0, 0));
+            if (result is null)
+                return;
+
+            /*BuildMotherboard(result.Advancement switch
+            {
+                Cardinal.North => Cardinal.South,
+                Cardinal.East => Cardinal.West,
+                Cardinal.South => Cardinal.North,
+                Cardinal.West => Cardinal.East,
+                _ => throw new ArgumentOutOfRangeException()
+            }, result.Advancement switch
+            {
+                Cardinal.North => new Vector2Int(result.End.x, 0),
+                Cardinal.East => new Vector2Int(0, result.End.y),
+                Cardinal.South => new Vector2Int(result.End.x, _motherboardSize.y - 1),
+                Cardinal.West => new Vector2Int(_motherboardSize.x - 1, result.End.y),
+                _ => throw new ArgumentOutOfRangeException()
+            });*/
+
+            Debug.Log(result.Advancement);
+        }
+
+        private class MotherboardGenerationResult
+        {
+            public Vector2Int End { get; set; }
+
+            public Cardinal Advancement { get; set; }
         }
 
         private Random GetRandom() => _random;
 
-        private void BuildMotherboard(Cardinal from, Vector2Int? start = null)
+        private MotherboardGenerationResult? BuildMotherboard(Cardinal from, Vector2Int start)
         {
             var random = GetRandom();
             var maxDaughters = _motherboardSize.x * _motherboardSize.y;
@@ -57,7 +87,7 @@ namespace CMIYC.Platform
 
             // There are no valid rooms... womp womp
             if (validWeightedRooms.Length is 0)
-                return;
+                return null;
 
             var roomPrefabs = ListPool<RoomDefinition>.Get();
 
@@ -105,7 +135,7 @@ namespace CMIYC.Platform
                     Rect rect = new(randomX, randomY, physicalSize.x, physicalSize.y);
 
                     // Check if this room was placed in bounds
-                    if (0 > (int)rect.xMin || 0 > (int)rect.yMin || (int)rect.xMax >= _motherboardSize.x || (int)rect.yMax >= _motherboardSize.y)
+                    if (0 >= (int)rect.xMin || 0 >= (int)rect.yMin || (int)rect.xMax >= _motherboardSize.x || (int)rect.yMax >= _motherboardSize.y)
                         continue;
 
                     // Check if this room overlaps with any previously calculated room
@@ -143,9 +173,10 @@ namespace CMIYC.Platform
             {
                 //Debug.Log($"{inst.Prefab.name}: {inst.Rect}, {inst.Cardinal}");
                 var def = inst.Definition = Instantiate(inst.Prefab);
+
                 var defTransform = def.transform;
-                defTransform.SetParent(motherboardTransform);
                 def.SetData(inst.Cardinal, inst.Position);
+                defTransform.SetParent(motherboardTransform);
 
                 defTransform.localRotation = Quaternion.Euler(0f, inst.Cardinal switch
                 {
@@ -167,76 +198,54 @@ namespace CMIYC.Platform
                 defTransform.SetParent(motherboardTransform);
                 def.Anchor.SetParent(defTransform, true);
 
-                //Debug.Log("Transformed To World: " + def.TransformLocation(new Vector2Int(1, 1)));
-                //Debug.Log("Transformed To Local: " + def.InverseTransformLocation(new Vector2Int(0, 0)));
                 for (int x = (int)inst.Rect.xMin; x < (int)inst.Rect.xMax; x++)
-                {
-                    for (int y = (int)inst.Rect.yMin; y < (int)inst.Rect.yMax; y++)
-                    {
-                        definitionLookup.Add(new Vector2Int(x, y), def);
-                    }
-                }
+                for (int y = (int)inst.Rect.yMin; y < (int)inst.Rect.yMax; y++)
+                    definitionLookup.Add(new Vector2Int(x, y), def);
             }
 
-            if (!start.HasValue)
+            if (definitionLookup.TryGetValue(start, out var roomDefinition))
             {
-                var val = from switch
-                {
-                    Cardinal.North => _motherboardSize.x,
-                    Cardinal.South => _motherboardSize.x,
-                    Cardinal.East => _motherboardSize.y,
-                    Cardinal.West => _motherboardSize.y,
-                    _ => throw new ArgumentOutOfRangeException(nameof(from), from, null)
-                };
-
-                // TODO: REGENERATE THE ENTIRE MAP IF NO ENTRANCE IS GENERATED
-
-                var list = ListPool<Vector2Int>.Get();
-                if (from is Cardinal.North or Cardinal.South)
-                {
-                    var y = from is Cardinal.North ? _motherboardSize.y - 1 : 0;
-                    for (int x = 0; x < val; x++)
-                    {
-                        Vector2Int cell = new(x, y);
-                        list.Add(cell);
-
-                        if (!definitionLookup.TryGetValue(cell, out var definition) || definition is not RoomDefinition roomDef)
-                            continue;
-
-                        if (roomDef.GetWallSegmentType(from, cell) is not WallSegmentType.Door)
-                            continue;
-
-                        start = cell;
-                        break;
-                    }
-                }
-                else
-                {
-                    var x = from is Cardinal.East ? _motherboardSize.x - 1 : 0;
-                    for (int y = 0; y < val; y++)
-                    {
-                        Vector2Int cell = new(x, y);
-                        list.Add(cell);
-
-                        if (!definitionLookup.TryGetValue(cell, out var definition) || definition is not RoomDefinition roomDef)
-                            continue;
-
-                        if (roomDef.GetWallSegmentType(from, cell) is not WallSegmentType.Door)
-                            continue;
-
-                        start = cell;
-                        break;
-                    }
-                }
-
-                start ??= list[random.Next(0, list.Count)];
-                ListPool<Vector2Int>.Release(list);
+                roomInstances.RemoveAll(r => r.Definition == roomDefinition);
+                Destroy(roomDefinition.gameObject);
             }
 
-            Debug.Log(start);
+            var (exitDir, exitTarget) = GetRandomExitNodes(random, from);
+            GenerateHallway(exitTarget, start, motherboardTransform, roomInstances, definitionLookup);
 
             ListPool<RoomDefinition>.Release(roomPrefabs);
             ListPool<RoomInstance>.Release(roomInstances);
+
+            return new MotherboardGenerationResult
+            {
+                End = exitTarget,
+                Advancement = exitDir
+            };
+        }
+
+        private (Cardinal, Vector2Int) GetRandomExitNodes(Random random, Cardinal banned)
+        {
+            Cardinal selected;
+            Vector2Int value;
+            using (ListPool<Cardinal>.Get(out var cardinals))
+            {
+                cardinals.Add(Cardinal.North);
+                cardinals.Add(Cardinal.East);
+                cardinals.Add(Cardinal.South);
+                cardinals.Add(Cardinal.West);
+
+                cardinals.Remove(banned);
+
+                selected = cardinals[random.Next(0, cardinals.Count)];
+                value = selected switch
+                {
+                    Cardinal.North => new Vector2Int(random.Next(0, _motherboardSize.x), _motherboardSize.y - 1),
+                    Cardinal.East => new Vector2Int(_motherboardSize.x - 1, random.Next(0, _motherboardSize.x)),
+                    Cardinal.South => new Vector2Int(random.Next(0, _motherboardSize.x), 0),
+                    Cardinal.West => new Vector2Int(0, random.Next(0, _motherboardSize.x)),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            return (selected, value);
         }
 
         private void OnDrawGizmos()

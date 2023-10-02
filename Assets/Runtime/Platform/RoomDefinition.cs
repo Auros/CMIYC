@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace CMIYC.Platform
 {
+    [PublicAPI]
     public class RoomDefinition : Definition
     {
         [SerializeField]
@@ -70,13 +74,35 @@ namespace CMIYC.Platform
             var sub = Cardinal switch
             {
                 Cardinal.North => new Vector2Int(AnchorLocation.x + location.x, AnchorLocation.y + location.y),
-                Cardinal.East => new Vector2Int(AnchorLocation.x - location.y, AnchorLocation.y + location.x),
-                Cardinal.South => new Vector2Int(location.y - AnchorLocation.y, location.x - AnchorLocation.x),
+                Cardinal.East => new Vector2Int(AnchorLocation.x + location.y, AnchorLocation.y - location.x),
+                Cardinal.South => new Vector2Int(AnchorLocation.x - location.x, AnchorLocation.y - location.y),
                 Cardinal.West => new Vector2Int(AnchorLocation.x - location.y, AnchorLocation.y + location.x),
                 _ => throw new ArgumentOutOfRangeException()
             };
 
             return sub;
+        }
+
+        public IReadOnlyList<Vector2Int> GetEntranceNodes()
+        {
+            // TODO: Optimize
+            List<Vector2Int> entranceNodes = new();
+            foreach (var segment in _roomSegments)
+            {
+                var (x, y) = segment.Location;
+                if (segment.GetWallSegmentType(Cardinal.North) is WallSegmentType.Door)
+                    entranceNodes.Add(new Vector2Int(x, y + 1));
+
+                if (segment.GetWallSegmentType(Cardinal.East) is WallSegmentType.Door)
+                    entranceNodes.Add(new Vector2Int(x + 1, y));
+
+                if (segment.GetWallSegmentType(Cardinal.South) is WallSegmentType.Door)
+                    entranceNodes.Add(new Vector2Int(x, y - 1));
+
+                if (segment.GetWallSegmentType(Cardinal.West) is WallSegmentType.Door)
+                    entranceNodes.Add(new Vector2Int(x - 1, y));
+            }
+            return entranceNodes;
         }
     }
 }
