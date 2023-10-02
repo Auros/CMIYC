@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ProjectileEmitPoint>k__BackingField: {fileID: 3040423081350026563}
-  <InitialAmmo>k__BackingField: 600
+  <InitialAmmo>k__BackingField: 200
   <BulletProjectile>k__BackingField: {fileID: 3250812358997741803, guid: ed81852d1eb92f441a26ebd45fdfc82e,
     type: 3}
   <SelfProjectile>k__BackingField: {fileID: 4862823986204179984, guid: 836a2f0472bbf8f47be3103bd0ac0393,
