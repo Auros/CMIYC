@@ -27,6 +27,10 @@ namespace CMIYC.Enemy
         [field: SerializeField]
         public JpgMetadataScriptableObject[] JpgMetadata { get; private set; } = Array.Empty<JpgMetadataScriptableObject>();
 
+        [Tooltip("FBX File Metadata")]
+        [field: SerializeField]
+        public FbxMetadataScriptableObject[] FbxMetadata { get; private set; } = Array.Empty<FbxMetadataScriptableObject>();
+
         [SerializeField]
         private Transform _enemyContainer = null!;
         [SerializeField]
@@ -149,6 +153,11 @@ namespace CMIYC.Enemy
             {
                 var metadata = RandomFromArray(JpgMetadata);
                 jpgBehaviour.SetMetadata(metadata, enemy, _mainCamera);
+            }
+            else if (enemyBehaviour is FbxBehaviour fbxBehaviour)
+            {
+                var metadata = RandomFromArray(FbxMetadata);
+                fbxBehaviour.SetMetadata(metadata, enemy, _mainCamera);
             }
         }
 
