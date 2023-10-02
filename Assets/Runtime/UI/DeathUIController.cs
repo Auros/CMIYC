@@ -79,7 +79,7 @@ namespace CMIYC.UI
         {
             _damageTween?.Cancel();
             _background.color = new(1, 1, 1, 0);
-            _damageTween = _tweenManager.Run(0.4f, 0, 1f, a => _background.color = _background.color.WithA(a), Easer.OutCubic);
+            _damageTween = _tweenManager.Run(0.2f, 0, 1f, a => _background.color = _background.color.WithA(a), Easer.OutCubic);
         }
 
         private void OnDestroy()
