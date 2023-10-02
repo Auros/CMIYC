@@ -125,7 +125,7 @@ namespace CMIYC.Weapons
             if (ReloadTime >= 0)
             {
                 ReloadAsync().Forget();
-                ReloadSoundAsync();
+                ReloadSoundAsync().Forget();
             }
         }
 
