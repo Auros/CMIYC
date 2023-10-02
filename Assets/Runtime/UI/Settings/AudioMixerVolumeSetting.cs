@@ -18,7 +18,8 @@ namespace CMIYC.UI.Settings
         [SerializeField]
         private Slider _slider;
 
+        // thanks, john french
         public void OnSliderValueChanged(float newValue)
-            => _audioMixer.SetFloat(_audioMixerFloatID, Mathf.Lerp(-80, _maxVol, newValue));
+            => _audioMixer.SetFloat(_audioMixerFloatID, Mathf.Log10(newValue) * 20);
     }
 }

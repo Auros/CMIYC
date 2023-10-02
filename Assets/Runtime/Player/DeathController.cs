@@ -30,11 +30,9 @@ namespace CMIYC
             OnPlayerDeath?.Invoke();
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
             if (UnityEngine.Input.GetKeyDown(KeyCode.K)) Die();
         }
-#endif
     }
 }
