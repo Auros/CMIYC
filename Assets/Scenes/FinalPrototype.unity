@@ -3541,6 +3541,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a7dc01c7d876bf146acd02ca8206142c, type: 2}
   - {fileID: 11400000, guid: 27da4f5ae2534194198f75da25eed494, type: 2}
   - {fileID: 11400000, guid: 44c62c01dd1265541bc9227743330647, type: 2}
+  - {fileID: 11400000, guid: bef6afe8b417a024c9b0b51d56e5d15f, type: 2}
   <JpgMetadata>k__BackingField:
   - {fileID: 11400000, guid: 6d66a36290b2fe94aa1ba8f93c2dce67, type: 2}
   - {fileID: 11400000, guid: 470987c9ac682374a86ae3f535e63557, type: 2}
@@ -3562,6 +3563,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 31eac1907a51c32448a6e959f91df58a, type: 2}
   - {fileID: 11400000, guid: 8db367e4747a05840b3b2036c3a75d17, type: 2}
   - {fileID: 11400000, guid: 03ccc8e6e716db44281132ad73b56943, type: 2}
+  - {fileID: 11400000, guid: b995319e29dd9d1489087dd55c74f304, type: 2}
   <FbxMetadata>k__BackingField:
   - {fileID: 11400000, guid: 67b4f7f72a6bde745bc3e068afafd82e, type: 2}
   _enemyContainer: {fileID: 1224423184}
