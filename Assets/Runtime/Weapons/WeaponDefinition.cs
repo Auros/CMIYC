@@ -86,6 +86,7 @@ namespace CMIYC.Weapons
                 if (ReloadTime >= 0)
                 {
                     ReloadAsync().Forget();
+                    ReloadSoundAsync().Forget();
                 }
                 return false;
             }
@@ -124,14 +125,7 @@ namespace CMIYC.Weapons
             if (ReloadTime >= 0)
             {
                 ReloadAsync().Forget();
-            }
-
-            if (_audioPool != null)
-            {
-                if (_reloadClip != null)
-                {
-                    ReloadSoundAsync().Forget();
-                }
+                ReloadSoundAsync();
             }
         }
 
@@ -198,7 +192,14 @@ namespace CMIYC.Weapons
         private async UniTask ReloadSoundAsync()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(ReloadSoundTime));
-            PlayReloadSound();
+
+            if (_audioPool != null)
+            {
+                if (_reloadClip != null)
+                {
+                    PlayReloadSound();
+                }
+            }
         }
     }
 }
