@@ -9,6 +9,8 @@ namespace CMIYC.Enemy.Behaviour
 {
     public class FbxBehaviour : EnemyBehaviour
     {
+        public FbxMetadataScriptableObject AssignedMetadata { get; private set; }
+
         [SerializeField]
         private Renderer _imageRenderer;
 
@@ -23,6 +25,8 @@ namespace CMIYC.Enemy.Behaviour
 
         public void SetMetadata(FbxMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
+            AssignedMetadata = metadata;
+
             _fireRate = metadata.FireRate;
             _projectile = metadata.Projectile;
             _droppedItem = metadata.DroppedItem;
