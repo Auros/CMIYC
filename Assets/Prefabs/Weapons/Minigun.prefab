@@ -192,8 +192,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1450703956424798415}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.034860823, y: 0.09570012, z: 0.0033536416, w: -0.99479395}
-  m_LocalPosition: {x: 0.377, y: -0.364, z: 0.739}
+  m_LocalRotation: {x: 0.041198723, y: 0.037174128, z: -0.15211965, w: -0.9868031}
+  m_LocalPosition: {x: 0.25, y: -0.364, z: 1.26}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -206,7 +206,7 @@ Transform:
   - {fileID: 6192142180402905394}
   - {fileID: 2052402734552355257}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -4.014, y: 349.01, z: 0}
+  m_LocalEulerAnglesHint: {x: -4.014, y: 355.06, z: 17.7}
 --- !u!114 &7936100311538439788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
   _volume: 1
   _pitchBase: 1
   _pitchRandomness: 0.025
-  _initialPoolSize: 0
+  _initialPoolSize: 10
 --- !u!1 &1684371181144043872
 GameObject:
   m_ObjectHideFlags: 0
