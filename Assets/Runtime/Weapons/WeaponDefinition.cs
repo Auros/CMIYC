@@ -94,6 +94,7 @@ namespace CMIYC.Weapons
 
             Ammo--;
             FireProjectile(BulletProjectile, target);
+            BroadcastMessage("OnBulletFire", SendMessageOptions.DontRequireReceiver);
 
             if (ShellParticles != null)
             {
