@@ -105,7 +105,6 @@ namespace CMIYC.Enemy.Behaviour
             transform.forward = forwardDirection;
 
             // Move in a randomly shifting direction
-            (var x, var y, _) = transform.position;
             var movementRotation = 360 * Mathf.Sin((Time.time * _moveCurve) + _timeOffset) * Vector3.up;
             var wtfIsAQuaternion = Quaternion.Euler(movementRotation);
             transform.position += Time.deltaTime * (wtfIsAQuaternion * Vector3.forward);
