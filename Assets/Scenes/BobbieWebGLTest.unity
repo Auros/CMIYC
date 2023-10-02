@@ -651,11 +651,17 @@ MonoBehaviour:
   - {fileID: 1438665957}
   - {fileID: 50834891}
   - {fileID: 2038133388}
-  <MinSpawnCount>k__BackingField: 2
+  <MinSpawnCount>k__BackingField: 4
   <MaxSpawnCount>k__BackingField: 7
   <SpawnChance>k__BackingField: 0.3
   <SpawnedEnemies>k__BackingField:
   - <Enemy>k__BackingField: {fileID: 11400000, guid: 1b7048bfded751c4f970f196a12f85a8,
+      type: 2}
+    <SpawnWeight>k__BackingField: 0.001
+  - <Enemy>k__BackingField: {fileID: 11400000, guid: f7c6c9c806f207c40b58360c3e4fa998,
+      type: 2}
+    <SpawnWeight>k__BackingField: 1
+  - <Enemy>k__BackingField: {fileID: 11400000, guid: f3fe9a97d2f626f4d881a5b3f6a9ad90,
       type: 2}
     <SpawnWeight>k__BackingField: 1
 --- !u!1 &40041395
@@ -3435,8 +3441,50 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a086e8f5987f7454e9a3d81209d469f4, type: 2}
   - {fileID: 11400000, guid: 78d100074842c834099086b408c8c0dc, type: 2}
   - {fileID: 11400000, guid: e63762c6b7b0ca446a24e55f63e0259e, type: 2}
-  <PngMetadata>k__BackingField: []
+  <PngMetadata>k__BackingField:
+  - {fileID: 11400000, guid: c62e70de7184dc544b9e97abeb2e167d, type: 2}
+  - {fileID: 11400000, guid: 305b32efa89a3f44bb340e2839c28bfa, type: 2}
+  - {fileID: 11400000, guid: d6866d7f050c1d84b8e0be82017267fb, type: 2}
+  - {fileID: 11400000, guid: e306223c55fa9d947be1bb702372df1d, type: 2}
+  - {fileID: 11400000, guid: 8546e069526c54241baeccc9956145c2, type: 2}
+  - {fileID: 11400000, guid: e9facbaf78c8d6a4082b8d7ae128c7bd, type: 2}
+  - {fileID: 11400000, guid: 03fcc7ae0d8f85a41afdc4bcdcacdfd3, type: 2}
+  - {fileID: 11400000, guid: 3b14d61b38f824c4ebd39f07c96989b4, type: 2}
+  - {fileID: 11400000, guid: 5e5ffa6082d25744daa9ea87cd1bc934, type: 2}
+  - {fileID: 11400000, guid: 9bc4436bf45cd1e40b67bd65698df883, type: 2}
+  - {fileID: 11400000, guid: 432d4a6459d12754e9f79b457b61f298, type: 2}
+  - {fileID: 11400000, guid: 3049627d9c5bff9449fa38e51ad659b5, type: 2}
+  - {fileID: 11400000, guid: c87768ef8896c6e40825e5da6c29001d, type: 2}
+  - {fileID: 11400000, guid: 4d769e3ca9e5b654e9c5496640fd5834, type: 2}
+  - {fileID: 11400000, guid: 837ad99dc506f8a46a928bed3225f817, type: 2}
+  - {fileID: 11400000, guid: d852b51a9f9c389428fa78d076a0bde7, type: 2}
+  - {fileID: 11400000, guid: d31b2fccfb91430439e404f51ce9df5c, type: 2}
+  - {fileID: 11400000, guid: a7dc01c7d876bf146acd02ca8206142c, type: 2}
+  - {fileID: 11400000, guid: 27da4f5ae2534194198f75da25eed494, type: 2}
+  - {fileID: 11400000, guid: 44c62c01dd1265541bc9227743330647, type: 2}
+  <JpgMetadata>k__BackingField:
+  - {fileID: 11400000, guid: 6d66a36290b2fe94aa1ba8f93c2dce67, type: 2}
+  - {fileID: 11400000, guid: 470987c9ac682374a86ae3f535e63557, type: 2}
+  - {fileID: 11400000, guid: f7766f3c528ed6a4292007004ac7a2a0, type: 2}
+  - {fileID: 11400000, guid: 00c63b3b81609334fb641ff8b972bb06, type: 2}
+  - {fileID: 11400000, guid: d884f2c28e5e68e4db091ade44cad772, type: 2}
+  - {fileID: 11400000, guid: 7b3deea463274fe49a5f7dd3783e2b1b, type: 2}
+  - {fileID: 11400000, guid: 33ecc78fb6c42ef4998cdb3c16f4cc0a, type: 2}
+  - {fileID: 11400000, guid: 6f0280bb4ec0539499b8219d49777896, type: 2}
+  - {fileID: 11400000, guid: 0e2cc335791ce27489e640c513c82e26, type: 2}
+  - {fileID: 11400000, guid: 6ef7648f9be942c41ace5bd13fc98c9e, type: 2}
+  - {fileID: 11400000, guid: 85871d2a459d13a429a79a368986a109, type: 2}
+  - {fileID: 11400000, guid: 02d6373ec1bdc68469099340094b5530, type: 2}
+  - {fileID: 11400000, guid: 24b8db0c785e762458c59646dbd3d236, type: 2}
+  - {fileID: 11400000, guid: b651929c1bdcd9a448e54ad8f648f66d, type: 2}
+  - {fileID: 11400000, guid: 7bc349225f527ba4eb766dc121ff7e2d, type: 2}
+  - {fileID: 11400000, guid: ed9f0b9dbeded5547b4b4f0f81c53d19, type: 2}
+  - {fileID: 11400000, guid: cf765afe6a9dc864ba0ca22673bb5c64, type: 2}
+  - {fileID: 11400000, guid: 31eac1907a51c32448a6e959f91df58a, type: 2}
+  - {fileID: 11400000, guid: 8db367e4747a05840b3b2036c3a75d17, type: 2}
+  - {fileID: 11400000, guid: 03ccc8e6e716db44281132ad73b56943, type: 2}
   _enemyContainer: {fileID: 1224423184}
+  _player: {fileID: 1044444512}
   _inputBroadcaster: {fileID: 35662607}
   _debugSpawnDefinitions:
   - {fileID: 39689360}
@@ -9598,6 +9646,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037188794}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1044444512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6941786113278733277, guid: b2daad300bf508946b6b029056f77ffc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1491424097}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1048243044
 GameObject:
   m_ObjectHideFlags: 0
@@ -15172,31 +15226,6 @@ PrefabInstance:
     - target: {fileID: 2911587348959925494, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3147616754209519103, guid: b2daad300bf508946b6b029056f77ffc,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3147616754209519103, guid: b2daad300bf508946b6b029056f77ffc,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3746630626650167512, guid: b2daad300bf508946b6b029056f77ffc,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3746630626650167512, guid: b2daad300bf508946b6b029056f77ffc,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3746630626650167512, guid: b2daad300bf508946b6b029056f77ffc,
-        type: 3}
-      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4519584884870326535, guid: b2daad300bf508946b6b029056f77ffc,

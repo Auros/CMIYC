@@ -31,9 +31,11 @@ namespace CMIYC.Player
         [SerializeField]
         private DeathController _deathController = null!;
 
-        public void OnShoot(InputAction.CallbackContext context)
+        private bool _inputShooting = false;
+
+        private void Update()
         {
-            if (!context.performed) return;
+            if (!_inputShooting) return;
 
             if (CurrentWeaponInstance == null) return;
 
@@ -54,6 +56,40 @@ namespace CMIYC.Player
             //   Perform our reload animation if we otherwise cannot fire
             if (!CurrentWeaponInstance.Reloading && !CurrentWeaponInstance.Shoot(crosshairWorldPosition))
             {
+                ReloadAsync().Forget();
+            }
+        }
+
+        public void OnShoot(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                _inputShooting = true;
+            else if (context.canceled)
+                _inputShooting = false;
+        }
+
+        public void OnThrow(InputAction.CallbackContext context)
+        {
+            if (!context.performed) return;
+
+            if (CurrentWeaponInstance == null) return;
+
+            // Convert our 0-1 crosshair constant to screen space (0,0 to screen width,height)
+            var crosshairScreenSpace = new Vector3(
+                _mainCamera.pixelWidth * _crosshairPosition.x,
+                _mainCamera.pixelHeight * _crosshairPosition.y, 0);
+
+            // Convert to world space to determine where our projectile should travel
+            var crosshairRay = _mainCamera.ScreenPointToRay(crosshairScreenSpace);
+
+            // Raycast against everything to see where our projectiles *should* be directed
+            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance)
+                ? raycastHit.point
+                : crosshairRay.GetPoint(_crosshairMaxDistance);
+
+            if (!CurrentWeaponInstance.Reloading)
+            {
+                CurrentWeaponInstance.Throw(crosshairWorldPosition);
                 ReloadAsync().Forget();
             }
         }

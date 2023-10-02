@@ -213,6 +213,15 @@ namespace CMIYC.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""344a17e8-33e4-41b0-ab96-71ec45e8f9f3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -235,6 +244,28 @@ namespace CMIYC.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dee80fdf-8b4b-4138-b4b0-0953cf8436f9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39150ec5-406e-42dc-817a-9d85571bb1e3"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -291,6 +322,7 @@ namespace CMIYC.Input
             // Shooting
             m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
             m_Shooting_Shoot = m_Shooting.FindAction("Shoot", throwIfNotFound: true);
+            m_Shooting_Throw = m_Shooting.FindAction("Throw", throwIfNotFound: true);
             // Pause
             m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
             m_Pause_Pause = m_Pause.FindAction("Pause", throwIfNotFound: true);
@@ -426,11 +458,13 @@ namespace CMIYC.Input
         private readonly InputActionMap m_Shooting;
         private List<IShootingActions> m_ShootingActionsCallbackInterfaces = new List<IShootingActions>();
         private readonly InputAction m_Shooting_Shoot;
+        private readonly InputAction m_Shooting_Throw;
         public struct ShootingActions
         {
             private @CacheInput m_Wrapper;
             public ShootingActions(@CacheInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Shoot => m_Wrapper.m_Shooting_Shoot;
+            public InputAction @Throw => m_Wrapper.m_Shooting_Throw;
             public InputActionMap Get() { return m_Wrapper.m_Shooting; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -443,6 +477,9 @@ namespace CMIYC.Input
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Throw.started += instance.OnThrow;
+                @Throw.performed += instance.OnThrow;
+                @Throw.canceled += instance.OnThrow;
             }
 
             private void UnregisterCallbacks(IShootingActions instance)
@@ -450,6 +487,9 @@ namespace CMIYC.Input
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
+                @Throw.started -= instance.OnThrow;
+                @Throw.performed -= instance.OnThrow;
+                @Throw.canceled -= instance.OnThrow;
             }
 
             public void RemoveCallbacks(IShootingActions instance)
@@ -523,6 +563,7 @@ namespace CMIYC.Input
         public interface IShootingActions
         {
             void OnShoot(InputAction.CallbackContext context);
+            void OnThrow(InputAction.CallbackContext context);
         }
         public interface IPauseActions
         {

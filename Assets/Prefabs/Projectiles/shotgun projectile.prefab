@@ -387,6 +387,7 @@ MonoBehaviour:
   _hitScan: 0
   _velocity: 50
   _attachedRigidbody: {fileID: 255300263677617935}
+  _toss: 1
   _lifetime: 20
   _sizeCurve:
     serializedVersion: 2
@@ -410,13 +411,13 @@ MonoBehaviour:
       inWeight: 0.027646655
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.99505615
-      value: 0.0047073364
-      inSlope: -16.109375
-      outSlope: -16.109375
+      time: 0.9967041
+      value: -0.000022888184
+      inSlope: -7.365164
+      outSlope: -7.365164
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.09338184
+      inWeight: 0.15971072
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
