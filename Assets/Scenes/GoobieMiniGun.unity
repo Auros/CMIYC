@@ -3485,7 +3485,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 03ccc8e6e716db44281132ad73b56943, type: 2}
   <FbxMetadata>k__BackingField:
   - {fileID: 11400000, guid: 67b4f7f72a6bde745bc3e068afafd82e, type: 2}
-  - {fileID: 11400000, guid: cb3652ed33750b34c9f50abb5b93e76e, type: 2}
   _enemyContainer: {fileID: 1224423184}
   _player: {fileID: 1044444512}
   _inputBroadcaster: {fileID: 35662607}
@@ -14249,7 +14248,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1437880372}
-  - component: {fileID: 1437880373}
+  - component: {fileID: 1437880371}
+  - component: {fileID: 1437880369}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -14257,23 +14257,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1437880372
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437880368}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 50}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1437880373
-BoxCollider:
+--- !u!64 &1437880369
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -14290,9 +14275,33 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 10, y: 0.01, z: 10}
-  m_Center: {x: 0, y: -0.005, z: 0}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &1437880371
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437880368}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1437880372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437880368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1438665956
 GameObject:
   m_ObjectHideFlags: 0
@@ -19597,8 +19606,8 @@ MonoBehaviour:
   - {fileID: 340863266}
   - {fileID: 803170030}
   <MinSpawnCount>k__BackingField: 2
-  <MaxSpawnCount>k__BackingField: 3
-  <SpawnChance>k__BackingField: 0.05
+  <MaxSpawnCount>k__BackingField: 7
+  <SpawnChance>k__BackingField: 0.3
   <SpawnedEnemies>k__BackingField:
   - <Enemy>k__BackingField: {fileID: 11400000, guid: d5c60c043ba44fe48a1f2505165f2e4e,
       type: 2}
