@@ -735,6 +735,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cec9fd07d4590e43b62ad680dc93bd8,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 2917176964526265674}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cec9fd07d4590e43b62ad680dc93bd8,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7522161271894398185}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cec9fd07d4590e43b62ad680dc93bd8,
         type: 3}
@@ -771,6 +775,31 @@ MonoBehaviour:
   _textProjectile: {fileID: 7789704010832952306, guid: 629fc80f1570c6346a490217f7015fa6,
     type: 3}
   _projectileOrigin: {fileID: 7956294374256551431}
+  _audioPool: {fileID: 2917176964526265674}
+  _typeSfx:
+  - {fileID: 8300000, guid: 62a755035e2397c4091b9ca03c31392c, type: 3}
+  - {fileID: 8300000, guid: 0381de1adac6fc74898a121569c9d377, type: 3}
+  - {fileID: 8300000, guid: 0ce10da267e6bc14a8d8aa85f611a526, type: 3}
+  - {fileID: 8300000, guid: 2e2e4a2d61ad0794787f4ea349cca31b, type: 3}
+  - {fileID: 8300000, guid: 14b9c44668f29e949a4b75b4f87527c9, type: 3}
+--- !u!114 &2917176964526265674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149284288040335307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fbbbdb93da24ee4c8ec0cfa1e9ddecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sfxMixerGroup: {fileID: -7547405672701232151, guid: 3358d5c7039dcc6448ab7a71344eedbe,
+    type: 2}
+  _volume: 1
+  _pitchBase: 0.9
+  _pitchRandomness: 0.1
+  _initialPoolSize: 0
 --- !u!65 &7522161271894398185
 BoxCollider:
   m_ObjectHideFlags: 0

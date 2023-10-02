@@ -1,4 +1,5 @@
 ﻿using AuraTween;
+using CMIYC.Audio;
 using CMIYC.Metadata;
 using CMIYC.Projectiles;
 using Cysharp.Threading.Tasks;
@@ -18,6 +19,11 @@ namespace CMIYC.Enemy.Behaviour
         private TextProjectile _textProjectile = null!;
         [SerializeField]
         private Transform _projectileOrigin = null!;
+
+        [SerializeField]
+        private AudioPool _audioPool = null!;
+        [SerializeField]
+        private AudioClip[] _typeSfx = null!;
 
         // TXT: Length of metadata contents * hardcoded value to keep score comparable to png
         public override int Size => AssignedMetadata.TextContents.Length * 16;
@@ -72,6 +78,8 @@ namespace CMIYC.Enemy.Behaviour
             newProjectile.ProjectileDefinition.Initialize(spawnPoint, projectileForward);
             newProjectile.Text.SetText(displayText);
             newProjectile.SetTarget(target);
+
+            _audioPool.Play(_typeSfx[Random.Range(0, _typeSfx.Length)]);
         }
     }
 }

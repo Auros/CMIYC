@@ -353,7 +353,7 @@ MonoBehaviour:
     m_Bits: 1
   _defaultCameraHeight: 0.75
   _crouchedCameraHeight: 0.3
-  _maxSpeed: 6
+  _maxSpeed: 10
   _groundAccel: 52
   _groundDecel: 28
   _airAccel: 48
@@ -400,7 +400,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8658619558702538321}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9de5b88a8baa16f4384627c3b709b489, type: 3}
   m_Name: 
