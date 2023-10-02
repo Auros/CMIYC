@@ -24,6 +24,9 @@ namespace CMIYC.Enemy.Behaviour
         private static int _addToNoiseProperty = Shader.PropertyToID("_AddToNoiseUV");
         private static int _mainTexProperty = Shader.PropertyToID("_MainTex");
 
+        // Images: width * height * 4 bytes per pixel
+        public override int Size => AssignedMetadata.Texture.width * AssignedMetadata.Texture.height * 4;
+
         private int bulletCount = 4;
         public void SetMetadata(JpgMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {

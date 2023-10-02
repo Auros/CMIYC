@@ -23,6 +23,9 @@ namespace CMIYC.Enemy.Behaviour
         private ProjectileDefinition _projectile;
         private GameObject _droppedItem;
 
+        // i dont really know on this one but hey, it works
+        public override int Size => AssignedMetadata.Texture.width * AssignedMetadata.Texture.height * 16;
+
         public void SetMetadata(FbxMetadataScriptableObject metadata, EnemyScriptableObject enemy, Camera cameraToLookAt)
         {
             AssignedMetadata = metadata;

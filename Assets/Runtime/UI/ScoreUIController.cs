@@ -1,4 +1,5 @@
 ﻿using CMIYC.Player;
+using CMIYC.Runtime.Utilities;
 using TMPro;
 using UnityEngine;
 
@@ -34,20 +35,7 @@ namespace CMIYC
 
         private void OnScoreIncrease(int scoreIncrease)
         {
-            var score = _scoreController.Score;
-            var portion = 0ul;
-            var unitIdx = 0;
-
-            while (score / 1024 > 0)
-            {
-                if (unitIdx == _unitsArray.Length - 1) break;
-
-                portion = score % 1024;
-                score /= 1024;
-                unitIdx++;
-            }
-
-            _text.text = $"SCORE: {score}.{portion / 1024f * 100:N0} {_unitsArray[unitIdx]}";
+            _text.text = $"SCORE: {FileSizeUtilities.GetFileSizeText((long)_scoreController.Score)}";
         }
 
         private void OnDestroy()

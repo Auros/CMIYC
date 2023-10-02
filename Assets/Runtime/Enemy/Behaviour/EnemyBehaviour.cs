@@ -53,6 +53,8 @@ namespace CMIYC.Enemy.Behaviour
         private static readonly float _minDissolve = -1.04f + _heightAddition;
         private static readonly float _aliveMinDissolve = 0.5f + _heightAddition;
 
+        public virtual int Size => UnityEngine.Random.Range(50, 150);
+
         public void SetNameTagMetadata(string fileName, Camera cameraToLookAt)
         {
             _nameText.SetText(fileName);
