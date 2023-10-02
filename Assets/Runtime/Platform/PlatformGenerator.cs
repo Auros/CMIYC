@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Pool;
 using Random = System.Random;
 
 namespace CMIYC.Platform
 {
+    [PublicAPI]
     public partial class PlatformGenerator : MonoBehaviour
     {
         public const int daughterboardUnit = 10;
+
+        [SerializeField]
+        private Transform _recyclingBin = null!;
 
         [SerializeField]
         private Vector2Int _motherboardSize = new(5, 5);
@@ -18,20 +23,24 @@ namespace CMIYC.Platform
         private HallDefinition _hallwayPrefab = null!;
 
         [SerializeField]
+        private Motherboard _motherboardPrefab = null!;
+
+        [SerializeField]
         private RoomSpawnOption[] _roomSpawnOptions = Array.Empty<RoomSpawnOption>();
 
         [Range(0, 1)]
         [SerializeField]
         private float _targetMotherboardVolume = 0.2f;
 
+        [Min(0)]
+        [SerializeField]
+        private int _initialRoomPoolSizePerRoom = 10;
+
         [SerializeField]
         private int _sampleAttempts = 5;
 
         [SerializeField]
         private int _seed;
-
-        [Tooltip("Attempt to re-roll a motherboard until one with at least this many rooms is generated")]
-        private int _minRooms = 3;
 
         [SerializeField]
         private bool _drawGizmos;
@@ -40,10 +49,9 @@ namespace CMIYC.Platform
         private bool _buildOnStart;
 
         private Random _random = new(0);
-        private const int _maxRerollTries = 50;
+        private IObjectPool<HallDefinition> _hallPool = null!;
         private IObjectPool<Motherboard> _motherboardPool = null!;
-
-        private readonly ObjectPool<RoomInstance> _roomInstancePool = new(() => new RoomInstance());
+        private IDictionary<RoomDefinition, IObjectPool<RoomDefinition>> _roomDefinitionPools = null!;
 
         public MotherboardGenerationResult? Next { get; private set; }
 
@@ -55,8 +63,62 @@ namespace CMIYC.Platform
 
         private void Awake()
         {
-            _motherboardPool = new ObjectPool<Motherboard>(() => new GameObject("Motherboard").AddComponent<Motherboard>());
             _random = _seed != -1 ? new Random(_seed) : new Random();
+
+            _hallPool = new ObjectPool<HallDefinition>(
+                () => Instantiate(_hallwayPrefab, transform),
+                h =>
+                {
+                    var hT = h.transform;
+                    hT.SetParent(transform);
+                    hT.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                },
+                h => h.transform.SetParent(_recyclingBin),
+                h => Destroy(h.gameObject)
+            );
+
+            _motherboardPool = new ObjectPool<Motherboard>(
+                () => Instantiate(_motherboardPrefab, transform),
+                m =>
+                {
+                    var mT = m.transform;
+                    mT.SetParent(transform);
+                    mT.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                },
+                m => m.transform.SetParent(_recyclingBin),
+                m => Destroy(m.gameObject)
+            );
+
+            _roomDefinitionPools = new Dictionary<RoomDefinition, IObjectPool<RoomDefinition>>(_roomSpawnOptions.Length);
+
+            foreach (var option in _roomSpawnOptions)
+            {
+                var prefab = option.Prefab;
+                if (_roomDefinitionPools.TryGetValue(prefab, out var pool))
+                    continue;
+
+                pool = new ObjectPool<RoomDefinition>(
+                    () => Instantiate(prefab, transform),
+                    r =>
+                    {
+                        var rT = r.transform;
+                        rT.SetParent(transform);
+                        rT.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    },
+                    r => r.transform.SetParent(_recyclingBin),
+                    r => Destroy(r.gameObject)
+                );
+
+                using (ListPool<RoomDefinition>.Get(out var prespawned))
+                {
+                    for (int i = 0; i < _initialRoomPoolSizePerRoom; i++)
+                        prespawned.Add(pool.Get());
+
+                    prespawned.ForEach(pool.Release);
+                }
+
+                _roomDefinitionPools[prefab] = pool;
+            }
         }
 
         private void Start()
@@ -76,6 +138,13 @@ namespace CMIYC.Platform
             if (Previous is not null)
             {
                 // TODO: Despawn motherboard
+                foreach (var instance in Previous.Rooms)
+                    DespawnRoomDefinition(instance);
+
+                foreach (var hall in Previous.Hallways)
+                    _hallPool.Release(hall.Definition);
+
+                _motherboardPool.Release(Previous.Motherboard);
             }
 
             if (Current is not null)
@@ -89,57 +158,41 @@ namespace CMIYC.Platform
             if (Next is null || Next != Current)
                 return;
 
-            Next = BuildMotherboard(Next.Advancement switch
+            var previousDirection = Next.Advancement switch
             {
                 Cardinal.North => Cardinal.South,
                 Cardinal.East => Cardinal.West,
                 Cardinal.South => Cardinal.North,
                 Cardinal.West => Cardinal.East,
                 _ => throw new ArgumentOutOfRangeException()
-            }, Next.Advancement switch
+            };
+
+            var startPoint = Next.Advancement switch
             {
                 Cardinal.North => new Vector2Int(Next.End.x, 0),
                 Cardinal.East => new Vector2Int(0, Next.End.y),
                 Cardinal.South => new Vector2Int(Next.End.x, _motherboardSize.y - 1),
                 Cardinal.West => new Vector2Int(_motherboardSize.x - 1, Next.End.y),
                 _ => throw new ArgumentOutOfRangeException()
-            }, Next.Advancement switch
+            };
+
+            var targetPos = Next.Advancement switch
             {
                 Cardinal.North => new Vector2(Next.Position.x, Next.Position.y + motherboardPhysicalHeight),
                 Cardinal.East => new Vector2(Next.Position.x + motherboardPhysicalWidth, Next.Position.y),
                 Cardinal.South => new Vector2(Next.Position.x, Next.Position.y - motherboardPhysicalHeight),
                 Cardinal.West => new Vector2(Next.Position.x - motherboardPhysicalWidth, Next.Position.y),
                 _ => throw new ArgumentOutOfRangeException()
-            });
+            };
+
+            Debug.Log($"Previous Direction: {previousDirection}, Previous Exit: {Next.End} Start Point: {startPoint}, Target Position: {targetPos}");
+
+            Next = BuildMotherboard(previousDirection, startPoint, targetPos);
         }
 
-        // idk how a lot of this works so low-tech solution
+        // ReSharper disable once MemberCanBeMadeStatic.Global
         public MotherboardGenerationResult? BuildMotherboardUntilMinRoomsMet(Cardinal from, Vector2Int start)
         {
-            // guh
-            /*int rerollTries = 0;
-            while (rerollTries < _maxRerollTries)
-            {
-                rerollTries++;
-                if (rerollTries > _maxRerollTries) return null;
-
-                var result = BuildMotherboard(from, start);
-
-                if (result?.RoomCount >= _minRooms)
-                {
-                    return result;
-                }
-                else
-                {
-                    // this is very bad, but i don't know how any of this works and I do not have nearly enough time to figure it out.
-                    foreach (Transform child in result?.Motherboard.Root)
-                    {
-                        Destroy(child.gameObject);
-                    }
-
-                }
-            }*/
-
             return null;
         }
 
@@ -219,11 +272,13 @@ namespace CMIYC.Platform
                     if (overlappingWithPrevious)
                         continue;
 
-                    var instance = _roomInstancePool.Get();
-                    instance.Cardinal = cardinal;
-                    instance.Prefab = roomPrefab;
-                    instance.Position = pos;
-                    instance.Rect = rect;
+                    var instance = new RoomInstance
+                    {
+                        Cardinal = cardinal,
+                        Prefab = roomPrefab,
+                        Position = pos,
+                        Rect = rect
+                    };
 
                     roomInstances.Add(instance);
                     break;
@@ -238,7 +293,9 @@ namespace CMIYC.Platform
 
             foreach (var inst in roomInstances)
             {
-                var def = inst.Definition = Instantiate(inst.Prefab);
+                var pool = _roomDefinitionPools[inst.Prefab];
+                var def = pool.Get();
+                inst.Definition = def;
 
                 var defTransform = def.transform;
                 def.SetData(inst.Cardinal, inst.Position);
@@ -269,12 +326,6 @@ namespace CMIYC.Platform
                     definitionLookup.Add(new Vector2Int(x, y), def);
             }
 
-            if (definitionLookup.TryGetValue(start, out var roomDefinition))
-            {
-                roomInstances.RemoveAll(r => r.Definition == roomDefinition);
-                Destroy(roomDefinition.gameObject);
-            }
-
             var (exitDir, exitTarget) = GetRandomExitNodes(random, from);
             GenerateHallway(start, exitTarget, motherboardTransform, roomInstances, hallInstances, definitionLookup);
 
@@ -283,6 +334,8 @@ namespace CMIYC.Platform
             DictionaryPool<Vector2Int, Definition>.Release(definitionLookup);
 
             motherboardTransform.SetLocalPositionAndRotation(new Vector3(physicalPosition.x, 0, physicalPosition.y), Quaternion.identity);
+
+            Debug.Log(exitDir);
 
             return new MotherboardGenerationResult
             {
@@ -294,6 +347,12 @@ namespace CMIYC.Platform
                 Hallways = hallInstances,
                 Position = physicalPosition
             };
+        }
+
+        private void DespawnRoomDefinition(RoomInstance roomInstance)
+        {
+            var pool = _roomDefinitionPools[roomInstance.Prefab];
+            pool.Release(roomInstance.Definition);
         }
 
         private (Cardinal, Vector2Int) GetRandomExitNodes(Random random, Cardinal banned)
@@ -375,13 +434,13 @@ namespace CMIYC.Platform
         }
 
         [Serializable]
-        protected struct RoomSpawnOption
+        protected class RoomSpawnOption
         {
             [field: Min(0), SerializeField]
             public float Weight { get; private set; }
 
             [field: SerializeField]
-            public RoomDefinition Prefab { get; private set; }
+            public RoomDefinition Prefab { get; private set; } = null!;
         }
 
         public class RoomInstance
