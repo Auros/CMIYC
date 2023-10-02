@@ -15,6 +15,9 @@ namespace CMIYC.UI
         private DeathController _deathController = null!;
 
         [SerializeField]
+        private DirectoryController _directoryController = null!;
+
+        [SerializeField]
         private PlayerHealthController _healthController = null!;
 
         [SerializeField]
@@ -25,6 +28,9 @@ namespace CMIYC.UI
 
         [SerializeField]
         private Transform _deathPanelParent = null!;
+
+        [SerializeField]
+        private Transform _leftDeathPanelParent = null!;
 
         [SerializeField]
         private TweenManager _tweenManager = null!;
@@ -46,6 +52,7 @@ namespace CMIYC.UI
         private void Start()
         {
             _deathController.OnPlayerDeath += OnPlayerDeath;
+            _deathController.OnPlayerDeath += _directoryController.OnPlayerDeath; // guh
             _healthController.PlayerTookDamage += PlayerTookDamage;
         }
 
@@ -109,6 +116,21 @@ namespace CMIYC.UI
 
                 await UniTask.Delay(TimeSpan.FromSeconds(_animationOffset));
             }
+            for (var i = 0; i < _leftDeathPanelParent.childCount; i++)
+            {
+                var child = _leftDeathPanelParent.GetChild(i) as RectTransform;
+
+                if (!child.TryGetComponent<CanvasGroup>(out var group))
+                {
+                    group = child.gameObject.AddComponent<CanvasGroup>();
+                }
+
+                _tweenManager.Run(0f, 1f, _animationLength, a => group.alpha = a, Easer.OutSine);
+                _tweenManager.Run(1000f, 0f, _animationLength, x => child.anchoredPosition = child.anchoredPosition.WithX(x), Easer.OutCubic);
+
+                await UniTask.Delay(TimeSpan.FromSeconds(_animationOffset));
+            }
+
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 

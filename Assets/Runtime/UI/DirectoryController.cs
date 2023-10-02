@@ -17,18 +17,22 @@ namespace CMIYC.UI
         [SerializeField]
         private Transform _container = null!;
 
-        private async void Start()
+        private void Start()
         {
-            Debug.Log("guh");
-            // TODO: populate vertical list with elements, ideally tabbed in similar to an actual hierarchy
+        }
 
+        public void OnPlayerDeath()
+        {
+            SetDirectories();
+        }
+
+        private void SetDirectories()
+        {
+            // TODO: add this at like, next motherboard traversal or something...
             foreach (Transform child in _container.transform)
             {
                 Destroy(child.gameObject);
             }
-
-            await UniTask.Delay(35000);
-            Debug.Log("guh2");
             foreach (var child in _locationTracker.RootNode.children)
             {
                 // drives
