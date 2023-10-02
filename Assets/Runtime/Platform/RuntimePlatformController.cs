@@ -23,23 +23,17 @@ namespace CMIYC.Platform
         {
             _roof?.SetActive(true);
 
-            var result = _platformGenerator.BuildMotherboardUntilMinRoomsMet(Cardinal.South, new Vector2Int(0, 0));
+            _platformGenerator.Advance();
+
+            // figure out how this gets updated, and when  I need to do stuff
+            var result = _platformGenerator.Current;
             if (result is null)
                 return; // TODO handle
-
-            // do whatever else here
-            Debug.Log(result.Advancement);
-            Debug.Log(result.End);
-
-            var multResult = result.End * 10;
-            // idk why moving player isnt working lol
-            // teleport start location to player
-            result.Motherboard.transform.position = new Vector3(-multResult.x - 5, 0, -multResult.y - 5);
-
+            
             // lmao i'm losing it
             // i really just don't have enough time to do anything else rn
-            var halls = (Object.FindObjectsOfType<HallDefinition>() as HallDefinition[]).Where(x => x.transform.parent == result.Motherboard.transform);
-            var rooms = (Object.FindObjectsOfType<RoomDefinition>() as RoomDefinition[]).Where(x => x.transform.parent == result.Motherboard.transform && x.isActiveAndEnabled);
+            var halls = result.Hallways.Select(x => x.Definition);
+            var rooms = result.Rooms.Select(x => x.Definition);
 
             // i literally do not know why the grid direction isn't consistent
             List<Vector2Int> _takenVectors = halls.Select(x => x.Cell).Distinct().ToList();
