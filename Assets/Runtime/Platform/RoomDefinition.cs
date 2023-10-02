@@ -104,5 +104,24 @@ namespace CMIYC.Platform
             }
             return entranceNodes;
         }
+
+        public Dictionary<Vector2Int, Cardinal> GetOccupiedNodes()
+        {
+            Dictionary<Vector2Int, Cardinal> nodes = new();
+            foreach (var segment in _roomSegments)
+            {
+                var location = segment.Location;
+                Cardinal cardinal = Cardinal.North;
+                // only supports one door direction but thats all im doing
+                if (segment.GetWallSegmentType(Cardinal.East) == WallSegmentType.Door) cardinal = Cardinal.East;
+                if (segment.GetWallSegmentType(Cardinal.West) == WallSegmentType.Door) cardinal = Cardinal.West;
+                if (segment.GetWallSegmentType(Cardinal.South) == WallSegmentType.Door) cardinal = Cardinal.South;
+                if (segment.GetWallSegmentType(Cardinal.North) == WallSegmentType.Door) cardinal = Cardinal.North;
+
+                nodes.TryAdd(location, cardinal);
+            }
+
+            return nodes;
+        }
     }
 }

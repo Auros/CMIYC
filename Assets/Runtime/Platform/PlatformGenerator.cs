@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 using Random = System.Random;
@@ -27,7 +28,14 @@ namespace CMIYC.Platform
         private int _sampleAttempts = 5;
 
         [SerializeField]
+        [Tooltip("reroll until you get a floor matching this config")]
+        private int _minRooms = 3;
+
+        [SerializeField]
         private int _seed;
+
+        [SerializeField]
+        private bool _drawGizmos = false;
 
         private Random _random = new(0);
         private readonly ObjectPool<RoomInstance> _roomInstancePool = new(() => new RoomInstance());
@@ -35,19 +43,23 @@ namespace CMIYC.Platform
         private IObjectPool<Motherboard> _motherboardPool = null!;
 
         private Vector2 MotherboardSize => _motherboardSize;
+        private int _maxRerollTries = 50;
 
         private void Awake()
         {
             _motherboardPool = new ObjectPool<Motherboard>(() => new GameObject("Motherboard").AddComponent<Motherboard>());
+            _random = _seed != -1 ? new Random(_seed) : new Random();
         }
 
         private void Start()
         {
-            _random = new Random(_seed);
-            var result = BuildMotherboard(Cardinal.South, new Vector2Int(0, 0));
+            //var result = BuildMotherboard(Cardinal.South, new Vector2Int(0, 0));
+            /*var result = BuildMotherboardUntilMinRoomsMet(Cardinal.South, new Vector2Int(0, 0));
             if (result is null)
                 return;
 
+            Debug.Log(result.Advancement);
+            Debug.Log(result.End);*/
             /*BuildMotherboard(result.Advancement switch
             {
                 Cardinal.North => Cardinal.South,
@@ -63,15 +75,48 @@ namespace CMIYC.Platform
                 Cardinal.West => new Vector2Int(_motherboardSize.x - 1, result.End.y),
                 _ => throw new ArgumentOutOfRangeException()
             });*/
-
-            Debug.Log(result.Advancement);
         }
 
-        private class MotherboardGenerationResult
+        // idk how a lot of this works so low-tech solution
+        public MotherboardGenerationResult? BuildMotherboardUntilMinRoomsMet(Cardinal from, Vector2Int start)
+        {
+            // guh
+            int rerollTries = 0;
+            while (rerollTries < _maxRerollTries)
+            {
+                rerollTries++;
+                if (rerollTries > _maxRerollTries) return null;
+
+                var result = BuildMotherboard(from, start);
+
+                Debug.Log(result?.RoomCount);
+                if (result?.RoomCount >= _minRooms)
+                {
+                    return result;
+                }
+                else
+                {
+                    // this is very bad, but i don't know how any of this works and I do not have nearly enough time to figure it out.
+                    foreach (Transform child in result?.Motherboard.Root)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                }
+            }
+
+            return null;
+        }
+
+        public class MotherboardGenerationResult
         {
             public Vector2Int End { get; set; }
 
             public Cardinal Advancement { get; set; }
+
+            public int RoomCount { get; set; }
+
+            public Motherboard Motherboard { get; set; }
         }
 
         private Random GetRandom() => _random;
@@ -212,13 +257,16 @@ namespace CMIYC.Platform
             var (exitDir, exitTarget) = GetRandomExitNodes(random, from);
             GenerateHallway(exitTarget, start, motherboardTransform, roomInstances, definitionLookup);
 
+            int roomCount = roomInstances.Count;
             ListPool<RoomDefinition>.Release(roomPrefabs);
             ListPool<RoomInstance>.Release(roomInstances);
 
             return new MotherboardGenerationResult
             {
                 End = exitTarget,
-                Advancement = exitDir
+                Advancement = exitDir,
+                RoomCount = roomCount,
+                Motherboard = motherboard
             };
         }
 
@@ -250,6 +298,10 @@ namespace CMIYC.Platform
 
         private void OnDrawGizmos()
         {
+            if (!_drawGizmos)
+            {
+                return;
+            }
             const int height = 10;
             var target = transform;
             Gizmos.matrix = target.localToWorldMatrix;
