@@ -43,13 +43,13 @@ namespace CMIYC.Platform
         private const int _maxRerollTries = 50;
         private IObjectPool<Motherboard> _motherboardPool = null!;
 
-        private readonly List<MotherboardGenerationResult> _activeMotherboards = new();
         private readonly ObjectPool<RoomInstance> _roomInstancePool = new(() => new RoomInstance());
 
-        /// <summary>
-        /// All the active motherboard instances, where the first element is the most recent one.
-        /// </summary>
-        public IReadOnlyList<MotherboardGenerationResult> ActiveMotherboards => _activeMotherboards;
+        public MotherboardGenerationResult? Next { get; private set; }
+
+        public MotherboardGenerationResult? Current { get; private set; }
+
+        public MotherboardGenerationResult? Previous { get; private set; }
 
         private Vector2 MotherboardSize => _motherboardSize;
 
@@ -64,38 +64,53 @@ namespace CMIYC.Platform
             if (!_buildOnStart)
                 return;
 
-            var result = BuildMotherboard(Cardinal.South, new Vector2Int(0, 0), Vector2.zero);
+            Advance();
+        }
+
+        public void Advance()
+        {
             var motherboardPhysicalWidth = _motherboardSize.x * daughterboardUnit;
             var motherboardPhysicalHeight = _motherboardSize.y * daughterboardUnit;
+            Next ??= BuildMotherboard(Cardinal.South, new Vector2Int(0, 0), Vector2.zero);
 
-            for (int i = 0; i < 3; i++)
+            if (Previous is not null)
             {
-                if (result is null)
-                    return;
-
-                result = BuildMotherboard(result.Advancement switch
-                {
-                    Cardinal.North => Cardinal.South,
-                    Cardinal.East => Cardinal.West,
-                    Cardinal.South => Cardinal.North,
-                    Cardinal.West => Cardinal.East,
-                    _ => throw new ArgumentOutOfRangeException()
-                }, result.Advancement switch
-                {
-                    Cardinal.North => new Vector2Int(result.End.x, 0),
-                    Cardinal.East => new Vector2Int(0, result.End.y),
-                    Cardinal.South => new Vector2Int(result.End.x, _motherboardSize.y - 1),
-                    Cardinal.West => new Vector2Int(_motherboardSize.x - 1, result.End.y),
-                    _ => throw new ArgumentOutOfRangeException()
-                }, result.Advancement switch
-                {
-                    Cardinal.North => new Vector2(result.Position.x, result.Position.y + motherboardPhysicalHeight),
-                    Cardinal.East => new Vector2(result.Position.x + motherboardPhysicalWidth, result.Position.y),
-                    Cardinal.South => new Vector2(result.Position.x, result.Position.y - motherboardPhysicalHeight),
-                    Cardinal.West => new Vector2(result.Position.x - motherboardPhysicalWidth, result.Position.y),
-                    _ => throw new ArgumentOutOfRangeException()
-                });
+                // TODO: Despawn motherboard
             }
+
+            if (Current is not null)
+            {
+                // TODO: Close off
+            }
+
+            Previous = Current;
+            Current = Next;
+
+            if (Next is null || Next != Current)
+                return;
+
+            Next = BuildMotherboard(Next.Advancement switch
+            {
+                Cardinal.North => Cardinal.South,
+                Cardinal.East => Cardinal.West,
+                Cardinal.South => Cardinal.North,
+                Cardinal.West => Cardinal.East,
+                _ => throw new ArgumentOutOfRangeException()
+            }, Next.Advancement switch
+            {
+                Cardinal.North => new Vector2Int(Next.End.x, 0),
+                Cardinal.East => new Vector2Int(0, Next.End.y),
+                Cardinal.South => new Vector2Int(Next.End.x, _motherboardSize.y - 1),
+                Cardinal.West => new Vector2Int(_motherboardSize.x - 1, Next.End.y),
+                _ => throw new ArgumentOutOfRangeException()
+            }, Next.Advancement switch
+            {
+                Cardinal.North => new Vector2(Next.Position.x, Next.Position.y + motherboardPhysicalHeight),
+                Cardinal.East => new Vector2(Next.Position.x + motherboardPhysicalWidth, Next.Position.y),
+                Cardinal.South => new Vector2(Next.Position.x, Next.Position.y - motherboardPhysicalHeight),
+                Cardinal.West => new Vector2(Next.Position.x - motherboardPhysicalWidth, Next.Position.y),
+                _ => throw new ArgumentOutOfRangeException()
+            });
         }
 
         // idk how a lot of this works so low-tech solution
