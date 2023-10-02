@@ -4956,7 +4956,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3640b376eb5dbaa47b93ca30f45fcca9, type: 2}
+  - {fileID: 2100000, guid: cd5c3dd5d26679d43a1f99bd608163b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5087,9 +5087,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3322287961351971332}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0029827994, y: 0.99492157, z: -0.031005934, w: 0.095712386}
-  m_LocalPosition: {x: 0.46937877, y: -0.17145169, z: 0.26011476}
-  m_LocalScale: {x: 0.24999994, y: 0.25000012, z: 0.24999991}
+  m_LocalRotation: {x: 0.0014157358, y: 0.99848187, z: -0.031116888, w: 0.045428276}
+  m_LocalPosition: {x: 0.2, y: -0.17145169, z: 0.6}
+  m_LocalScale: {x: 0.24999994, y: 0.25000012, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6252031318348945433}
@@ -5101,7 +5101,7 @@ Transform:
   - {fileID: 747073087604616326}
   - {fileID: 2942095767157764000}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.57, y: 174.79, z: 0}
 --- !u!114 &5362536110676943154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5125,8 +5125,14 @@ MonoBehaviour:
   <FireSpeed>k__BackingField: 0.5
   <ReloadTime>k__BackingField: 3
   _audioPool: {fileID: 3470568170760121030}
-  _shootClip: {fileID: 8300000, guid: 37167fc5f49e7274e9dcfb8720b6c4f4, type: 3}
-  _reloadClip: {fileID: 8300000, guid: 7576e7a515978584da1f7c0dec6a1701, type: 3}
+  _shootClip:
+  - {fileID: 8300000, guid: 046a5bc6170f69240ba8577d57740f17, type: 3}
+  - {fileID: 8300000, guid: fa72a0aa4f2788249bb3372ccce62c5c, type: 3}
+  - {fileID: 8300000, guid: ea6f4f2d1f93c064c80c0fcb99c31009, type: 3}
+  - {fileID: 8300000, guid: 69c0964967550d940aaef378a40bd90a, type: 3}
+  _reloadClip:
+  - {fileID: 8300000, guid: 88f2440743d1dc74092068d7d8bb0b3e, type: 3}
+  - {fileID: 8300000, guid: a0b208450def4e14d9840f19e35c5722, type: 3}
   <ReloadSoundTime>k__BackingField: 2
 --- !u!114 &3470568170760121030
 MonoBehaviour:
@@ -5142,7 +5148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sfxMixerGroup: {fileID: -7547405672701232151, guid: 3358d5c7039dcc6448ab7a71344eedbe,
     type: 2}
-  _volume: 0.9
+  _volume: 1
   _pitchBase: 1
   _pitchRandomness: 0
   _initialPoolSize: 2
@@ -5207,7 +5213,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3640b376eb5dbaa47b93ca30f45fcca9, type: 2}
+  - {fileID: 2100000, guid: cd5c3dd5d26679d43a1f99bd608163b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10185,7 +10191,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3640b376eb5dbaa47b93ca30f45fcca9, type: 2}
+  - {fileID: 2100000, guid: cd5c3dd5d26679d43a1f99bd608163b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10268,7 +10274,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3640b376eb5dbaa47b93ca30f45fcca9, type: 2}
+  - {fileID: 2100000, guid: cd5c3dd5d26679d43a1f99bd608163b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

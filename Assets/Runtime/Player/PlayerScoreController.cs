@@ -30,6 +30,9 @@ namespace CMIYC.Player
                 PngBehaviour png => png.AssignedMetadata.Texture.width * png.AssignedMetadata.Texture.height * 4,
                 JpgBehaviour jpg => jpg.AssignedMetadata.Texture.width * jpg.AssignedMetadata.Texture.height * 4,
 
+                // i dont really know on this one but hey, it works
+                FbxBehaviour fbx => fbx.AssignedMetadata.Texture.width * fbx.AssignedMetadata.Texture.height * 16,
+
                 // Fallback to random score
                 _ => UnityEngine.Random.Range(50, 150)
             };

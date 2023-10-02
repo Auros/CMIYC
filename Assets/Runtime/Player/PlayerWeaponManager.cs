@@ -32,6 +32,9 @@ namespace CMIYC.Player
         [SerializeField]
         private DeathController _deathController = null!;
 
+        [SerializeField]
+        private LayerMask _crosshairRaycastMask = default;
+
         private bool _inputShooting = false;
 
         private void Update()
@@ -49,7 +52,7 @@ namespace CMIYC.Player
             var crosshairRay = _mainCamera.ScreenPointToRay(crosshairScreenSpace);
 
             // Raycast against everything to see where our projectiles *should* be directed
-            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance)
+            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance, _crosshairRaycastMask)
                 ? raycastHit.point
                 : crosshairRay.GetPoint(_crosshairMaxDistance);
 
@@ -92,7 +95,7 @@ namespace CMIYC.Player
             var crosshairRay = _mainCamera.ScreenPointToRay(crosshairScreenSpace);
 
             // Raycast against everything to see where our projectiles *should* be directed
-            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance)
+            var crosshairWorldPosition = Physics.Raycast(crosshairRay, out var raycastHit, _crosshairMaxDistance, _crosshairRaycastMask)
                 ? raycastHit.point
                 : crosshairRay.GetPoint(_crosshairMaxDistance);
 
@@ -151,6 +154,8 @@ namespace CMIYC.Player
             // ...For the time being, shove our weapon into the ground.
             _weaponRoot.localPosition = 10f * Vector3.down;
 
+            CurrentWeaponInstance.PlayReloadSound();
+
             // Bring our weapon back up and finish reloading.
             await _tweenManager.Run(1f, 0f, reappearAnimationLength,
                 (t) => _weaponRoot.localPosition = t * Vector3.down, ModifiedBackOut, this);
@@ -199,7 +204,6 @@ namespace CMIYC.Player
                 : crosshairRay.GetPoint(_crosshairMaxDistance);
 
             CurrentWeaponInstance.ThrowReloadInstant(crosshairWorldPosition);
-            SwitchWeaponAsync().Forget();
 
             // if same type of weapon, thats all folks.
             if (weaponItemDefinition.Weapon.name == CurrentWeaponInstance.name)
@@ -211,6 +215,8 @@ namespace CMIYC.Player
             CurrentWeaponInstance.gameObject.SetActive(false);
             var newWeaponInstance = Instantiate(weaponItemDefinition.Weapon, _weaponRoot);
             CurrentWeaponInstance = newWeaponInstance;
+
+            SwitchWeaponAsync().Forget();
         }
     }
 }
