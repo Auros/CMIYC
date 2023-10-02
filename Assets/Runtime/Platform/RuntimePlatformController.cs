@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CMIYC.Enemy;
 using UnityEngine;
 
 namespace CMIYC.Platform
@@ -11,6 +12,9 @@ namespace CMIYC.Platform
 
         [SerializeField]
         private Transform _player = null!;
+
+        [SerializeField]
+        private EnemyController _enemyController = null!;
 
         public void Start()
         {
@@ -30,7 +34,7 @@ namespace CMIYC.Platform
             // lmao i'm losing it
             // i really just don't have enough time to do anything else rn
             var halls = (Object.FindObjectsOfType<HallDefinition>() as HallDefinition[]).Where(x => x.transform.parent == result.Motherboard.transform);
-            var rooms = (Object.FindObjectsOfType<RoomDefinition>() as RoomDefinition[]).Where(x => x.transform.parent == result.Motherboard.transform);
+            var rooms = (Object.FindObjectsOfType<RoomDefinition>() as RoomDefinition[]).Where(x => x.transform.parent == result.Motherboard.transform && x.isActiveAndEnabled);
 
             // i literally do not know why the grid direction isn't consistent
             List<Vector2Int> _takenVectors = halls.Select(x => x.Cell).Distinct().ToList();
@@ -79,6 +83,21 @@ namespace CMIYC.Platform
                 ApplyTempWalls(otherHall, Cardinal.South, HallExists(otherHall.Cell, Cardinal.South, _takenVectors, _roomCardinals));
                 ApplyTempWalls(otherHall, Cardinal.East, HallExists(otherHall.Cell, Cardinal.East, _takenVectors, _roomCardinals));
                 ApplyTempWalls(otherHall, Cardinal.West, HallExists(otherHall.Cell, Cardinal.West, _takenVectors, _roomCardinals));
+            }
+
+            SpawnEnemies(rooms);
+        }
+
+        private void SpawnEnemies(IEnumerable<RoomDefinition> rooms)
+        {
+            foreach (var room in rooms)
+            {
+                foreach (var spawnDefinition in room.SpawnDefinitions)
+                {
+                    var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cube.transform.position = spawnDefinition.transform.position;
+                    _enemyController.Spawn(spawnDefinition);
+                }
             }
         }
 

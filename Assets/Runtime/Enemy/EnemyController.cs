@@ -59,14 +59,6 @@ namespace CMIYC.Enemy
         public void Start()
         {
             _inputBroadcaster.Register(this);
-
-            if (_debugSpawnDefinitions != null && _debugSpawnDefinitions.Count > 0)
-            {
-                foreach (var spawnPosition in _debugSpawnDefinitions)
-                {
-                    Spawn(spawnPosition);
-                }
-            }
         }
 
         public void Update()
@@ -93,7 +85,6 @@ namespace CMIYC.Enemy
             }
 
             var spawnPoints = PickSpawnPoints(spawnDefinition);
-            Debug.Log(spawnPoints.Count);
 
             foreach (var spawnPoint in spawnPoints)
             {

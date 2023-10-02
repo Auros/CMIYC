@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CMIYC.Enemy;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ namespace CMIYC.Platform
         public Cardinal Cardinal { get; private set; }
 
         public Vector2Int AnchorLocation { get; private set; }
+
+        [field: SerializeField]
+        public EnemySpawnDefinition[] SpawnDefinitions { get; private set; } = Array.Empty<EnemySpawnDefinition>();
 
         protected override void OnDrawGizmos()
         {
