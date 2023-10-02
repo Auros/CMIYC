@@ -11,6 +11,9 @@ namespace CMIYC.Enemy.Behaviour
         [SerializeField]
         private Renderer _imageRenderer;
 
+        [SerializeField]
+        private Transform _projectileEmitPoint;
+
         private static int _mainTexProperty = Shader.PropertyToID("_MainTex");
 
         private float _fireRate;
@@ -41,6 +44,16 @@ namespace CMIYC.Enemy.Behaviour
                     // GOOBIE: create projectiles here
                     // Check PngBehaviour/JpgBehaviour for example of how i'm spawning projectiles using enemies
                     // Those both use multiple bullets at a time but it should be fairly easy to just do one
+
+                    if (_projectile == null) return;
+
+                    // Calculate projectile direction from emission point
+                    var spawnPoint = _projectileEmitPoint.position;
+                    var projectileForward = _cameraToLookAt.transform.position - spawnPoint;
+
+                    // Emit a new projectile at the weapon emission point, and let it loose.
+                    var newProjectile = Instantiate(_projectile);
+                    newProjectile.Initialize(spawnPoint, projectileForward);
                 }
             }
         }
