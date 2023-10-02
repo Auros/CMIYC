@@ -1,9 +1,11 @@
 ﻿using System;
+using CMIYC.Audio;
 using CMIYC.Items;
 using CMIYC.Metadata;
 using CMIYC.Projectiles;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace CMIYC.Enemy.Behaviour
 {
@@ -22,6 +24,11 @@ namespace CMIYC.Enemy.Behaviour
         private float _fireRate;
         private ProjectileDefinition _projectile;
         private GameObject _droppedItem;
+
+        [SerializeField]
+        private AudioPool _audioPool = null!;
+        [SerializeField]
+        private AudioClip[] _gunSfx = null!;
 
         // i dont really know on this one but hey, it works
         public override int Size => AssignedMetadata.Texture.width * AssignedMetadata.Texture.height * 16;
@@ -64,6 +71,7 @@ namespace CMIYC.Enemy.Behaviour
                     // Emit a new projectile at the weapon emission point, and let it loose.
                     var newProjectile = Instantiate(_projectile);
                     newProjectile.Initialize(spawnPoint, projectileForward);
+                    _audioPool.Play(_gunSfx[Random.Range(0, _gunSfx.Length)]);
                 }
             }
         }

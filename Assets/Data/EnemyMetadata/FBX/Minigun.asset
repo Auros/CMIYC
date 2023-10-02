@@ -18,4 +18,4 @@ MonoBehaviour:
     type: 3}
   DroppedItem: {fileID: 8542604747405717130, guid: 7a3972af1e6017a4e9d9ebe4c591efb5,
     type: 3}
-  FireRate: 0.5
+  FireRate: 0.2
