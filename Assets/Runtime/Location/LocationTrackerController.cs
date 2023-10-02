@@ -48,10 +48,13 @@ namespace CMIYC.Location
             }
         }
 
-        private void OnLocationEnter(string obj)
+        private void OnLocationEnter(string newLoc)
         {
-            var node = new LocationNode(_workingNode, obj, _workingNode == RootNode ? _driveSprite : _folderSprite, null);
-            _workingNode.AddChildNode(node);
+            if (!_workingNode.FindChildNode(newLoc, out var node))
+            {
+                node = new LocationNode(_workingNode, newLoc, _workingNode == RootNode ? _driveSprite : _folderSprite, null);
+                _workingNode.AddChildNode(node);
+            }
             _workingNode = node;
         }
 

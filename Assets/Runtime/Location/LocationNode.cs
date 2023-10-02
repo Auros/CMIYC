@@ -24,6 +24,9 @@ namespace CMIYC.Location
 
         public void AddChildNode(LocationNode node)
             => children.Add(node);
+
+        public bool FindChildNode(string location, out LocationNode node)
+            => (node = children.Find(it => it.location == location)) != null;
     }
 #nullable restore
 }
