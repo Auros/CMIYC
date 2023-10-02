@@ -159,7 +159,7 @@ namespace CMIYC.Enemy
             // im not doing more validation than this i will simply not have bad data
             var min = spawnData.MinEnemies > 0 ? spawnData.MinEnemies : 0;
             var max = spawnData.MaxEnemies < spawnData.SpawnPoints.Count ? spawnData.MaxEnemies : spawnData.SpawnPoints.Count;
-            var roomsToGenerate = Random.Range(min, max); // max is exclusive, might need to add one?
+            var roomsToGenerate = Random.Range(min, max + 1); // max is exclusive, might need to add one?
 
             List<Transform> spawnPoints = new();
 
