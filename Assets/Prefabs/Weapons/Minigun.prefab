@@ -228,10 +228,11 @@ MonoBehaviour:
   <ShellParticles>k__BackingField: {fileID: 6238536702493004922}
   <MuzzleFlashParticles>k__BackingField: {fileID: 55699964179540801}
   <FireSpeed>k__BackingField: 0.05
-  <ReloadTime>k__BackingField: 100
+  <ReloadTime>k__BackingField: -1
   _audioPool: {fileID: 8096867910002697901}
   _shootClip: {fileID: 8300000, guid: e97e9cf23079db24dbd1aa1a4b514602, type: 3}
-  _reloadClip: {fileID: 0}
+  _reloadClip: {fileID: 8300000, guid: 5af9bbcea8d167645a15b0b1e091dbb4, type: 3}
+  <ReloadSoundTime>k__BackingField: 0.8
 --- !u!114 &8096867910002697901
 MonoBehaviour:
   m_ObjectHideFlags: 0

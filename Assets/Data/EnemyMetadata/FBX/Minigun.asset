@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Minigun
   m_EditorClassIdentifier: 
   NameTag: minigun
-  Texture: {fileID: 2800000, guid: 33c7cac2175c3df4eae0829f478ff61f, type: 3}
-  Projectile: {fileID: 0}
-  FireRate: 5
+  Texture: {fileID: 2800000, guid: 3ad29a588f20f4640a560a4b98230847, type: 3}
+  Projectile: {fileID: 3250812358997741803, guid: b60e2ae7b89812e428e5826c498855c1,
+    type: 3}
+  DroppedItem: {fileID: 8542604747405717130, guid: 7a3972af1e6017a4e9d9ebe4c591efb5,
+    type: 3}
+  FireRate: 0.5

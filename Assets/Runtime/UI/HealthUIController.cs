@@ -20,10 +20,11 @@ namespace CMIYC.UI
         {
             _slider.value = _targetValue = 1f;
 
-            _playerHealthController.PlayerTookDamage += PlayerTookDamage;
+            _playerHealthController.PlayerTookDamage += HealthChanged;
+            _playerHealthController.PlayerHealed += HealthChanged;
         }
 
-        private void PlayerTookDamage()
+        private void HealthChanged()
         {
             _targetValue = _playerHealthController.Health / _playerHealthController.InitialHealth;
         }
@@ -35,7 +36,8 @@ namespace CMIYC.UI
 
         private void OnDestroy()
         {
-            _playerHealthController.PlayerTookDamage -= PlayerTookDamage;
+            _playerHealthController.PlayerTookDamage -= HealthChanged;
+            _playerHealthController.PlayerHealed -= HealthChanged;
         }
     }
 }

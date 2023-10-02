@@ -21,6 +21,7 @@ namespace CMIYC.Enemy.Behaviour
 
         private float _health;
         private float _maxHealth;
+        private Vector3 _globalPlayerPosition;
         protected Camera _cameraToLookAt;
         protected TweenManager _tweenManager;
         private Action<EnemyBehaviour>? _onDeath;
@@ -72,6 +73,8 @@ namespace CMIYC.Enemy.Behaviour
         public void UpdatePlayerPosition(Vector3 globalPlayerPosition)
         {
             if (!_isAlive) return;
+
+            _globalPlayerPosition = globalPlayerPosition;
             _isWithinPlayerRange = Vector3.Distance(globalPlayerPosition, this.transform.position) < _maxPlayerDistance;
 
             if (_isDebugging && _playerVisibleDebugger != null)
@@ -86,6 +89,14 @@ namespace CMIYC.Enemy.Behaviour
 
             _nameTag.LookAt(_cameraToLookAt.transform);
             _nameTag.localRotation = Quaternion.Euler(0, _nameTag.localRotation.eulerAngles.y + 180, 0);
+
+            if (!_isWithinPlayerRange) return;
+
+            var playerDirection = (transform.position - _globalPlayerPosition).normalized;
+            playerDirection.y = 0;
+
+            var forwardDirection = Vector3.RotateTowards(transform.forward, playerDirection, Time.deltaTime, 0);
+            transform.forward = forwardDirection;
         }
 
         public void OnProjectileHit(ProjectileHitEvent hitEvent)

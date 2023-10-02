@@ -138,6 +138,50 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!1 &5622857222744209541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3319598212559003378}
+  - component: {fileID: 5034594915509428772}
+  m_Layer: 0
+  m_Name: Location Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3319598212559003378
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622857222744209541}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7016093482924637585}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5034594915509428772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622857222744209541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2612229d493b8d4dbacd9ca7f17fbd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8242702695037294750
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +248,7 @@ GameObject:
   - component: {fileID: 4514367145247156543}
   - component: {fileID: 2378783188982227642}
   - component: {fileID: 2685141081799896285}
+  - component: {fileID: 1261341756616831224}
   - component: {fileID: 7719258016994574435}
   m_Layer: 3
   m_Name: Player
@@ -225,6 +270,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3319598212559003378}
   - {fileID: 3718594052884198925}
   - {fileID: 2574090047296711515}
   m_Father: {fileID: 0}
@@ -344,6 +390,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <InitialHealth>k__BackingField: 100
   _deathController: {fileID: 0}
+--- !u!114 &1261341756616831224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8658619558702538321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de5b88a8baa16f4384627c3b709b489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthController: {fileID: 2685141081799896285}
+  _timeBeforeRegen: 15
+  _healthRegenPerSec: 5
 --- !u!114 &7719258016994574435
 MonoBehaviour:
   m_ObjectHideFlags: 0
