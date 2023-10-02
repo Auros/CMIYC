@@ -30,6 +30,9 @@ namespace CMIYC.Enemy.Behaviour
         private float _previousDissolve = _maxDissolve;
         private List<float> _queuedDissolves = new();
 
+        private float _moveCurve;
+        private float _timeOffset;
+
         [SerializeField]
         private Transform _nameTag = null!;
         [SerializeField]
@@ -63,6 +66,8 @@ namespace CMIYC.Enemy.Behaviour
             _maxHealth = health;
             _onDeath = onDeath;
             _isAlive = true;
+            _moveCurve = UnityEngine.Random.Range(0.01f, 0.5f);
+            _timeOffset = UnityEngine.Random.Range(0, 69f);
 
             foreach (var dissolvingRenderer in _dissolvingRenderers)
             {
@@ -92,11 +97,18 @@ namespace CMIYC.Enemy.Behaviour
 
             if (!_isWithinPlayerRange) return;
 
+            // Slowly turn to player
             var playerDirection = (transform.position - _globalPlayerPosition).normalized;
             playerDirection.y = 0;
 
             var forwardDirection = Vector3.RotateTowards(transform.forward, playerDirection, Time.deltaTime, 0);
             transform.forward = forwardDirection;
+
+            // Move in a randomly shifting direction
+            (var x, var y, _) = transform.position;
+            var movementRotation = 360 * Mathf.Sin((Time.time * _moveCurve) + _timeOffset) * Vector3.up;
+            var wtfIsAQuaternion = Quaternion.Euler(movementRotation);
+            transform.position += Time.deltaTime * (wtfIsAQuaternion * Vector3.forward);
         }
 
         public void OnProjectileHit(ProjectileHitEvent hitEvent)
