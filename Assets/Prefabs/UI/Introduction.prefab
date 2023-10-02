@@ -449,11 +449,15 @@ MonoBehaviour:
   _text: {fileID: 6205175820759888082}
   _tips:
   - Yes, you can bunnyhop.
-  - Try holding spacebar and moving sideways!
+  - More jump = more speed
   - Just here to save space.
   - Storage space is getting low...
-  - Nice homework folder you got there...
-  - These files dont know what hit em...
+  - Nice "homework" folder!
+  - Computer infected.
+  - CLEAN CLEAN CLEAN
+  - Computer? I hardly-
+  - 'Disk Cleanup: Active.'
+  - Delete. Everything.
 --- !u!114 &1254375304855942874
 MonoBehaviour:
   m_ObjectHideFlags: 0
