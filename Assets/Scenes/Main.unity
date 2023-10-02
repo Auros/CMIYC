@@ -334,6 +334,9 @@ MonoBehaviour:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: ecb03a9593c88c64bb43664488bb0c15,
       type: 2}
     SpawnWeight: 0.25
+  - <Metadata>k__BackingField: {fileID: 11400000, guid: 0802aa270e1ce5e4fa7ae356b7306f85,
+      type: 2}
+    SpawnWeight: 0.25
   <DefaultPngMetadata>k__BackingField:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 9bc4436bf45cd1e40b67bd65698df883,
       type: 2}
@@ -346,7 +349,7 @@ MonoBehaviour:
     SpawnWeight: 1
   - <Metadata>k__BackingField: {fileID: 11400000, guid: e306223c55fa9d947be1bb702372df1d,
       type: 2}
-    SpawnWeight: 1
+    SpawnWeight: 2
   - <Metadata>k__BackingField: {fileID: 11400000, guid: c62e70de7184dc544b9e97abeb2e167d,
       type: 2}
     SpawnWeight: 1
@@ -398,6 +401,9 @@ MonoBehaviour:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: cdf47ba19187f124bb74fae6b8849abf,
       type: 2}
     SpawnWeight: 1
+  - <Metadata>k__BackingField: {fileID: 11400000, guid: 762af1f4be253a943b8621ae4e4011fb,
+      type: 2}
+    SpawnWeight: 1
   <DefaultJpgMetadata>k__BackingField:
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 6d66a36290b2fe94aa1ba8f93c2dce67,
       type: 2}
@@ -410,7 +416,7 @@ MonoBehaviour:
     SpawnWeight: 1
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 00c63b3b81609334fb641ff8b972bb06,
       type: 2}
-    SpawnWeight: 1
+    SpawnWeight: 2
   - <Metadata>k__BackingField: {fileID: 11400000, guid: d884f2c28e5e68e4db091ade44cad772,
       type: 2}
     SpawnWeight: 1
@@ -460,6 +466,9 @@ MonoBehaviour:
       type: 2}
     SpawnWeight: 1
   - <Metadata>k__BackingField: {fileID: 11400000, guid: 611f77ad958b09b4099282e913b3c396,
+      type: 2}
+    SpawnWeight: 1
+  - <Metadata>k__BackingField: {fileID: 11400000, guid: 1a55e98cd5be6d34fbfc79350801835d,
       type: 2}
     SpawnWeight: 1
   <DefaultFbxMetadata>k__BackingField:
@@ -1145,7 +1154,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
-  m_Intensity: 8
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

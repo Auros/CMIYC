@@ -231,7 +231,7 @@ MonoBehaviour:
   _playerHealthController: {fileID: 2685141081799896285}
   _useUnscaledTime: 0
   _reactionStrength: 5
-  _movementSensitivity: 0.1
+  _movementSensitivity: 1
   _rotationSensitivity: 5
 --- !u!1 &8658619558702538321
 GameObject:
