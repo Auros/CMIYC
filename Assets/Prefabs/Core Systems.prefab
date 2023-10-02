@@ -664,11 +664,6 @@ PrefabInstance:
       propertyPath: _inputController
       value: 
       objectReference: {fileID: 516639606693136211}
-    - target: {fileID: 2685141081799896285, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
-        type: 3}
-      propertyPath: _deathController
-      value: 
-      objectReference: {fileID: 2980596473541964107}
     - target: {fileID: 4514367145247156543, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
         type: 3}
       propertyPath: _deathController
@@ -1574,6 +1569,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1798267391946721995, guid: dcb985326e82a47489e1851839e2c395,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1925230954678905592, guid: dcb985326e82a47489e1851839e2c395,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2288,6 +2288,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6210421648924240080, guid: dcb985326e82a47489e1851839e2c395,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -12.5
       objectReference: {fileID: 0}
     - target: {fileID: 6370395867536022654, guid: dcb985326e82a47489e1851839e2c395,
         type: 3}
