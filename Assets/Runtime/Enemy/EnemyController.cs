@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine.InputSystem.Controls;
 using Random = UnityEngine.Random;
+using CMIYC.Audio;
 
 namespace CMIYC.Enemy
 {
@@ -41,6 +42,8 @@ namespace CMIYC.Enemy
         private EnemyTextPool _enemyTextPool = null!;
         [SerializeField]
         private TweenManager _tweenManager = null!;
+        [SerializeField]
+        private MusicLoop _musicLoop = null!;
 
         private const float _spawnOffset = 1.11f; // assuming spawn is at foot of enemy, how much height needs to be added
 
@@ -213,6 +216,11 @@ namespace CMIYC.Enemy
             if (_spawnedEnemies.Contains(enemy)) _spawnedEnemies.Remove(enemy);
 
             OnEnemyDeath?.Invoke(enemy);
+
+            if (_musicLoop != null)
+            {
+                _musicLoop.ResetRiff();
+            }
 
             Destroy(enemy.gameObject);
         }
