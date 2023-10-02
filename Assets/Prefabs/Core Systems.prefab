@@ -664,6 +664,11 @@ PrefabInstance:
       propertyPath: _inputController
       value: 
       objectReference: {fileID: 516639606693136211}
+    - target: {fileID: 2685141081799896285, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
+        type: 3}
+      propertyPath: _deathController
+      value: 
+      objectReference: {fileID: 2980596473541964107}
     - target: {fileID: 4514367145247156543, guid: 4729f1c41abc6bb4c98b912e2bbdbb69,
         type: 3}
       propertyPath: _deathController
