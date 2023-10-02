@@ -72,6 +72,7 @@ namespace CMIYC.Player
         private void OnPlayerDeath()
         {
             _rigidbody.constraints = RigidbodyConstraints.None;
+            _rigidbody.drag = 1f;
         }
 
         void Update()
