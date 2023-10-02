@@ -13,7 +13,7 @@ namespace CMIYC.Location
 
         private Stack<string> _locations = new();
 
-        private void Start()
+        private void Awake()
         {
             var randomDrive = (char)UnityEngine.Random.Range('A', 'Z');
             _locations.Push($"{randomDrive}:");
