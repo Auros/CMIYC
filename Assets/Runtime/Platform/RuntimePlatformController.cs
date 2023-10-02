@@ -14,60 +14,87 @@ namespace CMIYC.Platform
         private Transform _player = null!;
 
         [SerializeField]
+        private GameObject _closeDoor = null!;
+
+        [SerializeField]
         private EnemyController _enemyController = null!;
 
         [SerializeField]
         private GameObject _roof = null!;
 
+        // a bit gross
+        private Motherboard? _activeMotherboard;
+        private List<PlatformGenerator.MotherboardGenerationResult> _setupMotherboards = new();
+
         public void Start()
         {
             _roof?.SetActive(true);
 
+            Regenerate();
+        }
+
+        public void OnMotherboardEntered(Motherboard motherboard)
+        {
+            if (motherboard != _activeMotherboard)
+            {
+                Debug.Log("CHANGING!!!!!!!!!!!!!!!");
+                Regenerate();
+            }
+        }
+
+        public void OnMotherboardReleased(Motherboard motherboard)
+        {
+            motherboard.OnEntered -= OnMotherboardEntered;
+            motherboard.OnReleased -= OnMotherboardReleased;
+        }
+
+        private void Regenerate()
+        {
             _platformGenerator.Advance();
 
             // figure out how this gets updated, and when  I need to do stuff
             var result = _platformGenerator.Current;
-            if (result is null)
-                return; // TODO handle
+            var next = _platformGenerator.Next;
 
-            // lmao i'm losing it
-            // i really just don't have enough time to do anything else rn
+            Setup(result, true);
+            Setup(next);
+
+            _activeMotherboard = result?.Motherboard;
+        }
+
+        private void Setup(PlatformGenerator.MotherboardGenerationResult? result, bool isCurrent = false)
+        {
+            if (result == null || _setupMotherboards.Contains(result)) return;
+
             var halls = result.Hallways.Select(x => x.Definition);
             var rooms = result.Rooms.Select(x => x.Definition);
 
-            // i literally do not know why the grid direction isn't consistent
-            Dictionary<Vector2Int, Cardinal> _roomCardinals = new();
-
             // temp wall impl incase auros doesn't have time
-            foreach (var room in rooms)
-            {
-                var occupiedSegments = room.GetOccupiedNodes();
-                for (int i = 0; i < room.Size.x; i++)
-                {
-                    for (int j = 0; j < room.Size.y; j++)
-                    {
-                        var unrotated = new Vector2Int(i, j);
-                        if (!occupiedSegments.TryGetValue(unrotated, out Cardinal segmentCardinal)) continue;
-
-                        Vector2Int location = room.AnchorLocation;
-                        if (room.Cardinal == Cardinal.West) location = room.AnchorLocation + new Vector2Int(-i, j);
-                        if (room.Cardinal == Cardinal.East) location = room.AnchorLocation + new Vector2Int(i, -j);
-                        if (room.Cardinal == Cardinal.South) location = room.AnchorLocation + new Vector2Int(-i, -j);
-                        if (room.Cardinal == Cardinal.North) location = room.AnchorLocation + new Vector2Int(i, j);
-
-                        if ((segmentCardinal == Cardinal.East || segmentCardinal == Cardinal.West))
-                        {
-                            if (room.Cardinal == Cardinal.West || room.Cardinal == Cardinal.East)
-                            {
-                                segmentCardinal = segmentCardinal == Cardinal.East ? Cardinal.West : Cardinal.East;
-                            }
-                        }
-                        _roomCardinals.TryAdd(location, Multiply(room.Cardinal, segmentCardinal));
-                    }
-                }
-            }
 
             SpawnEnemies(rooms);
+
+            if (isCurrent)
+            {
+                // create cube or some shit idk
+                var blockOffCube = Instantiate(_closeDoor);
+
+                var additionVector = result.Origin switch
+                {
+                    Cardinal.North => new Vector2(0, 4.5f),
+                    Cardinal.East => new Vector2(4.5f, 0f),
+                    Cardinal.South => new Vector2(0f, -4.5f),
+                    Cardinal.West => new Vector2(-4.5f, 0f),
+                };
+
+                blockOffCube.transform.position = result.Entrance.transform.position + new Vector3(additionVector.x, 0, additionVector.y);
+                if (result.Origin == Cardinal.East || result.Origin == Cardinal.West)
+                {
+                    blockOffCube.transform.Rotate(new Vector3(0, 90f, 0));
+                }
+            }
+            _setupMotherboards.Add(result);
+            result.Motherboard.OnEntered += OnMotherboardEntered;
+            result.Motherboard.OnReleased += OnMotherboardReleased;
         }
 
         private void SpawnEnemies(IEnumerable<RoomDefinition> rooms)
@@ -82,55 +109,6 @@ namespace CMIYC.Platform
                     // _enemyController.Spawn(spawnDefinition);
                 }
             }
-        }
-
-        // idk how auros is doing it but i can do this quickly
-        private Cardinal Multiply(Cardinal a, Cardinal b)
-        {
-            if (a == Cardinal.West)
-            {
-                switch (b)
-                {
-                    case Cardinal.South:
-                        return Cardinal.West;
-                    case Cardinal.West:
-                        return Cardinal.North;
-                    case Cardinal.North:
-                        return Cardinal.East;
-                    case Cardinal.East:
-                        return Cardinal.South;
-                }
-            }
-            if (a == Cardinal.East)
-            {
-                switch (b)
-                {
-                    case Cardinal.South:
-                        return Cardinal.East;
-                    case Cardinal.West:
-                        return Cardinal.South;
-                    case Cardinal.North:
-                        return Cardinal.West;
-                    case Cardinal.East:
-                        return Cardinal.North;
-                }
-            }
-            if (a == Cardinal.North)
-            {
-                switch (b)
-                {
-                    case Cardinal.South:
-                        return Cardinal.North;
-                    case Cardinal.West:
-                        return Cardinal.East;
-                    case Cardinal.North:
-                        return Cardinal.South;
-                    case Cardinal.East:
-                        return Cardinal.West;
-                }
-            }
-
-            return b;
         }
 
         private bool HallExists(Vector2Int location, Cardinal cardinal, List<Vector2Int> takenVectors, Dictionary<Vector2Int, Cardinal> roomCardinals)

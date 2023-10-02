@@ -169,6 +169,7 @@ namespace CMIYC.Platform
                 foreach (var hall in Previous.Hallways)
                     _hallPool.Release(hall.Definition);
 
+                Previous.Motherboard.ClearEvents();
                 _motherboardPool.Release(Previous.Motherboard);
             }
 
