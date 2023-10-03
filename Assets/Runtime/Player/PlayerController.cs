@@ -85,6 +85,12 @@ namespace CMIYC.Player
             Vector3 angles = _camera.transform.localEulerAngles;
             angles.x -= lookValue.y;
             angles.y += lookValue.x;
+
+            if (angles.x > 180)
+                angles.x -= 360;
+
+            angles.x = Mathf.Clamp(angles.x, -90f, 90f);
+
             _camera.transform.localEulerAngles = angles;
 
             _camera.transform.localPosition = _camera.transform.localPosition.WithY(_inputCrouching ? _crouchedCameraHeight : _defaultCameraHeight);
