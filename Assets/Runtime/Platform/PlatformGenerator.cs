@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Pool;
 using Random = System.Random;
 
@@ -51,6 +52,8 @@ namespace CMIYC.Platform
         [SerializeField]
         private bool _buildOnStart;
 
+        public event Action<Motherboard>? OnMotherboardEntered;
+
         private Random _random = new(0);
         private ObjectPool<HallDefinition> _hallPool = null!;
         private ObjectPool<Motherboard> _motherboardPool = null!;
@@ -68,7 +71,10 @@ namespace CMIYC.Platform
 
         private void Awake()
         {
-            _random = _seed != -1 ? new Random(_seed) : new Random();
+            var epicSeed = _seed != -1 ? _seed : UnityEngine.Random.Range(0, int.MaxValue);
+            _random = new Random(epicSeed);
+
+            Debug.Log("Seed: " + epicSeed);
 
             _hallPool = new ObjectPool<HallDefinition>(
                 () => Instantiate(_hallwayPrefab, transform),
@@ -158,9 +164,12 @@ namespace CMIYC.Platform
 
         public void Advance()
         {
+            bool isFirst = Next == null;
             var motherboardPhysicalWidth = _motherboardSize.x * daughterboardUnit;
             var motherboardPhysicalHeight = _motherboardSize.y * daughterboardUnit;
             Next ??= BuildMotherboard(Cardinal.South, new Vector2Int(0, 0), Vector2.zero);
+            if (isFirst)
+                Next?.Entrance.GetWall(Next.Origin).SetType(WallSegmentType.Wall);
 
             if (Previous is not null)
             {
@@ -173,6 +182,7 @@ namespace CMIYC.Platform
 
                 Previous.Motherboard.ClearEvents();
                 _motherboardPool.Release(Previous.Motherboard);
+                Previous.Motherboard.OnEntered -= MotherboardOnOnEntered;
             }
 
             // Close off the previous motherboard
@@ -297,8 +307,10 @@ namespace CMIYC.Platform
             }
 
             var motherboard = _motherboardPool.Get();
+            motherboard.gameObject.SetActive(false);
             var motherboardTransform = motherboard.transform;
             motherboardTransform.SetParent(transform);
+            motherboard.OnEntered += MotherboardOnOnEntered;
 
             var definitionLookup = DictionaryPool<Vector2Int, Definition>.Get();
 
@@ -341,6 +353,20 @@ namespace CMIYC.Platform
             GenerateHallway(start, exitTarget, motherboardTransform, roomInstances, hallInstances, definitionLookup);
 
             motherboardTransform.SetLocalPositionAndRotation(new Vector3(physicalPosition.x, 0, physicalPosition.y), Quaternion.identity);
+            motherboard.gameObject.SetActive(true);
+
+
+            // Definition lookup is being silly, recalculated it with more reliable data source
+            definitionLookup.Clear();
+            foreach (var room in roomInstances)
+            {
+                for (int x = 0; x < room.Definition.Size.x; x++)
+                    for (int y = 0; y < room.Definition.Size.y; y++)
+                        definitionLookup.Add(room.Definition.TransformLocation(new Vector2Int(x, y)), room.Definition);
+            }
+            foreach (var hall in hallInstances)
+                definitionLookup.Add(hall.Position, hall.Definition);
+
 
             HallDefinition entrance = null!;
             HallDefinition exit = null!;
@@ -408,6 +434,11 @@ namespace CMIYC.Platform
             };
         }
 
+        private void MotherboardOnOnEntered(Motherboard motherboard)
+        {
+            OnMotherboardEntered?.Invoke(motherboard);
+        }
+
         private static Cardinal Adjacant(Cardinal cardinal)
         {
             return cardinal switch
@@ -420,8 +451,9 @@ namespace CMIYC.Platform
             };
         }
 
-        private void DespawnRoomDefinition(RoomInstance roomInstance)
+        private void DespawnRoomDefinition(RoomInstance roomInstance, IDictionary<Vector2Int, Definition>? lookup = null)
         {
+            lookup?.Remove(roomInstance.Position);
             var pool = _roomDefinitionPools[roomInstance.Prefab];
             pool.Release(roomInstance.Definition);
         }

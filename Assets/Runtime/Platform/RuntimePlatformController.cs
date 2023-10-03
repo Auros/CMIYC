@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CMIYC.Enemy;
 using UnityEngine;
@@ -11,22 +12,79 @@ namespace CMIYC.Platform
         private PlatformGenerator _platformGenerator = null!;
 
         [SerializeField]
-        private Transform _player = null!;
-
-        [SerializeField]
-        private GameObject _closeDoor = null!;
-
-        [SerializeField]
         private EnemyController _enemyController = null!;
 
         [SerializeField]
         private GameObject _roof = null!;
 
         [SerializeField]
-        private Color _defaultRoomColor = new();
+        private Color _defaultRoomColor;
+
+        private void OnEnable()
+        {
+            _platformGenerator.OnMotherboardEntered += PlatformGenerator_OnMotherboardEntered;
+        }
+
+        private void Start()
+        {
+            _roof.SetActive(true);
+            _platformGenerator.Advance();
+            Setup(_platformGenerator.Current!);
+            Setup(_platformGenerator.Next!);
+        }
+
+        private void PlatformGenerator_OnMotherboardEntered(Motherboard motherboard)
+        {
+            if (motherboard != _platformGenerator.Next?.Motherboard)
+                return;
+
+            _platformGenerator.Advance();
+
+            if (_platformGenerator.Next is null)
+                return;
+
+            Setup(_platformGenerator.Next);
+        }
+
+        private void Setup(PlatformGenerator.MotherboardGenerationResult result)
+        {
+            Color.RGBToHSV(_defaultRoomColor, out float h, out float s, out float v);
+            h = UnityEngine.Random.Range(0, 1f);
+
+            var roomColor = Color.HSVToRGB(h, s, v);
+            var rooms = result.Rooms.Select(r => r.Definition).ToArray();
+            SpawnEnemies(rooms);
+
+            foreach (var room in rooms)
+            {
+                room.SetColor(roomColor);
+            }
+
+            foreach (var hall in result.Hallways)
+            {
+                hall.Definition.SetColor(roomColor);
+            }
+        }
+
+        private void OnDisable()
+        {
+            _platformGenerator.OnMotherboardEntered += PlatformGenerator_OnMotherboardEntered;
+        }
+
+        private void SpawnEnemies(IEnumerable<RoomDefinition> rooms)
+        {
+            foreach (var room in rooms)
+            {
+                foreach (var spawnData in room.SpawnDatas)
+                {
+                    _enemyController.Spawn(spawnData);
+                }
+            }
+        }
+
 
         // a bit gross
-        private Motherboard? _activeMotherboard;
+        /*private Motherboard? _activeMotherboard;
         private List<PlatformGenerator.MotherboardGenerationResult> _setupMotherboards = new();
         private Dictionary<PlatformGenerator.MotherboardGenerationResult, Color> _colorByMotherboard = new();
         private List<GameObject> _existingFakeWalls = new();
@@ -177,6 +235,6 @@ namespace CMIYC.Platform
             }
 
             return false;
-        }
+        }*/
     }
 }

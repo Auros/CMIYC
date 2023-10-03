@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collider: {fileID: 7769373986699559954}
-  _height: 0
+  _height: 10
 --- !u!65 &7769373986699559954
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -61,9 +61,9 @@ BoxCollider:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 245879
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 242
   m_IsTrigger: 1
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 250, y: 20, z: 250}

@@ -31,12 +31,25 @@ namespace CMIYC.Platform
                 int removed = roomInstances.RemoveAll(r => r.Definition == roomDefinition);
 
                 if (removed > 0)
-                    DespawnRoomDefinition(roomEntrance.Instance);
+                    DespawnRoomDefinition(roomEntrance.Instance, definitionLookup);
 
                 definitionLookup.Remove(location);
             }
 
             int test = 0;
+
+            bool HasRoom(int targetX, int targetY)
+            {
+                foreach (var room in roomInstances)
+                {
+                    for (int x = 0; x < room.Definition.Size.x; x++)
+                        for (int y = 0; y < room.Definition.Size.y; y++)
+                            if (room.Definition.TransformLocation(new Vector2Int(x, y)) == new Vector2Int(targetX, targetY))
+                                return true;
+                }
+
+                return false;
+            }
 
             while (!reachedExitNode && 1000 > test++)
             {
@@ -49,7 +62,7 @@ namespace CMIYC.Platform
                     Vector2Int cell = new(x, y);
 
                     // Exclude room spots
-                    if (definitionLookup.TryGetValue(cell, out var localDef) && localDef is RoomDefinition)
+                    if (definitionLookup.TryGetValue(cell, out var localDef) && localDef is RoomDefinition || HasRoom(x, y))
                         continue;
 
                     var unexploredCell = _unexploredCellPool.Get();
@@ -238,7 +251,7 @@ namespace CMIYC.Platform
                 {
                     roomInstances.Remove(room);
                     definitionLookup.Remove(room.Position);
-                    DespawnRoomDefinition(room);
+                    DespawnRoomDefinition(room, definitionLookup);
                 }
             }
         }

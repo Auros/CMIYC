@@ -21,19 +21,18 @@ namespace CMIYC.Platform
             var width = PlatformGenerator.daughterboardUnit * size.x;
             var height = PlatformGenerator.daughterboardUnit * size.y;
 
-            _collider.center = new Vector3(width / 2f, _height / 2f, height / 2f);
+            _collider.center = new Vector3(width / 2f, _height / 2f, height / 2f) * 0.95f;
             _collider.size = Vector3.zero.WithX(width).WithY(_height).WithZ(height);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!_entered)
-            {
-                _entered = true;
-                OnEntered?.Invoke(this);
-            }
-        }
+            if (_entered)
+                return;
 
+            _entered = true;
+            OnEntered?.Invoke(this);
+        }
         public void ClearEvents()
         {
             _entered = false;

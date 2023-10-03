@@ -156,7 +156,7 @@
                 {
                     "name": "",
                     "id": "c9413947-cf69-49bb-a0ad-3c8041a60bd9",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -168,6 +168,17 @@
                     "name": "",
                     "id": "661d1600-6e08-44f4-a4c2-fa7ea6545af6",
                     "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8a3950f-6242-439a-a75c-52f54e009a47",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

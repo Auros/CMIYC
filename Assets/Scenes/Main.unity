@@ -637,7 +637,7 @@ MonoBehaviour:
   - <Weight>k__BackingField: 0.5
     <Prefab>k__BackingField: {fileID: 8258362943781664908, guid: c06b4bf905a888a448c8e0586d856a10,
       type: 3}
-  _targetMotherboardVolume: 0.192
+  _targetMotherboardVolume: 0.125
   _initialRoomPoolSizePerRoom: 10
   _initialHallwayPoolSize: 100
   _sampleAttempts: 5
@@ -1459,6 +1459,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 503661935}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1314621520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8728432324932716573, guid: b2daad300bf508946b6b029056f77ffc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1491424097}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1421686813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1840,7 +1846,7 @@ PrefabInstance:
     - target: {fileID: 1264550615971169892, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -27.445007
+      value: -27.444946
       objectReference: {fileID: 0}
     - target: {fileID: 1274313925181135887, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
@@ -1856,6 +1862,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMin.y
       value: 0.0000019669533
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274313925181135887, guid: b2daad300bf508946b6b029056f77ffc,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00012207031
       objectReference: {fileID: 0}
     - target: {fileID: 1447157028731024784, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
@@ -1967,6 +1978,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1843541176816217251, guid: b2daad300bf508946b6b029056f77ffc,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2102989548836164030, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       propertyPath: _directoryController
@@ -2016,6 +2032,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Core Systems
+      objectReference: {fileID: 0}
+    - target: {fileID: 2748484783284689894, guid: b2daad300bf508946b6b029056f77ffc,
+        type: 3}
+      propertyPath: orthographic size
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2803749115811808288, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
@@ -2226,6 +2247,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752472750251369878, guid: b2daad300bf508946b6b029056f77ffc,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 3848350395768728160, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
@@ -2897,10 +2923,15 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1843541176816217251, guid: b2daad300bf508946b6b029056f77ffc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8728432324932716573, guid: b2daad300bf508946b6b029056f77ffc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1656156377}
     - targetCorrespondingSourceObject: {fileID: 3871314505726230417, guid: b2daad300bf508946b6b029056f77ffc,
         type: 3}
       insertIndex: -1
@@ -3492,12 +3523,33 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1491424097}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1314621520}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc943db7cf44f35448c6291cf2f3d02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &1656156377
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314621520}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1713146253
 GameObject:
   m_ObjectHideFlags: 0
@@ -3513,7 +3565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1713146254
 Transform:
   m_ObjectHideFlags: 0
@@ -4103,9 +4155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _platformGenerator: {fileID: 478547059}
-  _player: {fileID: 1044444512}
-  _closeDoor: {fileID: 9065086164346652404, guid: d5cf17d9d363c8943831e30975ff02ad,
-    type: 3}
   _enemyController: {fileID: 255356373}
   _roof: {fileID: 1902418342}
   _defaultRoomColor: {r: 0.44313726, g: 0.56078434, b: 1, a: 1}
